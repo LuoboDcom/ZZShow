@@ -1,4 +1,4 @@
-package com.ys.yoosir.zzshow;
+package com.ys.yoosir.zzshow.ui.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,18 +8,28 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity
+import com.ys.yoosir.zzshow.R;
+import com.ys.yoosir.zzshow.modle.PostChannelTable;
+import com.ys.yoosir.zzshow.ui.activities.base.BaseActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -41,9 +51,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-    }
-
-    private void testRxJava(){
 
     }
 
@@ -103,4 +110,22 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void initViewPager(List<PostChannelTable> postChannels){
+        final List<String> channelNames = new ArrayList<>();
+        if(postChannels != null){
+            setPostList(postChannels,channelNames);
+            setViewPager(channelNames);
+        }
+    }
+
+    private void setPostList(List<PostChannelTable> postChannels, List<String> channelNames) {
+
+    }
+
+    private void setViewPager(List<String> channelNames) {
+    }
+
+    
+
 }

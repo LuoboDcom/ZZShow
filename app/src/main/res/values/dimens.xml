@@ -6,4 +6,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="padding_size_l">8dp</dimen>
+
+    <dimen name="text_size_xxl">20sp</dimen>
 </resources>
