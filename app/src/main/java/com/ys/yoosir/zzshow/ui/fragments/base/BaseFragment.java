@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ys.yoosir.zzshow.presenter.BasePresenter;
+import com.ys.yoosir.zzshow.presenter.interfaces.BasePresenter;
 
 import butterknife.ButterKnife;
 
@@ -17,8 +17,8 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseFragment<T extends BasePresenter> extends Fragment{
 
-    private T mPresenter;
-    private View mFragmentView;
+    protected T mPresenter;
+    protected View mFragmentView;
 
     public abstract int getLayoutId();
     public abstract void initViews(View view);

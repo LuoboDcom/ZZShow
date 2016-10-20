@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.ys.yoosir.zzshow.presenter.BasePresenter;
+import com.ys.yoosir.zzshow.presenter.interfaces.BasePresenter;
 
 /**
  * 绑定 presenter

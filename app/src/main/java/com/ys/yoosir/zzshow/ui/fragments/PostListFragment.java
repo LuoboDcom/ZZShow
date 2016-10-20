@@ -8,13 +8,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.modle.PostBean;
+import com.ys.yoosir.zzshow.modle.toutiao.ArticleData;
+import com.ys.yoosir.zzshow.presenter.PostListPresenterImpl;
 import com.ys.yoosir.zzshow.ui.adapters.PostListAdapter;
 import com.ys.yoosir.zzshow.ui.adapters.listener.RecyclerListener;
 import com.ys.yoosir.zzshow.ui.fragments.base.BaseFragment;
+import com.ys.yoosir.zzshow.view.PostListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,23 +26,19 @@ import butterknife.BindView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PostListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
  * Use the {@link PostListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PostListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,RecyclerListener{
+public class PostListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,RecyclerListener,PostListView{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = PostListFragment.class.getSimpleName();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -48,7 +47,7 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
     RecyclerView mRecyclerView;
 
     private PostListAdapter mPostsAdapter;
-    private List<List<PostBean>> postList;
+    private List<ArticleData> mArticleDataList;
     private boolean hasMore = false;
 
     public PostListFragment() {
@@ -107,17 +106,20 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
 
                 if (hasMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
                         && lastVisibleItemPosition >= totalItemCount - 1) {
-                    mNewsListPresenter.loadMore();
-//                    mNewsListAdapter.showFooter();
+                    //TODO  load more & show footer
+
                     mRecyclerView.scrollToPosition(mPostsAdapter.getItemCount() - 1);
                 }
             }
         });
         //TODO setAdapter
+        mRecyclerView.setAdapter(mPostsAdapter);
     }
 
     private void initPresenter(){
-
+        mPresenter = new PostListPresenterImpl();
+        mPresenter.attachView(this);
+        mPresenter.onCreate();
     }
 
     @Override
@@ -127,32 +129,18 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        postList = new ArrayList<>();
-        mPostsAdapter = new PostListAdapter(this);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        mArticleDataList = new ArrayList<>();
+        mPostsAdapter = new PostListAdapter(this,mArticleDataList);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -165,18 +153,31 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
 
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void setPostList(List<ArticleData> articleDataList) {
+        Log.d(TAG,"setPostList");
+        if(mPostsAdapter != null) {
+            if (!mArticleDataList.isEmpty()) {
+                mArticleDataList.clear();
+            }
+            mArticleDataList.addAll(articleDataList);
+            mPostsAdapter.notifyDataSetChanged();
+        }
     }
+
+    @Override
+    public void showProgress() {
+        Log.d(TAG,"showProgress");
+    }
+
+    @Override
+    public void hideProgress() {
+        Log.d(TAG,"hideProgress");
+    }
+
+    @Override
+    public void showMsg(String message) {
+        Log.d(TAG,"showMsg");
+    }
+
 }

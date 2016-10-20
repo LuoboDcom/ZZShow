@@ -1,4 +1,6 @@
-package com.ys.yoosir.zzshow.presenter;
+package com.ys.yoosir.zzshow.presenter.interfaces;
+
+import android.support.annotation.NonNull;
 
 import com.ys.yoosir.zzshow.view.base.BaseView;
 
@@ -13,7 +15,7 @@ public interface BasePresenter {
     void onCreate();
 
     //绑定
-    void attachView(BaseView vid);
+    void attachView(@NonNull BaseView vid);
 
     void onDestroy();
 }
