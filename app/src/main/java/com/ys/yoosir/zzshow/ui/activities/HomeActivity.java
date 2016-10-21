@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,6 +19,9 @@ import android.widget.ImageView;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.modle.PostChannelTable;
 import com.ys.yoosir.zzshow.ui.activities.base.BaseActivity;
+import com.ys.yoosir.zzshow.ui.adapters.PostFragmentPagerAdapter;
+import com.ys.yoosir.zzshow.ui.fragments.PostListFragment;
+import com.ys.yoosir.zzshow.utils.TabLayoutUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +30,10 @@ import butterknife.BindView;
 
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ArrayList<Fragment> mPostFragmentList = new ArrayList<>();
+    private String mCurrentViewPagerName;
+    private List<String> mChannelNames;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -74,6 +82,17 @@ public class HomeActivity extends BaseActivity
         mNavigationView.setNavigationItemSelectedListener(this);
 
         initViews();
+
+        initValues();
+    }
+
+    private void initValues() {
+        List<PostChannelTable> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            PostChannelTable postChannelTable = new PostChannelTable(i+1,"Channel-"+(i+1));
+            list.add(postChannelTable);
+        }
+        initViewPager(list);
     }
 
     private void initViews() {
@@ -146,15 +165,61 @@ public class HomeActivity extends BaseActivity
     }
 
     private void setPostList(List<PostChannelTable> postChannels, List<String> channelNames) {
+        mPostFragmentList.clear();
+        for (PostChannelTable postChannel: postChannels) {
+            PostListFragment postListFragment = createListFragment(postChannel);
+            mPostFragmentList.add(postListFragment);
+            channelNames.add(postChannel.getName());
+        }
+    }
 
+    private PostListFragment createListFragment(PostChannelTable postchannel){
+        PostListFragment fragment =  PostListFragment.newInstance("1","2");
+        return fragment;
     }
 
     private void setViewPager(List<String> channelNames) {
+        PostFragmentPagerAdapter adapter = new PostFragmentPagerAdapter(
+                getSupportFragmentManager(),channelNames,mPostFragmentList);
+        mViewPager.setAdapter(adapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+        TabLayoutUtil.dynamicSetTabLayoutMode(mTabLayout);
+        setPageChangeListener();
 
-
-
+        mChannelNames = channelNames;
+        int currentViewPagerPosition = getCurrentViewPagerPosition();
+        mViewPager.setCurrentItem(currentViewPagerPosition,false);
     }
 
-    
+    private void setPageChangeListener() {
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mCurrentViewPagerName = mChannelNames.get(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    private int getCurrentViewPagerPosition(){
+        int position = 0;
+        if(mCurrentViewPagerName != null){
+            for (int i = 0; i < mChannelNames.size(); i++) {
+                if (mCurrentViewPagerName.equals(mChannelNames.get(i))){
+                    position = i;
+                }
+            }
+        }
+        return position;
+    }
 
 }

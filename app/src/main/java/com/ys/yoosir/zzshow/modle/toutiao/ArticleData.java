@@ -11,7 +11,7 @@ public class ArticleData {
     private String      keyword;             //描述
     private boolean     has_video;           //视频
     private String      title;               //标题
-    private long        datetime;            //时间
+    private String        datetime;            //时间
     private int         gallary_image_count; //图片数量
     private ArrayList<ArticleImageItem> image_list; //图片集合
 
@@ -39,11 +39,11 @@ public class ArticleData {
         this.title = title;
     }
 
-    public long getDatetime() {
+    public String getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(long datetime) {
+    public void setDatetime(String datetime) {
         this.datetime = datetime;
     }
 

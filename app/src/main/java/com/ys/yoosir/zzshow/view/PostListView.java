@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface PostListView extends BaseView{
 
-    void setPostList(List<ArticleData> articleDataList);
+    void setPostList(List<ArticleData> articleDataList,boolean hasMore,int loadType);
 
 }

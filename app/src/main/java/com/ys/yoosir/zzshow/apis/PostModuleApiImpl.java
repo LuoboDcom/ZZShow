@@ -44,11 +44,11 @@ public class PostModuleApiImpl{
         service = retrofit.create(PostModuleApi.class);
     }
 
-    public void getArticles(final RequestCallBack<List<ArticleData>> callBack,long maxBehotTime){
+    public void getArticles(final RequestCallBack<ArticleResult<List<ArticleData>>> callBack,long maxBehotTime){
 
         service.getArticles(getParams(maxBehotTime))               //获取 Observable 对象
                 .subscribeOn(Schedulers.newThread())    //请求在新的线程中执行
-                .observeOn(Schedulers.io())             //请求完成后在 io 线程中执行
+                .observeOn(AndroidSchedulers.mainThread())             //请求完成后在 io 线程中执行
                 .subscribe(new Subscriber<ArticleResult<List<ArticleData>>>() {
                     @Override
                     public void onCompleted() {
@@ -68,7 +68,7 @@ public class PostModuleApiImpl{
                         System.out.println("onNext");
                         Log.i(TAG,"onNext");
                         Log.d(TAG,listArticleResult.toString());
-                        callBack.success(listArticleResult.getData());
+                        callBack.success(listArticleResult);
                     }
                 });
     }

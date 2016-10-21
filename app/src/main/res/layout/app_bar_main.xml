@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         <LinearLayout
@@ -36,6 +37,7 @@
                 android:id="@+id/add_channel_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:maxHeight="?attr/actionBarSize"
                 android:padding="@dimen/padding_size_l"

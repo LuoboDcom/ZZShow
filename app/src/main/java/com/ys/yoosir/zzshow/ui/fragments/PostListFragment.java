@@ -1,6 +1,7 @@
 package com.ys.yoosir.zzshow.ui.fragments;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,10 +11,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.ys.yoosir.zzshow.R;
+import com.ys.yoosir.zzshow.apis.LoadDataType;
+import com.ys.yoosir.zzshow.apis.PostModuleApiImpl;
 import com.ys.yoosir.zzshow.modle.toutiao.ArticleData;
 import com.ys.yoosir.zzshow.presenter.PostListPresenterImpl;
+import com.ys.yoosir.zzshow.presenter.interfaces.PostListPresenter;
 import com.ys.yoosir.zzshow.ui.adapters.PostListAdapter;
 import com.ys.yoosir.zzshow.ui.adapters.listener.RecyclerListener;
 import com.ys.yoosir.zzshow.ui.fragments.base.BaseFragment;
@@ -46,9 +51,13 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
     @BindView(R.id.post_rv)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+
     private PostListAdapter mPostsAdapter;
     private List<ArticleData> mArticleDataList;
     private boolean hasMore = false;
+    private boolean isLoading = false;
 
     public PostListFragment() {
         // Required empty public constructor
@@ -91,7 +100,14 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
 
     private void initRecyclerView() {
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                outRect.set(0,0,0,getActivity().getResources().getDimensionPixelSize(R.dimen.padding_size_xl));
+            }
+        });
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -104,11 +120,12 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
                 int visibleItemCount = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
 
-                if (hasMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
+                if ( !isLoading && hasMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
                         && lastVisibleItemPosition >= totalItemCount - 1) {
                     //TODO  load more & show footer
-
-                    mRecyclerView.scrollToPosition(mPostsAdapter.getItemCount() - 1);
+                    isLoading = true;
+                    ((PostListPresenter)mPresenter).loadMoreData();
+                    //mRecyclerView.scrollToPosition(mPostsAdapter.getItemCount() - 1);
                 }
             }
         });
@@ -145,7 +162,7 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
 
     @Override
     public void onRefresh() {
-
+        ((PostListPresenter)mPresenter).refreshData();
     }
 
     @Override
@@ -154,13 +171,26 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void setPostList(List<ArticleData> articleDataList) {
+    public void setPostList(List<ArticleData> articleDataList,boolean hasMore,int loadType) {
         Log.d(TAG,"setPostList");
+        this.hasMore = hasMore;
+        switch (loadType){
+            case LoadDataType.TYPE_FIRST_LOAD:
+                if (!mArticleDataList.isEmpty()) {
+                    mArticleDataList.clear();
+                }
+                break;
+            case LoadDataType.TYPE_REFRESH:
+                if (!mArticleDataList.isEmpty()) {
+                    mArticleDataList.clear();
+                }
+                mSwipeRefreshLayout.setRefreshing(false);
+                break;
+            case LoadDataType.TYPE_LOAD_MORE:
+                break;
+        }
+        mArticleDataList.addAll(articleDataList);
         if(mPostsAdapter != null) {
-            if (!mArticleDataList.isEmpty()) {
-                mArticleDataList.clear();
-            }
-            mArticleDataList.addAll(articleDataList);
             mPostsAdapter.notifyDataSetChanged();
         }
     }
@@ -168,11 +198,15 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void showProgress() {
         Log.d(TAG,"showProgress");
+        mProgressBar.setVisibility(View.VISIBLE);
+        isLoading = true;
     }
 
     @Override
     public void hideProgress() {
         Log.d(TAG,"hideProgress");
+        mProgressBar.setVisibility(View.GONE);
+        isLoading = false;
     }
 
     @Override

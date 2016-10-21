@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.ys.yoosir.zzshow.presenter.interfaces.BasePresenter;
 
+import butterknife.ButterKnife;
+
 /**
  * 绑定 presenter
  * Created by Yoosir on 2016/10/19 0019.
@@ -21,6 +23,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         super.onCreate(savedInstanceState);
         int layoutId = getLayoutId();
         setContentView(layoutId);
+        ButterKnife.bind(this);
         if(mPresenter != null){
             mPresenter.onCreate();
         }

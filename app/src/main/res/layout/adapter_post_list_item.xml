@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff">
+
+    <ImageView
+        android:id="@+id/post_img_iv"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:scaleType="fitXY"
+        />
+
+    <TextView
+        android:id="@+id/post_img_count_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/post_img_count_height"
+        android:layout_alignBottom="@id/post_img_iv"
+        android:layout_alignRight="@id/post_img_iv"
+        android:layout_alignEnd="@id/post_img_iv"
+        android:layout_marginRight="@dimen/padding_size_m"
+        android:layout_marginBottom="@dimen/padding_size_m"
+        android:paddingLeft="@dimen/padding_size_l"
+        android:paddingRight="@dimen/padding_size_l"
+        android:gravity="center"
+        android:textSize="@dimen/post_img_count_tv_size"
+        android:textColor="@color/tv_color_gray"
+        android:text="@string/post_img_count_value"
+        android:background="@drawable/post_img_count_bg"/>
+
+    <TextView
+        android:id="@+id/post_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/post_img_iv"
+        android:padding="@dimen/padding_size_l"
+        android:textSize="@dimen/text_size_m"
+        android:textColor="@color/tv_color_black"
+        android:gravity="center_vertical"
+        />
+
+</RelativeLayout>
