@@ -7,6 +7,7 @@ import com.ys.yoosir.zzshow.apis.listener.RequestCallBack;
 import com.ys.yoosir.zzshow.modle.PostBean;
 import com.ys.yoosir.zzshow.modle.toutiao.ArticleData;
 import com.ys.yoosir.zzshow.modle.toutiao.ArticleResult;
+import com.ys.yoosir.zzshow.utils.RetrofitManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,13 +36,7 @@ public class PostModuleApiImpl{
     }
 
     private PostModuleApiImpl(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(Constants.URL_HOST)
-                .build();
-
-        service = retrofit.create(PostModuleApi.class);
+        service = RetrofitManager.getRetrofitInstance().create(PostModuleApi.class);
     }
 
     public void getArticles(final RequestCallBack<ArticleResult<List<ArticleData>>> callBack,long maxBehotTime){

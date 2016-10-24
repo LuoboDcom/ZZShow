@@ -21,6 +21,7 @@ import com.ys.yoosir.zzshow.modle.PostChannelTable;
 import com.ys.yoosir.zzshow.ui.activities.base.BaseActivity;
 import com.ys.yoosir.zzshow.ui.adapters.PostFragmentPagerAdapter;
 import com.ys.yoosir.zzshow.ui.fragments.PostListFragment;
+import com.ys.yoosir.zzshow.ui.fragments.VideoListFragment;
 import com.ys.yoosir.zzshow.utils.TabLayoutUtil;
 
 import java.util.ArrayList;
@@ -167,8 +168,13 @@ public class HomeActivity extends BaseActivity
     private void setPostList(List<PostChannelTable> postChannels, List<String> channelNames) {
         mPostFragmentList.clear();
         for (PostChannelTable postChannel: postChannels) {
-            PostListFragment postListFragment = createListFragment(postChannel);
-            mPostFragmentList.add(postListFragment);
+            if("Channel-2".equals(postChannel.getName())) {
+                VideoListFragment videoListFragment = VideoListFragment.newInstance("1","2");
+                mPostFragmentList.add(videoListFragment);
+            }else{
+                PostListFragment postListFragment = createListFragment(postChannel);
+                mPostFragmentList.add(postListFragment);
+            }
             channelNames.add(postChannel.getName());
         }
     }

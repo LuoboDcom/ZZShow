@@ -17,11 +17,11 @@ import java.util.List;
 public class PostListPresenterImpl extends BasePresenterImpl<PostListView,ArticleResult<List<ArticleData>>> implements PostListPresenter {
 
     private int mLoadDataType = LoadDataType.TYPE_FIRST_LOAD;
-    private PostModuleApiImpl mPostModlueService;
+    private PostModuleApiImpl mPostModuleService;
     private long nexMaxBehotTime = 0l;
 
     public PostListPresenterImpl(){
-        mPostModlueService = PostModuleApiImpl.getInstance();
+        mPostModuleService = PostModuleApiImpl.getInstance();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PostListPresenterImpl extends BasePresenterImpl<PostListView,Articl
     }
 
     private void loadPastData(long maxBehotTime){
-        mPostModlueService.getArticles(this,maxBehotTime);
+        mPostModuleService.getArticles(this,maxBehotTime);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class PostListPresenterImpl extends BasePresenterImpl<PostListView,Articl
 
     @Override
     public void success(ArticleResult<List<ArticleData>> data) {
-        super.success(data);
         if(mView != null){
+            super.success(data);
             nexMaxBehotTime = data.getNext().getMax_behot_time();
             mView.setPostList(data.getData(),data.isHas_more(),mLoadDataType);
         }
@@ -73,8 +73,8 @@ public class PostListPresenterImpl extends BasePresenterImpl<PostListView,Articl
 
     @Override
     public void onError(String errorMsg) {
-        super.onError(errorMsg);
         if(mView != null){
+            super.onError(errorMsg);
             mView.showMsg(errorMsg);
         }
     }

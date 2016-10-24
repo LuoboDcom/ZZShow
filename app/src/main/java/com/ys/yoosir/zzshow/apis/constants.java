@@ -22,4 +22,14 @@ public class Constants {
 
     public static final String URL_HOST = "http://www.toutiao.com/api/";
     public static final String ARTICLE_PATH = "article/recent/";
+
+    /**
+     * http://www.toutiao.com/api/article/feed/
+     * ?category=video&utm_source=toutiao
+     * &widen=0
+     * &max_behot_time=1477290896
+     * &max_behot_time_tmp=1477290896
+     * &as=A1F548F0AD5AC6A&cp=580D4A9C76EAFE1
+     */
+    public static final String VIDEO_PATH = "article/feed/";
 }

@@ -8,6 +8,7 @@
 
     <color name="tv_color_black">#222222</color>
     <color name="tv_color_gray">#f3f3f3</color>
+    <color name="tv_color_white">#ffffff</color>
 
     <color name="background_gray">#eeeeee</color>
     <color name="background_half_transparent">#96000000</color>
