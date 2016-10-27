@@ -4,10 +4,12 @@
     android:layout_height="200dp"
     android:background="#ffffff">
 
-    <com.waynell.videolist.widget.TextureVideoView
-        android:id="@+id/video_view"
+    <FrameLayout
+        android:id="@+id/item_layout_video"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="200dp">
+
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/video_cover_iv"

@@ -1,10 +1,12 @@
 package com.ys.yoosir.zzshow.ui.adapters;
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ import com.ys.yoosir.zzshow.utils.VideoListGlideModule;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,23 +36,27 @@ import butterknife.ButterKnife;
  */
 public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private RecyclerListener mItemListener;
-    private List<VideoData>   mPostList;
+    private List<VideoData>   mVideoDatas;
 
-    public VideoListAdapter(RecyclerListener itemListener, List<VideoData> postList){
-        this.mItemListener = itemListener;
-        this.mPostList = postList;
+    public VideoListAdapter(Context context){
+        this.mVideoDatas = new ArrayList<>();
+    }
+
+    public void setData(List<VideoData> videoDatas){
+        mVideoDatas.clear();
+        mVideoDatas.addAll(videoDatas);
+        notifyDataSetChanged();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new VideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_video_list_item, parent, false),mItemListener);
+        return new VideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_video_list_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final VideoViewHolder mHolder = (VideoViewHolder) holder;
-        VideoData data = mPostList.get(position);
+        VideoData data = mVideoDatas.get(position);
         if("null".equals(data.getMedia_url()) || data.getMedia_url() == null){
             return;
         }
@@ -62,64 +69,32 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 .into(mHolder.videoCoverIv);
         mHolder.videoTitleTv.setText(data.getTitle());
         mHolder.videoDurationTv.setText(data.getVideo_duration_str());
-        mHolder.videoView.setVideoPath(data.getMedia_url());
+
         // load video file
-        Glide.with(MyApplication.getInstance())
-                .using(VideoListGlideModule.getOkHttpUrlLoader(), InputStream.class)
-                .load(new GlideUrl(data.getMedia_url()))
-                .as(File.class)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE);
-
-        mHolder.videoView.setMediaPlayerCallback(new TextureVideoView.MediaPlayerCallback() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-
-            }
-
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(MediaPlayer mediaPlayer, int i) {
-
-            }
-
-            @Override
-            public void onVideoSizeChanged(MediaPlayer mediaPlayer, int i, int i1) {
-
-            }
-
-            @Override
-            public boolean onInfo(MediaPlayer mediaPlayer, int i, int i1) {
-                return false;
-            }
-
-            @Override
-            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                return false;
-            }
-        });
+        String videoUrl = "http://v6.pstatp.com/video/c/18aec3b0546642bd8fa5daaed8c41668/?Signature=HsOtVnRnUkmzKex30YQVSDNviPc%3D&Expires=1477313015&KSSAccessKeyId=qh0h9TdcEMrm1VlR2ad/";
 
         mHolder.videoPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mHolder.videoCoverIv.setVisibility(View.GONE);
+                mHolder.videoPlayBtn.setVisibility(View.GONE);
                 //TODO start play video
-                mHolder.videoView.start();
+                if(mStartClick != null){
+                    mStartClick.onClick(position);
+                }
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mPostList == null ? 0 : mPostList.size();
+        return mVideoDatas == null ? 0 : mVideoDatas.size();
     }
 
-    class VideoViewHolder extends RecyclerView.ViewHolder implements ListItem{
+    class VideoViewHolder extends RecyclerView.ViewHolder{
 
-        @BindView(R.id.video_view)
-        TextureVideoView videoView;
+        @BindView(R.id.item_layout_video)
+        FrameLayout videoLayoutView;
 
         @BindView(R.id.video_cover_iv)
         ImageView videoCoverIv;
@@ -133,25 +108,19 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @BindView(R.id.video_duration_tv)
         TextView videoDurationTv;
 
-        public VideoViewHolder(View itemView, final RecyclerListener itemListener) {
+        public VideoViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemListener.OnItemClickListener(v,0,getAdapterPosition());
-                }
-            });
             ButterKnife.bind(this,itemView);
         }
+    }
 
-        @Override
-        public void setActive(View view, int i) {
-            videoView.start();
-        }
+    private StartClick mStartClick;
 
-        @Override
-        public void deactivate(View view, int i) {
-            videoView.stop();
-        }
+    public void setStartClick(StartClick startClick){
+        this.mStartClick = startClick;
+    }
+
+    public interface StartClick{
+        void onClick(int position);
     }
 }

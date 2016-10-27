@@ -53,9 +53,9 @@ public class VideoModuleApiImpl {
 
                     @Override
                     public void onNext(ArticleResult<List<VideoData>> listArticleResult) {
-//                        for (VideoData data:listArticleResult.getData()) {
-//                            Log.d(TAG,data.toString());
-//                        }
+                        for (VideoData data:listArticleResult.getData()) {
+                            Log.d(TAG,data.toString());
+                        }
                         callBack.success(listArticleResult);
                     }
                 });

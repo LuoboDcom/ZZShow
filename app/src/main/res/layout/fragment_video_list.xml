@@ -6,20 +6,7 @@
     android:background="@color/background_gray"
     tools:context=".ui.fragments.VideoListFragment">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/post_rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background_gray">
-
-        </android.support.v7.widget.RecyclerView>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
+    <!-- video list -->
 
     <TextView
         android:id="@+id/empty_view"

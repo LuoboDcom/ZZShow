@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/show_video_layout"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <com.ys.yoosir.zzshow.utils.mediavideo.IjkVideoView
+        android:id="@+id/main_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.ys.yoosir.zzshow.utils.mediavideo.IjkVideoView>
+
+    <ImageView
+        android:id="@+id/pause_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/media_controller"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/media_controller"
+        />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/sound_layout"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:text="音量"
+            android:textColor="#fff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <com.ys.yoosir.zzshow.utils.mediavideo.VSeekBar
+            android:id="@+id/sound_seek"
+            android:layout_width="5dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:maxHeight="5dp"
+            android:minHeight="5dp"
+            android:progressDrawable="@drawable/bg_seek"
+            android:thumb="@null"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/brightness_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:text="亮度"
+            android:textColor="#fff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.ys.yoosir.zzshow.utils.mediavideo.VSeekBar
+            android:id="@+id/brightness_seek"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_width="5dp"
+            android:layout_height="160dp"
+            android:maxHeight="5dp"
+            android:minHeight="5dp"
+            android:progressDrawable="@drawable/bg_seek"
+            android:thumb="@null"
+            />
+        
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/seekTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:textSize="16dp"
+        android:textColor="#fff"
+        android:visibility="gone"
+        />
+    
+</RelativeLayout>
