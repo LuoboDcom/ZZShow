@@ -27,6 +27,7 @@ import com.ys.yoosir.zzshow.ui.adapters.VideoListAdapter;
 import com.ys.yoosir.zzshow.ui.adapters.listener.RecyclerListener;
 import com.ys.yoosir.zzshow.ui.fragments.base.BaseFragment;
 import com.ys.yoosir.zzshow.view.VideoListView;
+import com.ys.yoosir.zzshow.widget.video.VideoListLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ import butterknife.BindView;
  * Use the {@link VideoListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VideoListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,VideoListView,RecyclerListener,ItemsProvider{
+public class VideoListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,VideoListView,RecyclerListener{
 
     private static final String TAG = VideoListFragment.class.getSimpleName();
 
@@ -51,18 +52,13 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
     private String mParam1;
     private String mParam2;
 
-    @BindView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
-
-    @BindView(R.id.post_rv)
-    RecyclerView mRecyclerView;
+    @BindView(R.id.video_list_layout)
+    VideoListLayout mVideoListLayout;
 
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
 
-    private SingleListViewItemActiveCalculator mCalculator;
 
-    private VideoListAdapter mVideosAdapter;
     private ArrayList<VideoData> mVideoList = new ArrayList<>();
     private boolean isLoading = false;
     private boolean hasMore = false;
@@ -98,14 +94,6 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        mVideosAdapter = new VideoListAdapter(this,mVideoList);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG,"onCreateView");
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -117,67 +105,7 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void initViews(View view) {
         Log.d(TAG,"initViews");
-        initSwipeRefreshLayout();
-        initRecyclerView();
         initPresenter();
-    }
-
-    private void initSwipeRefreshLayout(){
-        Log.d(TAG,"initSwipeRefreshLayout");
-        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_red_light,android.R.color.holo_orange_light,android.R.color.holo_green_light,android.R.color.holo_blue_light);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-    }
-
-    private void initRecyclerView() {
-        mRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                outRect.set(0,0,0,getActivity().getResources().getDimensionPixelSize(R.dimen.padding_size_xl));
-            }
-        });
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            private int mScrollState;
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                mScrollState = newState;
-
-                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-
-                int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager)
-                        .findLastVisibleItemPosition();
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
-
-                if ( !isLoading && hasMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItemPosition >= totalItemCount - 1) {
-                    //TODO  load more & show footer
-                    isLoading = true;
-//                    ((VideoListPresenter)mPresenter).loadMoreData();
-                    //mRecyclerView.scrollToPosition(mPostsAdapter.getItemCount() - 1);
-                }
-
-                if(newState == RecyclerView.SCROLL_STATE_IDLE && mVideosAdapter.getItemCount() > 0){
-                    mCalculator.onScrollStateIdle();
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                mCalculator.onScrolled(mScrollState);
-            }
-        });
-        //TODO setAdapter
-        mCalculator = new SingleListViewItemActiveCalculator(this,
-                new RecyclerViewItemPositionGetter(mLinearLayoutManager, mRecyclerView));
-        mRecyclerView.setAdapter(mVideosAdapter);
     }
 
     private void initPresenter(){
@@ -215,15 +143,13 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
                 if (!mVideoList.isEmpty()) {
                     mVideoList.clear();
                 }
-                mSwipeRefreshLayout.setRefreshing(false);
                 break;
             case LoadDataType.TYPE_LOAD_MORE:
                 break;
         }
         mVideoList.addAll(videoDataList);
-        if(mVideosAdapter != null) {
-            mVideosAdapter.notifyDataSetChanged();
-        }
+        mVideoListLayout.setVisibility(View.VISIBLE);
+        mVideoListLayout.setData(mVideoList);
     }
 
     @Override
@@ -248,22 +174,4 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
 
     }
 
-    @Override
-    public ListItem getListItem(int position) {
-        if(mRecyclerView != null) {
-            RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition(position);
-            if (holder instanceof ListItem) {
-                return (ListItem) holder;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public int listItemSize() {
-        if(mVideosAdapter != null){
-            return mVideosAdapter.getItemCount();
-        }
-        return 0;
-    }
 }

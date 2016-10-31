@@ -89,7 +89,7 @@ public class HomeActivity extends BaseActivity
 
     private void initValues() {
         List<PostChannelTable> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             PostChannelTable postChannelTable = new PostChannelTable(i+1,"Channel-"+(i+1));
             list.add(postChannelTable);
         }
@@ -168,13 +168,13 @@ public class HomeActivity extends BaseActivity
     private void setPostList(List<PostChannelTable> postChannels, List<String> channelNames) {
         mPostFragmentList.clear();
         for (PostChannelTable postChannel: postChannels) {
-            if("Channel-2".equals(postChannel.getName())) {
+//            if("Channel-2".equals(postChannel.getName())) {
                 VideoListFragment videoListFragment = VideoListFragment.newInstance("1","2");
                 mPostFragmentList.add(videoListFragment);
-            }else{
-                PostListFragment postListFragment = createListFragment(postChannel);
-                mPostFragmentList.add(postListFragment);
-            }
+//            }else{
+//                PostListFragment postListFragment = createListFragment(postChannel);
+//                mPostFragmentList.add(postListFragment);
+//            }
             channelNames.add(postChannel.getName());
         }
     }

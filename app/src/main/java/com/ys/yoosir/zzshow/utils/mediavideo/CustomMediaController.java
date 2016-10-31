@@ -27,6 +27,7 @@ import com.ys.yoosir.zzshow.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 /**
  *  视频播放控制器
@@ -43,53 +44,37 @@ public class CustomMediaController implements IMediaController{
 
     private View view;
 
-    @BindView(R.id.media_controller)
-    private View itemView;
+    View itemView;
 
-    @BindView(R.id.main_video)
-    private IjkVideoView videoView;
+    IjkVideoView videoView;
 
-    @BindView(R.id.loading)
-    private ProgressBar progressBar;
+    ProgressBar progressBar;
 
-    @BindView(R.id.seekBar)
-    private SeekBar seekBar;
+    SeekBar seekBar;
 
-    @BindView(R.id.all_time)
-    private TextView allTime;
+    TextView allTime;
 
-    @BindView(R.id.time)
-    private TextView time;
+    TextView time;
 
-    @BindView(R.id.full)
-    private ImageView fullIv;
+    ImageView fullIv;
 
-    @BindView(R.id.sound)
-    private ImageView soundIv;
+    ImageView soundIv;
 
-    @BindView(R.id.player_btn)
-    private ImageView playIv;
+    ImageView playIv;
 
-    @BindView(R.id.pause_image)
-    private ImageView   pauseIv;
+    ImageView   pauseIv;
 
-    @BindView(R.id.seekTxt)
-    private TextView seekTxt;
+    TextView seekTxt;
 
-    @BindView(R.id.brightness_seek)
-    private VSeekBar brightnessSeek;
+    VSeekBar brightnessSeek;
 
-    @BindView(R.id.sound_seek)
-    private VSeekBar soundSeek;
+    VSeekBar soundSeek;
 
-    @BindView(R.id.show)
-    private RelativeLayout show;
+    RelativeLayout show;
 
-    @BindView(R.id.brightness_layout)
-    private LinearLayout brightnessLayout;
+    LinearLayout brightnessLayout;
 
-    @BindView(R.id.sound_layout)
-    private LinearLayout soundLayout;
+    LinearLayout soundLayout;
 
 
     private Context context;
@@ -148,16 +133,37 @@ public class CustomMediaController implements IMediaController{
     };
 
     public CustomMediaController(Context context,View view){
+        this.context = context;
         this.view = view;
-        ButterKnife.bind(view);
-        itemView.setVisibility(View.GONE);
         isShow = false;
         isDragging = false;
-
         isShowController = true;
-        this.context = context;
+
+        itemView = view.findViewById(R.id.media_controller);
+        itemView.setVisibility(View.GONE);
+        videoView = (IjkVideoView) view.findViewById(R.id.main_video);
+
         audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        initView();
         initAction();
+    }
+
+    private void initView() {
+        progressBar = (ProgressBar) view.findViewById(R.id.loading);
+        seekBar = (SeekBar) itemView.findViewById(R.id.seekBar);
+        allTime = (TextView) itemView.findViewById(R.id.all_time);
+        time = (TextView) itemView.findViewById(R.id.time);
+        fullIv = (ImageView) itemView.findViewById(R.id.full);
+        soundIv = (ImageView) itemView.findViewById(R.id.sound);
+        playIv = (ImageView) itemView.findViewById(R.id.player_btn);
+        pauseIv = (ImageView) view.findViewById(R.id.pause_image);
+
+        brightnessLayout = (LinearLayout) view.findViewById(R.id.brightness_layout);
+        brightnessSeek = (VSeekBar) view.findViewById(R.id.brightness_seek);
+        soundLayout = (LinearLayout) view.findViewById(R.id.sound_layout);
+        soundSeek = (VSeekBar) view.findViewById(R.id.sound_seek);
+        show = (RelativeLayout) view.findViewById(R.id.show);
+        seekTxt= (TextView) view.findViewById(R.id.seekTxt);
     }
 
     private void initAction() {
@@ -237,17 +243,142 @@ public class CustomMediaController implements IMediaController{
         });
 
         //TODO videoView.setOnInfoListener
+        videoView.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(IMediaPlayer iMediaPlayer, int what, int extra) {
+                switch (what){
+                    case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                        //开启缓冲
+                        if(progressBar.getVisibility() == View.GONE)
+                            progressBar.setVisibility(View.VISIBLE);
+                        break;
+                    case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                        //开始播放
+                        progressBar.setVisibility(View.GONE);
+                        break;
+                    case IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                        progressBar.setVisibility(View.GONE);
+                        break;
+                    case IMediaPlayer.MEDIA_INFO_AUDIO_RENDERING_START:
+                        progressBar.setVisibility(View.GONE);
+                        break;
+                }
+                return false;
+            }
+        });
+
+        soundIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isSound){
+                    //静音
+                    soundIv.setImageResource(R.mipmap.sound_mult_icon);
+                    audioManager.setStreamMute(AudioManager.STREAM_MUSIC,true);
+                }else{
+                    //取消静音
+                    soundIv.setImageResource(R.mipmap.sound_open_icon);
+                    audioManager.setStreamMute(AudioManager.STREAM_MUSIC,false);
+                }
+                isSound = !isSound;
+            }
+        });
+
+        playIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(videoView.isPlaying()){
+                    pause();
+                }else{
+                    reStart();
+                }
+            }
+        });
+
+        fullIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getScreenOrientation((Activity) context) == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
+                    ((Activity)context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }else{
+                    ((Activity)context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                }
+            }
+        });
     }
 
+    private long setProgress(){
+        if(isDragging){
+            return 0;
+        }
+
+        long position = videoView.getCurrentPosition();
+        long duration = videoView.getDuration();
+        this.duration = duration;
+        if(!generateTime(duration).equals(allTime.getText().toString()))
+            allTime.setText(generateTime(duration));
+        if(seekBar != null){
+            if(duration > 0 ){
+                long pos = 100L * position / duration;
+                seekBar.setProgress((int) pos);
+            }
+            int percent = videoView.getBufferPercentage();
+            seekBar.setSecondaryProgress(percent);
+        }
+        String string = generateTime((long) (duration * seekBar.getProgress() * 1.0f / 100));
+        time.setText(string);
+        return  position;
+    }
+
+    public void setVisible(){
+        show();
+    }
+
+    public void setShowController(boolean isShowController){
+        this.isShowController = isShowController;
+        handler.removeMessages(SET_VIEW_HIDE);
+        itemView.setVisibility(View.GONE);
+    }
+
+    public void start(){
+        pauseIv.setVisibility(View.GONE);
+        itemView.setVisibility(View.GONE);
+        playIv.setImageResource(R.mipmap.video_stop_btn);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void pause(){
+        playIv.setImageResource(R.mipmap.video_play_btn);
+        videoView.pause();
+        bitmap = videoView.getBitmap();
+        if(bitmap != null){
+            pauseIv.setImageBitmap(bitmap);
+            pauseIv.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void reStart(){
+        playIv.setImageResource(R.mipmap.video_stop_btn);
+        videoView.start();
+        if(bitmap != null){
+            handler.sendEmptyMessageDelayed(PAUSE_IMAGE_HIDE,100);
+            bitmap.recycle();
+            bitmap = null;
+        }
+    }
 
     @Override
     public void hide() {
-
+        if(isShow){
+            handler.removeMessages(MESSAGE_SHOW_PROGRESS);
+            isShow = false;
+            handler.removeMessages(SET_VIEW_HIDE);
+            itemView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public boolean isShowing() {
-        return false;
+        return isShow;
     }
 
     @Override
@@ -267,12 +398,18 @@ public class CustomMediaController implements IMediaController{
 
     @Override
     public void show(int timeout) {
-
+        handler.sendEmptyMessageDelayed(SET_VIEW_HIDE,timeout);
     }
 
     @Override
     public void show() {
-
+        if(!isShowController)
+            return;
+        isShow = true;
+        progressBar.setVisibility(View.GONE);
+        itemView.setVisibility(View.VISIBLE);
+        handler.sendEmptyMessage(MESSAGE_SHOW_PROGRESS);
+        show(TIME_OUT);
     }
 
     @Override
@@ -398,6 +535,11 @@ public class CustomMediaController implements IMediaController{
         }
     }
 
+    /**
+     *  long to String
+     * @param time
+     * @return
+     */
     private String generateTime(long time) {
         int totalSeconds = (int) (time / 1000);
         int seconds = totalSeconds % 60;
@@ -405,6 +547,21 @@ public class CustomMediaController implements IMediaController{
         int hours = totalSeconds / 3600;
         return hours > 0 ? String.format("%02d:%02d:%02d", hours, minutes, seconds) : String.format("%02d:%02d", minutes, seconds);
     }
+
+    /**
+     * 手势结束
+     */
+    private void endGesture(){
+        volume = -1;
+        brightness = -1f;
+        if(newPosition >= 0){
+            handler.removeMessages(MESSAGE_SEEK_NEW_POSITION);
+            handler.sendEmptyMessage(MESSAGE_SEEK_NEW_POSITION);
+        }
+        handler.removeMessages(MESSAGE_HIDE_CONTROLL);
+        handler.sendEmptyMessageDelayed(MESSAGE_HIDE_CONTROLL,500);
+    }
+
 
     /**
      *  滑动改变声音大小

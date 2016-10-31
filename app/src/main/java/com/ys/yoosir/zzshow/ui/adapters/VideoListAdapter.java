@@ -71,7 +71,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         mHolder.videoDurationTv.setText(data.getVideo_duration_str());
 
         // load video file
-        String videoUrl = "http://v6.pstatp.com/video/c/18aec3b0546642bd8fa5daaed8c41668/?Signature=HsOtVnRnUkmzKex30YQVSDNviPc%3D&Expires=1477313015&KSSAccessKeyId=qh0h9TdcEMrm1VlR2ad/";
+        String videoUrl = "http://v6.pstatp.com/video/c/a930338a6087407d8ae568afc3a51eb3/?Signature=Udk9e0SkjMBgMVsanZc2BnpMaNI%3D&Expires=1477912023&KSSAccessKeyId=qh0h9TdcEMrm1VlR2ad/";
 
         mHolder.videoPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
