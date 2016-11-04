@@ -9,6 +9,7 @@ import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
  * Created by Yoosir on 2016/10/26 0026.
  */
 public class VideoListLayout extends RelativeLayout{
+
+    private final String TAG = "VideoListLayout";
 
     private Context mContext;
     private LinearLayoutManager mLayoutManager;
@@ -137,6 +140,9 @@ public class VideoListLayout extends RelativeLayout{
                     frameLayout.removeAllViews();
                     View itemView = (View) frameLayout.getParent();
                     //TODO show cover view
+                    if(itemView != null){
+                        itemView.findViewById(R.id.video_cover_layout).setVisibility(View.VISIBLE);
+                    }
                 }
 
                 lastPosition = -1;
@@ -166,9 +172,9 @@ public class VideoListLayout extends RelativeLayout{
                     if(last != null){
                         last.removeAllViews();
                         View itemView = (View)last.getParent();
-//                        if(itemView != null){
-//                            itemView.findViewById(R.id.)
-//                        }
+                        if(itemView != null){
+                            itemView.findViewById(R.id.video_cover_layout).setVisibility(View.GONE);
+                        }
                     }
                 }
 
@@ -180,7 +186,7 @@ public class VideoListLayout extends RelativeLayout{
                 FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.item_layout_video);
                 frameLayout.removeAllViews();
                 frameLayout.addView(mVideoItemView);
-                String videoUrl = "http://v6.pstatp.com/video/c/a930338a6087407d8ae568afc3a51eb3/?Signature=Udk9e0SkjMBgMVsanZc2BnpMaNI%3D&Expires=1477912023&KSSAccessKeyId=qh0h9TdcEMrm1VlR2ad/";
+                String videoUrl = "http://flv2.bn.netease.com/tvmrepo/2016/4/N/C/EBKQMCMNC/SD/EBKQMCMNC-mobile.mp4";
                 mVideoItemView.start(videoUrl);
                 lastPosition = position;
 
@@ -192,7 +198,7 @@ public class VideoListLayout extends RelativeLayout{
             public void onChildViewAttachedToWindow(View view) {
                 int index = mVideoListView.getChildAdapterPosition(view);
                 //TODO show cover
-
+                view.findViewById(R.id.video_cover_layout).setVisibility(View.VISIBLE);
                 if(index == position){
                     //当前正在播放
                     FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.item_layout_video);
@@ -200,7 +206,7 @@ public class VideoListLayout extends RelativeLayout{
                     if(mVideoItemView != null &&
                             (mVideoItemView.isPlay() || mVideoItemView.VideoStatus() == IjkVideoView.STATE_PAUSED)){
                         //TODO hide cover
-
+                        view.findViewById(R.id.video_cover_layout).setVisibility(View.GONE);
                     }
 
                     if(mVideoItemView.VideoStatus() == IjkVideoView.STATE_PAUSED){
@@ -244,13 +250,14 @@ public class VideoListLayout extends RelativeLayout{
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
+        Log.i(TAG,"position = " + position );
         if(mVideoItemView != null){
             mVideoItemView.onChanged(newConfig);
             if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
                 mFullScreenLayout.setVisibility(View.GONE);
                 mVideoListView.setVisibility(View.VISIBLE);
                 mFullScreenLayout.removeAllViews();
+                Log.d(TAG,"position = "+position+" - lastItem="+mLayoutManager.findLastVisibleItemPosition() +" - firstItem="+ mLayoutManager.findFirstVisibleItemPosition());
                 if(position <= mLayoutManager.findLastVisibleItemPosition()
                         && position >= mLayoutManager.findFirstVisibleItemPosition()){
                     View view = mVideoListView.findViewHolderForAdapterPosition(position).itemView;

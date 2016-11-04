@@ -73,12 +73,11 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         // load video file
         String videoUrl = "http://v6.pstatp.com/video/c/a930338a6087407d8ae568afc3a51eb3/?Signature=Udk9e0SkjMBgMVsanZc2BnpMaNI%3D&Expires=1477912023&KSSAccessKeyId=qh0h9TdcEMrm1VlR2ad/";
 
-        mHolder.videoPlayBtn.setOnClickListener(new View.OnClickListener() {
+        mHolder.videoCoverLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mHolder.videoCoverIv.setVisibility(View.GONE);
-                mHolder.videoPlayBtn.setVisibility(View.GONE);
                 //TODO start play video
+                v.setVisibility(View.GONE);
                 if(mStartClick != null){
                     mStartClick.onClick(position);
                 }
@@ -95,6 +94,9 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         @BindView(R.id.item_layout_video)
         FrameLayout videoLayoutView;
+
+        @BindView(R.id.video_cover_layout)
+        FrameLayout videoCoverLayout;
 
         @BindView(R.id.video_cover_iv)
         ImageView videoCoverIv;

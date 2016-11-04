@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,7 +151,7 @@ public class VideoPlayView extends RelativeLayout implements MediaPlayer.OnInfoL
                 public void run() {
                     setFullScreen(!portrait);
                     if(portrait){
-                        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+                        ViewGroup.LayoutParams layoutParams = VideoPlayView.this.getLayoutParams();
                         layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
                         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
                         setLayoutParams(layoutParams);
@@ -158,10 +159,14 @@ public class VideoPlayView extends RelativeLayout implements MediaPlayer.OnInfoL
                     }else{
                         int heightPixels = mContext.getResources().getDisplayMetrics().heightPixels;
                         int widthPixels = mContext.getResources().getDisplayMetrics().widthPixels;
-                        ViewGroup.LayoutParams layoutParams = getLayoutParams();
-                        layoutParams.height = heightPixels;
-                        layoutParams.width = widthPixels;
-                        setLayoutParams(layoutParams);
+                        ViewGroup.LayoutParams layoutParams = VideoPlayView.this.getLayoutParams();
+                        if(layoutParams != null) {
+                            layoutParams.height = heightPixels;
+                            layoutParams.width = widthPixels;
+                            setLayoutParams(layoutParams);
+                        }else{
+                            Log.e("VideoPlayView","layoutParams -- is null");
+                        }
                     }
                 }
             });
