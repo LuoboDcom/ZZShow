@@ -60,16 +60,20 @@ public class VideoPlayView extends RelativeLayout implements MediaPlayer.OnInfoL
             @Override
             public void onCompletion(IMediaPlayer iMediaPlayer) {
                 view.setVisibility(View.GONE);
+                Log.d("Completion"," VideoPlayView ");
                 if(mMediaController.getScreenOrientation((Activity) mContext)
                         == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
                     //横屏播放完毕，重置
+                    Log.d("Completion","VideoPlayView - setRequestedOrientation before");
                     ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    Log.d("Completion","VideoPlayView - setRequestedOrientation after");
                     ViewGroup.LayoutParams layoutParams = getLayoutParams();
                     layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
                     layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
                     setLayoutParams(layoutParams);
                 }
                 if(mCompletionListener != null){
+                    Log.d("Completion","VideoPlayView - mCompletionListener");
                     mCompletionListener.completion(iMediaPlayer);
                 }
             }
@@ -208,6 +212,10 @@ public class VideoPlayView extends RelativeLayout implements MediaPlayer.OnInfoL
 
     public void release(){
         mVideoView.release(true);
+    }
+
+    public int getVideoStatus(){
+        return mVideoView.getCurrentStatue();
     }
 
     public int VideoStatus(){

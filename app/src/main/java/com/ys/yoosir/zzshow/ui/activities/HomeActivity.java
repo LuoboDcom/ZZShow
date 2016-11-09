@@ -1,11 +1,13 @@
 package com.ys.yoosir.zzshow.ui.activities;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.ys.yoosir.zzshow.R;
@@ -23,6 +26,7 @@ import com.ys.yoosir.zzshow.ui.adapters.PostFragmentPagerAdapter;
 import com.ys.yoosir.zzshow.ui.fragments.PostListFragment;
 import com.ys.yoosir.zzshow.ui.fragments.VideoListFragment;
 import com.ys.yoosir.zzshow.utils.TabLayoutUtil;
+import com.ys.yoosir.zzshow.widget.video.VideoPlayView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +34,7 @@ import java.util.List;
 import butterknife.BindView;
 
 public class HomeActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,VideoListFragment.OnVideoFIListener {
 
     private ArrayList<Fragment> mPostFragmentList = new ArrayList<>();
     private String mCurrentViewPagerName;
@@ -56,6 +60,9 @@ public class HomeActivity extends BaseActivity
 
     @BindView(R.id.fab)
     FloatingActionButton mFloatActionBtn;
+
+    @BindView(R.id.full_screen)
+    FrameLayout mFullScreenLayout;
 
     @Override
     public int getLayoutId() {
@@ -89,7 +96,7 @@ public class HomeActivity extends BaseActivity
 
     private void initValues() {
         List<PostChannelTable> list = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
             PostChannelTable postChannelTable = new PostChannelTable(i+1,"Channel-"+(i+1));
             list.add(postChannelTable);
         }
@@ -228,4 +235,30 @@ public class HomeActivity extends BaseActivity
         return position;
     }
 
+    /**
+     *  VideoListFragment  交互接口
+     */
+    @Override
+    public void onVideoFI(int stateCode,VideoPlayView playView) {
+        if(stateCode == 1){
+            mFullScreenLayout.setVisibility(View.GONE);
+            mFullScreenLayout.removeAllViews();
+        }else if(stateCode == 2) {
+            mFullScreenLayout.addView(playView);
+            mFullScreenLayout.setVisibility(View.VISIBLE);
+        }else if(stateCode == 3){
+            mFullScreenLayout.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if(mFullScreenLayout != null && mFullScreenLayout.getVisibility() == View.VISIBLE  && getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

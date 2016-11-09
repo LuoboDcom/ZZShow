@@ -43,21 +43,8 @@ public class VideoListLayout extends RelativeLayout{
     @BindView(R.id.video_list)
     RecyclerView mVideoListView;
 
-    @BindView(R.id.small_layout)
-    FrameLayout mSmallLayout;
-
-    @BindView(R.id.layout_video)
-    FrameLayout mVideoLayout;
-
-    @BindView(R.id.close)
-    ImageView mCloseIv;
-
-    @BindView(R.id.full_screen)
-    FrameLayout mFullScreenLayout;
-
     private VideoPlayView mVideoItemView;
 
-    private int position = -1;
     private int lastPosition = -1;
 
     public VideoListLayout(Context context) {
@@ -89,8 +76,6 @@ public class VideoListLayout extends RelativeLayout{
         LayoutInflater.from(context).inflate(R.layout.layout_video_list,this,true);
         this.mContext = context;
         ButterKnife.bind(this);
-//        mVideoListView = (RecyclerView) findViewById(R.id.video_list);
-//        mSmallLayout = (RelativeLayout) findViewById(R.id.small_layout);
 
         mLayoutManager = new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
         mVideoListView.setLayoutManager(mLayoutManager);
@@ -102,92 +87,67 @@ public class VideoListLayout extends RelativeLayout{
 
     private void initActions() {
 
-        mCloseIv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mVideoItemView.isPlay()){
-                    mVideoItemView.stop();
-                    position = -1;
-                    lastPosition = -1;
-                    mVideoLayout.removeAllViews();
-                    mSmallLayout.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        mSmallLayout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSmallLayout.setVisibility(View.GONE);
-                ((Activity)mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            }
-        });
-
         mVideoItemView.setCompletionListener(new VideoPlayView.CompletionListener() {
             @Override
             public void completion(IMediaPlayer mp) {
-
+                Log.d("Completion","VideoListLayout ");
                 //播放完还原播放界面
-                if(mSmallLayout.getVisibility() == View.VISIBLE){
-                    mVideoLayout.removeAllViews();
-                    mSmallLayout.setVisibility(View.GONE);
-                    mVideoItemView.setShowController(true);
-                }
-
                 FrameLayout frameLayout = (FrameLayout) mVideoItemView.getParent();
+                //回收VideoView
                 mVideoItemView.release();
-                if(frameLayout != null && frameLayout.getChildCount() > 0){
+                Log.d("Completion","VideoListLayout - frameLayout ");
+                if(frameLayout != null){
                     frameLayout.removeAllViews();
-                    View itemView = (View) frameLayout.getParent();
-                    //TODO show cover view
-                    if(itemView != null){
-                        itemView.findViewById(R.id.video_cover_layout).setVisibility(View.VISIBLE);
+                    if(frameLayout.getId() != R.id.full_screen){
+                        View itemView = (View) frameLayout.getParent();
+                        if(itemView != null){
+                            //显示封面
+                            itemView.findViewById(R.id.video_cover_layout).setVisibility(View.VISIBLE);
+                            //重置标识
+                            lastPosition = -1;
+                        }
                     }
                 }
-
-                lastPosition = -1;
             }
         });
 
         mAdapter.setStartClick(new VideoListAdapter.StartClick() {
             @Override
             public void onClick(int position) {
-                VideoListLayout.this.position = position;
-                if(mVideoItemView.VideoStatus() == IjkVideoView.STATE_PAUSED){
-                    if(position != lastPosition){
+                if(position != lastPosition){
+                    //有视频在播放或暂停中
+                    if(mVideoItemView.getVideoStatus() == IjkVideoView.STATE_PLAYING ||
+                            mVideoItemView.getVideoStatus() == IjkVideoView.STATE_PAUSED ){
+                        //停止
                         mVideoItemView.stop();
                         mVideoItemView.release();
                     }
-                }
-
-                if(mSmallLayout.getVisibility() == View.VISIBLE){
-                    mSmallLayout.setVisibility(View.GONE);
-                    mVideoLayout.removeAllViews();
-                    mVideoItemView.setShowController(true);
-                }
-
-                if(lastPosition != -1){
-                    //找到 VideoItemView 的父类，然后 remove
-                    ViewGroup last = (ViewGroup) mVideoItemView.getParent();
-                    if(last != null){
-                        last.removeAllViews();
-                        View itemView = (View)last.getParent();
-                        if(itemView != null){
-                            itemView.findViewById(R.id.video_cover_layout).setVisibility(View.GONE);
+                    //将 上一个 VideoView 移除掉
+                    if(lastPosition != -1){
+                        //找到 VideoItemView 的父类，然后 remove
+                        ViewGroup lastVideoViewParent = (ViewGroup) mVideoItemView.getParent();
+                        if(lastVideoViewParent != null){
+                            lastVideoViewParent.removeAllViews();
+                            //找到在 RecyclerView 的 itemView
+                            View itemView = (View)lastVideoViewParent.getParent();
+                            if(itemView != null){
+                                itemView.findViewById(R.id.video_cover_layout).setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 }
-
-                if(mVideoItemView.getParent() != null){
-                    ((ViewGroup)mVideoItemView.getParent()).removeAllViews();
-                }
-
-                View view = mVideoListView.findViewHolderForAdapterPosition(position).itemView;
-                FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.item_layout_video);
+                //设置当前 item 的 ui
+                View itemView = mVideoListView.findViewHolderForAdapterPosition(position).itemView;
+                //隐藏封面
+                itemView.findViewById(R.id.video_cover_layout).setVisibility(View.GONE);
+                //添加 VideoView
+                FrameLayout frameLayout = (FrameLayout) itemView.findViewById(R.id.item_layout_video);
                 frameLayout.removeAllViews();
                 frameLayout.addView(mVideoItemView);
+                //播放
                 String videoUrl = "http://flv2.bn.netease.com/tvmrepo/2016/4/N/C/EBKQMCMNC/SD/EBKQMCMNC-mobile.mp4";
                 mVideoItemView.start(videoUrl);
+                //
                 lastPosition = position;
 
             }
@@ -196,97 +156,106 @@ public class VideoListLayout extends RelativeLayout{
         mVideoListView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override
             public void onChildViewAttachedToWindow(View view) {
+                //当前被添加的 childView 的 位置下标
                 int index = mVideoListView.getChildAdapterPosition(view);
-                //TODO show cover
+                //显示视频的封面View
                 view.findViewById(R.id.video_cover_layout).setVisibility(View.VISIBLE);
-                if(index == position){
-                    //当前正在播放
+                //判断 此 childView 是否当前正在操作的item
+                if(index == lastPosition){
+                    //是，设置VideoView的显示区域
                     FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.item_layout_video);
                     frameLayout.removeAllViews();
                     if(mVideoItemView != null &&
                             (mVideoItemView.isPlay() || mVideoItemView.VideoStatus() == IjkVideoView.STATE_PAUSED)){
-                        //TODO hide cover
+                        //VideoView 正在播放 或 暂停 ，都要隐藏 视频封面图
                         view.findViewById(R.id.video_cover_layout).setVisibility(View.GONE);
                     }
 
+                    if(mVideoItemView.getParent() != null) {
+                        ((ViewGroup) mVideoItemView.getParent()).removeAllViews();
+                    }
                     if(mVideoItemView.VideoStatus() == IjkVideoView.STATE_PAUSED){
-                        if(mVideoItemView.getParent() != null)
-                            ((ViewGroup)mVideoItemView.getParent()).removeAllViews();
-                        frameLayout.addView(mVideoItemView);
-                        return;
-                    }
-
-                    if(mSmallLayout.getVisibility() == View.VISIBLE && mVideoItemView != null && mVideoItemView.isPlay()){
-                        mSmallLayout.setVisibility(View.GONE);
-                        mVideoLayout.removeAllViews();
+                        //TODO  show play btn and controller ui
                         mVideoItemView.setShowController(true);
-                        frameLayout.addView(mVideoItemView);
+                    }else if(mVideoItemView.VideoStatus() == IjkVideoView.STATE_PLAYING){
+                        //TODO show controller ui
+                        mVideoItemView.setShowController(true);
                     }
+                    frameLayout.addView(mVideoItemView);
                 }
             }
 
             @Override
             public void onChildViewDetachedFromWindow(View view) {
                 int index = mVideoListView.getChildAdapterPosition(view);
-                if(index == position){
+                if(index == lastPosition){
                     FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.item_layout_video);
                     frameLayout.removeAllViews();
-                    if(mSmallLayout.getVisibility() == View.GONE
-                            && mVideoItemView != null && mVideoItemView.isPlay()){
-                        mVideoLayout.removeAllViews();
-                        mVideoItemView.setShowController(false);
-                        mVideoLayout.addView(mVideoItemView);
-                        mSmallLayout.setVisibility(View.VISIBLE);
-                    }
+                    lastPosition = -1;
+                    mVideoItemView.stop();
+                    mVideoItemView.release();
                 }
             }
         });
     }
 
-    public void setData(List<VideoData> videoDatas){
-        mAdapter.setData(videoDatas);
+    public void setData(List<VideoData> videosData){
+        mAdapter.setData(videosData);
     }
 
-    @Override
-    protected void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Log.i(TAG,"position = " + position );
-        if(mVideoItemView != null){
+    /**
+     *  是否有 VideoPlayView
+     * @return true 有 ；false 没有
+     */
+    public boolean hasVideoItem(Configuration newConfig){
+        boolean flag = mVideoItemView != null;
+        if(flag){
             mVideoItemView.onChanged(newConfig);
-            if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-                mFullScreenLayout.setVisibility(View.GONE);
-                mVideoListView.setVisibility(View.VISIBLE);
-                mFullScreenLayout.removeAllViews();
-                Log.d(TAG,"position = "+position+" - lastItem="+mLayoutManager.findLastVisibleItemPosition() +" - firstItem="+ mLayoutManager.findFirstVisibleItemPosition());
-                if(position <= mLayoutManager.findLastVisibleItemPosition()
-                        && position >= mLayoutManager.findFirstVisibleItemPosition()){
-                    View view = mVideoListView.findViewHolderForAdapterPosition(position).itemView;
-                    FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.item_layout_video);
-                    frameLayout.removeAllViews();
-                    frameLayout.addView(mVideoItemView);
-                    mVideoItemView.setShowController(true);
-                }else{
-                    mVideoLayout.removeAllViews();
-                    mVideoLayout.addView(mVideoItemView);
-                    mVideoItemView.setShowController(false);
-                    mSmallLayout.setVisibility(View.VISIBLE);
-                }
-                mVideoItemView.setControllerVisible();
-            }else{
-                ViewGroup viewGroup = (ViewGroup) mVideoItemView.getParent();
-                if(viewGroup == null)
-                    return;
-                viewGroup.removeAllViews();
-                mFullScreenLayout.addView(mVideoItemView);
-                mSmallLayout.setVisibility(View.GONE);
-                mVideoLayout.setVisibility(View.GONE);
-                mFullScreenLayout.setVisibility(View.VISIBLE);
-            }
         }else{
             mAdapter.notifyDataSetChanged();
             mVideoListView.setVisibility(View.VISIBLE);
-            mFullScreenLayout.setVisibility(View.GONE);
         }
+        return flag;
+    }
+
+    /**
+     *  切换到竖屏时操作
+     */
+    public boolean updateOrientationPortrait(){
+        mVideoListView.setVisibility(View.VISIBLE);
+        Log.d("Completion","VideoListLayout updateOrientationPortrait ");
+        if (lastPosition <= mLayoutManager.findLastVisibleItemPosition()
+                && lastPosition >= mLayoutManager.findFirstVisibleItemPosition()) {
+            Log.d("Completion", "VideoListLayout position in ");
+            View view = mVideoListView.findViewHolderForAdapterPosition(lastPosition).itemView;
+            FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.item_layout_video);
+            frameLayout.removeAllViews();
+            if(mVideoItemView.getVideoStatus() == IjkVideoView.STATE_IDLE){
+                view.findViewById(R.id.video_cover_layout).setVisibility(VISIBLE);
+            }else {
+                frameLayout.addView(mVideoItemView);
+                mVideoItemView.setShowController(true);
+                mVideoItemView.setControllerVisible();
+            }
+        }
+        return true;
+    }
+
+    /**
+     *  切换到横屏时操作
+     * @return
+     */
+    public boolean updateOrientationLandscape(){
+        //将 VideoView 重竖屏移除
+        ViewGroup viewGroup = (ViewGroup) mVideoItemView.getParent();
+        if(viewGroup == null)
+            return false;
+        viewGroup.removeAllViews();
+        return true;
+    }
+
+    public VideoPlayView getVideoItemView(){
+        return mVideoItemView;
     }
 
     @Override
@@ -299,15 +268,8 @@ public class VideoListLayout extends RelativeLayout{
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(mVideoLayout == null)
-            return;
 
-        if(mSmallLayout.getVisibility() == View.VISIBLE){
-            mSmallLayout.setVisibility(View.GONE);
-            mVideoLayout.removeAllViews();
-        }
-
-        if(position != -1){
+        if(lastPosition != -1){
             ViewGroup view = (ViewGroup) mVideoItemView.getParent();
             if(view != null){
                 view.removeAllViews();

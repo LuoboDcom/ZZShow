@@ -9,37 +9,4 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <FrameLayout
-        android:id="@+id/small_layout"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        >
-
-        <FrameLayout
-            android:id="@+id/layout_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </FrameLayout>
-
-        <ImageView
-            android:id="@+id/close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|right"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"/>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/full_screen"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-    </FrameLayout>
-    
 </RelativeLayout>

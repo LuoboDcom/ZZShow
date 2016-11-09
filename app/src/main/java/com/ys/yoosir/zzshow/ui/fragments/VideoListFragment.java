@@ -1,6 +1,7 @@
 package com.ys.yoosir.zzshow.ui.fragments;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,6 +29,7 @@ import com.ys.yoosir.zzshow.ui.adapters.listener.RecyclerListener;
 import com.ys.yoosir.zzshow.ui.fragments.base.BaseFragment;
 import com.ys.yoosir.zzshow.view.VideoListView;
 import com.ys.yoosir.zzshow.widget.video.VideoListLayout;
+import com.ys.yoosir.zzshow.widget.video.VideoPlayView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,11 +120,18 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (context instanceof OnVideoFIListener) {
+            mListener = (OnVideoFIListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mListener = null;
     }
 
     @Override
@@ -174,4 +183,42 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
 
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d("Completion","onConfigurationChanged ");
+        //VideoView 是否初始化成功
+        if(mVideoListLayout.hasVideoItem(newConfig)){
+            if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+                //切换到竖屏时
+                //从横屏移除
+                if(mListener != null){
+                    Log.d("Completion","onConfigurationChanged - mListener ");
+                    mListener.onVideoFI(1,null);
+                }
+                //添加到竖屏
+                Log.d("Completion","onConfigurationChanged updateOrientationPortrait ");
+                mVideoListLayout.updateOrientationPortrait();
+            }else{
+                //切换到横屏时
+                if(mVideoListLayout.updateOrientationLandscape()){
+                    //并添加到横屏显示
+                    if(mListener != null){
+                        mListener.onVideoFI(2,mVideoListLayout.getVideoItemView());
+                    }
+                }
+            }
+        }else{
+            if(mListener != null){
+                mListener.onVideoFI(3,null);
+            }
+        }
+    }
+
+    private OnVideoFIListener mListener;
+
+    public interface OnVideoFIListener {
+        // TODO: Update argument type and name
+        void onVideoFI(int stateCode,VideoPlayView playView);
+    }
 }

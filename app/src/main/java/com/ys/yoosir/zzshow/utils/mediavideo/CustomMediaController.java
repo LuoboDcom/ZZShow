@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -297,9 +298,12 @@ public class CustomMediaController implements IMediaController{
         fullIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Completion"," fullScreen click ");
                 if(getScreenOrientation((Activity) context) == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
+                    Log.d("Completion"," click to portrait");
                     ((Activity)context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 }else{
+                    Log.d("Completion"," click to landscape");
                     ((Activity)context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 }
             }
@@ -482,8 +486,10 @@ public class CustomMediaController implements IMediaController{
             handler.removeMessages(SET_VIEW_HIDE);
             //横屏下拦截事件
             if(getScreenOrientation((Activity) context) == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
+                Log.d("AudioManager","onDown true");
                 return true;
             }else{
+                Log.d("AudioManager","onDown false");
                 return super.onDown(e);
             }
         }
@@ -491,13 +497,14 @@ public class CustomMediaController implements IMediaController{
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             float x = e1.getX() - e2.getX();
-            float y = e1.getY() - e1.getY();
+            float y = e1.getY() - e2.getY();
+            Log.d("AudioManager","firstTouch = "+ firstTouch);
             if(firstTouch){
                 seek = Math.abs(distanceX) >= Math.abs(distanceY);
                 volumeControll = e1.getX() < view.getMeasuredWidth() * 0.5;
                 firstTouch = false;
             }
-
+            Log.d("AudioManager","seek = "+ seek+" -- volumeControll="+volumeControll);
             if(seek){
                 onProgressSlide( -x / view.getWidth(),e1.getX()/view.getWidth());
             }else{
@@ -581,6 +588,7 @@ public class CustomMediaController implements IMediaController{
         else if (index < 0)
             index = 0;
 
+        Log.d("AudioManager","index == "+index);
         //变更声音
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,index,0);
 
