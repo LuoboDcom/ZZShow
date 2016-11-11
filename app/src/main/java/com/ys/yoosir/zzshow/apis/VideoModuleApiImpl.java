@@ -2,11 +2,12 @@ package com.ys.yoosir.zzshow.apis;
 
 import android.util.Log;
 
+import com.ys.yoosir.zzshow.apis.common.HostType;
 import com.ys.yoosir.zzshow.apis.interfaces.VideoModuleApi;
 import com.ys.yoosir.zzshow.apis.listener.RequestCallBack;
-import com.ys.yoosir.zzshow.modle.toutiao.ArticleResult;
-import com.ys.yoosir.zzshow.modle.toutiao.VideoData;
-import com.ys.yoosir.zzshow.utils.RetrofitManager;
+import com.ys.yoosir.zzshow.mvp.modle.toutiao.ArticleResult;
+import com.ys.yoosir.zzshow.mvp.modle.toutiao.VideoData;
+import com.ys.yoosir.zzshow.utils.httputil.RetrofitManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +33,7 @@ public class VideoModuleApiImpl {
     }
 
     public VideoModuleApiImpl(){
-        service = RetrofitManager.getRetrofitInstance().create(VideoModuleApi.class);
+        service = RetrofitManager.getInstance(HostType.TOUTIAO_PHOTO).createService(VideoModuleApi.class);
     }
 
     public void getVideoList(final RequestCallBack<ArticleResult<List<VideoData>>> callBack,long maxBehotTime){

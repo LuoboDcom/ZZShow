@@ -1,9 +1,9 @@
 package com.ys.yoosir.zzshow.apis.interfaces;
 
-import com.ys.yoosir.zzshow.apis.Constants;
-import com.ys.yoosir.zzshow.modle.PostBean;
-import com.ys.yoosir.zzshow.modle.toutiao.ArticleData;
-import com.ys.yoosir.zzshow.modle.toutiao.ArticleResult;
+import com.ys.yoosir.zzshow.Constants;
+import com.ys.yoosir.zzshow.mvp.modle.PostBean;
+import com.ys.yoosir.zzshow.mvp.modle.toutiao.ArticleData;
+import com.ys.yoosir.zzshow.mvp.modle.toutiao.ArticleResult;
 
 import java.util.List;
 import java.util.Map;

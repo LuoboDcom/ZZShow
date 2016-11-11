@@ -1,8 +1,8 @@
 package com.ys.yoosir.zzshow.apis.interfaces;
 
-import com.ys.yoosir.zzshow.apis.Constants;
-import com.ys.yoosir.zzshow.modle.toutiao.ArticleResult;
-import com.ys.yoosir.zzshow.modle.toutiao.VideoData;
+import com.ys.yoosir.zzshow.Constants;
+import com.ys.yoosir.zzshow.mvp.modle.toutiao.ArticleResult;
+import com.ys.yoosir.zzshow.mvp.modle.toutiao.VideoData;
 
 import java.util.List;
 import java.util.Map;

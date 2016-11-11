@@ -27,4 +27,9 @@ public class RxJavaSimpleTest {
         mRxJavaSimple.testScheduler();
     }
 
+    @Test
+    public void testHelloWorld()throws Exception{
+        mRxJavaSimple.testHelloWorld();
+    }
+
 }

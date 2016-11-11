@@ -1,9 +1,7 @@
 package com.ys.yoosir.zzshow.widget.video;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,12 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.modle.toutiao.VideoData;
-import com.ys.yoosir.zzshow.ui.adapters.VideoListAdapter;
+import com.ys.yoosir.zzshow.mvp.modle.toutiao.VideoData;
+import com.ys.yoosir.zzshow.mvp.ui.adapters.VideoListAdapter;
 import com.ys.yoosir.zzshow.utils.mediavideo.IjkVideoView;
 
 import java.util.List;
