@@ -18,12 +18,18 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     public abstract int getLayoutId();
 
+    public abstract void initVariables();
+
+    public abstract void initViews();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int layoutId = getLayoutId();
         setContentView(layoutId);
+        initVariables();
         ButterKnife.bind(this);
+        initViews();
         if(mPresenter != null){
             mPresenter.onCreate();
         }

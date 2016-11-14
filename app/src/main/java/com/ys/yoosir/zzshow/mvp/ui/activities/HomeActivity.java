@@ -21,10 +21,14 @@ import android.widget.ImageView;
 
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.modle.PostChannelTable;
+import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.mvp.presenter.HomePresenterImpl;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.PostFragmentPagerAdapter;
+import com.ys.yoosir.zzshow.mvp.ui.fragments.NewsListFragment;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.PostListFragment;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.VideoListFragment;
+import com.ys.yoosir.zzshow.mvp.view.HomeView;
 import com.ys.yoosir.zzshow.utils.TabLayoutUtil;
 import com.ys.yoosir.zzshow.widget.video.VideoPlayView;
 
@@ -34,9 +38,9 @@ import java.util.List;
 import butterknife.BindView;
 
 public class HomeActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener,VideoListFragment.OnVideoFIListener {
+        implements HomeView,NavigationView.OnNavigationItemSelectedListener,VideoListFragment.OnVideoFIListener {
 
-    private ArrayList<Fragment> mPostFragmentList = new ArrayList<>();
+    private ArrayList<Fragment> mNewsFragmentList = new ArrayList<>();
     private String mCurrentViewPagerName;
     private List<String> mChannelNames;
 
@@ -70,10 +74,13 @@ public class HomeActivity extends BaseActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setSupportActionBar(mToolbar);
+    public void initVariables() {
+        mPresenter = new HomePresenterImpl();
+        mPresenter.attachView(this);
+    }
 
+    @Override
+    public void initViews() {
         mFloatActionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,23 +95,12 @@ public class HomeActivity extends BaseActivity
         toggle.syncState();
 
         mNavigationView.setNavigationItemSelectedListener(this);
-
-        initViews();
-
-        initValues();
     }
 
-    private void initValues() {
-        List<PostChannelTable> list = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            PostChannelTable postChannelTable = new PostChannelTable(i+1,"Channel-"+(i+1));
-            list.add(postChannelTable);
-        }
-        initViewPager(list);
-    }
-
-    private void initViews() {
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setSupportActionBar(mToolbar);
     }
 
     @Override
@@ -164,36 +160,9 @@ public class HomeActivity extends BaseActivity
         return true;
     }
 
-    private void initViewPager(List<PostChannelTable> postChannels){
-        final List<String> channelNames = new ArrayList<>();
-        if(postChannels != null){
-            setPostList(postChannels,channelNames);
-            setViewPager(channelNames);
-        }
-    }
-
-    private void setPostList(List<PostChannelTable> postChannels, List<String> channelNames) {
-        mPostFragmentList.clear();
-        for (PostChannelTable postChannel: postChannels) {
-//            if("Channel-2".equals(postChannel.getName())) {
-                VideoListFragment videoListFragment = VideoListFragment.newInstance("1","2");
-                mPostFragmentList.add(videoListFragment);
-//            }else{
-//                PostListFragment postListFragment = createListFragment(postChannel);
-//                mPostFragmentList.add(postListFragment);
-//            }
-            channelNames.add(postChannel.getName());
-        }
-    }
-
-    private PostListFragment createListFragment(PostChannelTable postchannel){
-        PostListFragment fragment =  PostListFragment.newInstance("1","2");
-        return fragment;
-    }
-
     private void setViewPager(List<String> channelNames) {
         PostFragmentPagerAdapter adapter = new PostFragmentPagerAdapter(
-                getSupportFragmentManager(),channelNames,mPostFragmentList);
+                getSupportFragmentManager(),channelNames,mNewsFragmentList);
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
         TabLayoutUtil.dynamicSetTabLayoutMode(mTabLayout);
@@ -260,5 +229,43 @@ public class HomeActivity extends BaseActivity
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void initViewPager(List<NewsChannelTable> newsChannels) {
+        final List<String> channelNames = new ArrayList<>();
+        if(newsChannels != null){
+            setNewsList(newsChannels,channelNames);
+            setViewPager(channelNames);
+        }
+    }
+
+    private void setNewsList(List<NewsChannelTable> newsChannels, List<String> channelNames) {
+        mNewsFragmentList.clear();
+        for (NewsChannelTable newsChannelTable: newsChannels) {
+            NewsListFragment newsListFragment = createListFragment(newsChannelTable);
+            mNewsFragmentList.add(newsListFragment);
+            channelNames.add(newsChannelTable.getNewsChannelName());
+        }
+    }
+
+    private NewsListFragment createListFragment(NewsChannelTable newsChannelTable){
+        NewsListFragment fragment =  NewsListFragment.newInstance(newsChannelTable.getNewsChannelType(),newsChannelTable.getNewsChannelId(),newsChannelTable.getNewsChannelIndex());
+        return fragment;
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showMsg(String message) {
+
     }
 }

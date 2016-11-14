@@ -1,6 +1,6 @@
 package com.ys.yoosir.zzshow.mvp.view;
 
-import com.ys.yoosir.zzshow.mvp.modle.PostChannelTable;
+import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.view.base.BaseView;
 
 import java.util.List;
@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface HomeView extends BaseView {
 
-    void initViewPager(List<PostChannelTable> postChannels);
+    void initViewPager(List<NewsChannelTable> newsChannels);
 
 }

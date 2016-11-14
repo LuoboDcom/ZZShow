@@ -37,12 +37,13 @@ import butterknife.BindView;
 public class NewsListFragment extends BaseFragment implements RecyclerListener,NewsListView{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String NEWS_CHANNEL_ID = "NEWS_CHANNEL_ID";
+    private static final String NEWS_CHANNEL_TYPE = "NEWS_CHANNEL_TYPE";
+    private static final String NEWS_CHANNEL_INDEX = "NEWS_CHANNEL_INDEX";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mNewsChannelType;
+    private String mNewsChannelId;
+    private int mNewsChannelIndex;
 
     @BindView(R.id.news_swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -55,6 +56,7 @@ public class NewsListFragment extends BaseFragment implements RecyclerListener,N
 
     private List<NewsSummary> mNewsSummaryList;
     private NewsListAdapter mAdapter;
+    private boolean isFirst = true;
     private boolean hasMore = false;
     private boolean isLoading = false;
 
@@ -62,20 +64,13 @@ public class NewsListFragment extends BaseFragment implements RecyclerListener,N
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NewsListFragment.
-     */
     // TODO: Rename and change types and number of parameters
-    public static NewsListFragment newInstance(String param1, String param2) {
+    public static NewsListFragment newInstance(String channelType, String channelId,int channelIndex) {
         NewsListFragment fragment = new NewsListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(NEWS_CHANNEL_TYPE, channelType);
+        args.putString(NEWS_CHANNEL_ID, channelId);
+        args.putInt(NEWS_CHANNEL_INDEX, channelIndex);
         fragment.setArguments(args);
         return fragment;
     }
@@ -145,15 +140,24 @@ public class NewsListFragment extends BaseFragment implements RecyclerListener,N
         mPresenter = new NewsListPresenterImpl();
         mPresenter.attachView(this);
         ((NewsListPresenterImpl)mPresenter).setNewsTypeAndId(ApiConstants.NETEASE_TYPE_OTHER, ApiConstants.NETEASE_ID_GAME);
-        mPresenter.onCreate();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser & isFirst & mPresenter != null){
+            isFirst = false;
+            mPresenter.onCreate();
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mNewsChannelType = getArguments().getString(NEWS_CHANNEL_TYPE);
+            mNewsChannelId = getArguments().getString(NEWS_CHANNEL_ID);
+            mNewsChannelIndex = getArguments().getInt(NEWS_CHANNEL_INDEX);
         }
         mNewsSummaryList = new ArrayList<>();
         mAdapter = new NewsListAdapter(this,mNewsSummaryList);

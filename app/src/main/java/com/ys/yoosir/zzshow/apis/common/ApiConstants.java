@@ -11,7 +11,7 @@ public class ApiConstants {
     //头条TYPE
     public static final String NETEASE_TYPE_HEADLINE = "headline";
     //房产TYPE
-    public static final String NETEASE_TYPE_HOUST = "house";
+    public static final String NETEASE_TYPE_HOUSE = "house";
     //其他TYPE
     public static final String NETEASE_TYPE_OTHER = "list";
     /**
@@ -24,6 +24,8 @@ public class ApiConstants {
     /** --------------------------  ID ------------------------------**/
     //头条
     public static final String NETEASE_ID_HEADLINE = "T1348647909107";
+    // 房产id
+    public static final String NETEASE_ID_HOUSE = "5YyX5Lqs";
     //体育
     public static final String NETEASE_ID_SPORTS = "T1348649079062";
     //娱乐
@@ -116,5 +118,23 @@ public class ApiConstants {
             default:
                 return "";
         }
+    }
+
+    /**
+     * 新闻id获取类型
+     *
+     * @param id 新闻id
+     * @return 新闻类型
+     */
+    public static String getType(String id) {
+        switch (id) {
+            case NETEASE_ID_HEADLINE:
+                return NETEASE_TYPE_HEADLINE;
+            case NETEASE_ID_HOUSE:
+                return NETEASE_TYPE_HOUSE;
+            default:
+                break;
+        }
+        return NETEASE_TYPE_OTHER;
     }
 }

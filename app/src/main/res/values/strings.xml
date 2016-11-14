@@ -6,7 +6,10 @@
 
     <string name="action_settings">Settings</string>
 
+    <!-- Error -->
     <string name="network_error">网络异常，请检查网络设置</string>
+    <string name="db_error">数据库出错了</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

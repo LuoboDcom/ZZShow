@@ -35,13 +35,14 @@ import butterknife.BindView;
 public class PostListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,RecyclerListener,PostListView{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String NEWS_CHANNEL_ID = "NEWS_CHANNEL_ID";
+    private static final String NEWS_CHANNEL_TYPE = "NEWS_CHANNEL_TYPE";
+    private static final String NEWS_CHANNEL_INDEX = "NEWS_CHANNEL_INDEX";
     private static final String TAG = PostListFragment.class.getSimpleName();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mNewsChannelType;
+    private String mNewsChannelId;
+    private int mNewsChannelIndex;
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -61,20 +62,13 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PostListFragment.
-     */
     // TODO: Rename and change types and number of parameters
-    public static PostListFragment newInstance(String param1, String param2) {
+    public static PostListFragment newInstance(String channelType, String channelId,int channelIndex) {
         PostListFragment fragment = new PostListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(NEWS_CHANNEL_TYPE, channelType);
+        args.putString(NEWS_CHANNEL_ID, channelId);
+        args.putInt(NEWS_CHANNEL_INDEX, channelIndex);
         fragment.setArguments(args);
         return fragment;
     }
@@ -141,8 +135,9 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mNewsChannelType = getArguments().getString(NEWS_CHANNEL_TYPE);
+            mNewsChannelId = getArguments().getString(NEWS_CHANNEL_ID);
+            mNewsChannelIndex = getArguments().getInt(NEWS_CHANNEL_INDEX);
         }
         mArticleDataList = new ArrayList<>();
         mPostsAdapter = new PostListAdapter(this,mArticleDataList);
