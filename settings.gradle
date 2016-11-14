@@ -1,1 +1,1 @@
-include ':app', ':tabmodule'
+include ':app'

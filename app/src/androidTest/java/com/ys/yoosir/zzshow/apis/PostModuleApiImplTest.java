@@ -26,6 +26,6 @@ public class PostModuleApiImplTest extends ApplicationTest {
     @Test
     public void testGetArticles() throws Exception {
         long maxmaxBehotTime = System.currentTimeMillis()/1000 - 3 * 60 * 60;
-        PostModuleApiImpl.getInstance().getArticles(maxmaxBehotTime);
+        VideoModuleApiImpl.getInstance().getVideoList(maxmaxBehotTime);
     }
 }

@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(AndroidJUnit4.class)
 @SmallTest
-public class RxJavaSimpleTest {
+public class RxJavaSimpleAndroidTest {
 
     private RxJavaSimple mRxJavaSimple;
 
@@ -25,6 +25,11 @@ public class RxJavaSimpleTest {
     @Test
     public void testScheduler(){
         mRxJavaSimple.testScheduler();
+    }
+
+    @Test
+    public void testOperatorCreate(){
+        mRxJavaSimple.operatorCreate();
     }
 
 }
