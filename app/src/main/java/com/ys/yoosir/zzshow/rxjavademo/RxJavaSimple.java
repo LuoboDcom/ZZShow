@@ -47,17 +47,19 @@ public class RxJavaSimple {
             @Override
             public void onCompleted() {
                 //完成
+                System.out.println("-- onCompleted");
             }
 
             @Override
             public void onError(Throwable e) {
                 //异常
+                System.out.println("-- onError -error="+e.getMessage());
             }
 
             @Override
             public void onNext(String s) {
                 //下一步
-                System.out.print(s);
+                System.out.print("-- onNext -s="+s);
             }
         };
         //关联 Observable 和 Subscriber

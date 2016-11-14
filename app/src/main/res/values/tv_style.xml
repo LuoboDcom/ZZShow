@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <style name="news_title_style">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/tv_color_black</item>
+    </style>
+
+    <style name="news_footer_style">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/tv_color_dark_gray</item>
+    </style>
+
+</resources>

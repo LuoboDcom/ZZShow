@@ -2,49 +2,41 @@ package com.ys.yoosir.zzshow.apis;
 
 import android.util.Log;
 
-import com.ys.yoosir.zzshow.apis.interfaces.PostModuleApi;
+import com.ys.yoosir.zzshow.apis.common.HostType;
 import com.ys.yoosir.zzshow.apis.interfaces.VideoModuleApi;
-import com.ys.yoosir.zzshow.modle.toutiao.ArticleResult;
-import com.ys.yoosir.zzshow.modle.toutiao.VideoData;
+import com.ys.yoosir.zzshow.apis.listener.RequestCallBack;
+import com.ys.yoosir.zzshow.mvp.modle.toutiao.ArticleResult;
+import com.ys.yoosir.zzshow.mvp.modle.toutiao.VideoData;
+import com.ys.yoosir.zzshow.utils.httputil.RetrofitManager;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- *  视频请求管理类
- * Created by Yoosir on 2016/10/23.
+ * 视频 Video
+ * Created by Yoosir on 2016/10/24 0024.
  */
-
 public class VideoModuleApiImpl {
 
-    private static final String TAG = VideoModuleApiImpl.class.getName();
+    private static final String TAG = VideoModuleApiImpl.class.getSimpleName();
 
     private VideoModuleApi service;
-    private HashMap<String,String> params;
+    private Map<String,String> params;
 
     public static VideoModuleApiImpl getInstance(){
         return new VideoModuleApiImpl();
     }
 
     public VideoModuleApiImpl(){
-            Retrofit retrofit = new Retrofit.Builder()
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                    .baseUrl(Constants.URL_HOST)
-                    .build();
-
-            service = retrofit.create(VideoModuleApi.class);
+        service = RetrofitManager.getInstance(HostType.TOUTIAO_PHOTO).createService(VideoModuleApi.class);
     }
 
-    public void getVideoList(long maxBehotTime){
+    public void getVideoList(final RequestCallBack<ArticleResult<List<VideoData>>> callBack,long maxBehotTime){
         service.getVideos(getParams(maxBehotTime))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -56,29 +48,32 @@ public class VideoModuleApiImpl {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i(TAG,e.getMessage());
+                        Log.d(TAG,e.getMessage());
+                        callBack.onError(e.getMessage());
                     }
 
                     @Override
                     public void onNext(ArticleResult<List<VideoData>> listArticleResult) {
                         for (VideoData data:listArticleResult.getData()) {
-                            Log.d(TAG,"video = "+ data.toString());
+                            Log.d(TAG,data.toString());
                         }
+                        callBack.success(listArticleResult);
                     }
                 });
     }
 
-    private Map<String,String> getParams(long maxBehotTime){
-        if(params == null) {
+    public Map<String,String > getParams(long maxBehotTime){
+        if(params == null){
             params = new HashMap<>();
-            params.put("category", "video");
-            params.put("utm_source", "toutiao");
-            params.put("widen", "0");
-            params.put("as", "A19598408C0614F");
-            params.put("cp", "580C36D1944F8E1");
+            params.put("category","video");
+            params.put("utm_source","toutiao");
+            params.put("widen","0");
+            params.put("as","A1F548F0AD5AC6A");
+            params.put("cp","580D4A9C76EAFE1");
         }
-        params.put("max_behot_time", "" + maxBehotTime);
+        params.put("max_behot_time","" + maxBehotTime);
         params.put("max_behot_time_tmp","" + maxBehotTime);
-        return  params;
+        return params;
     }
+
 }

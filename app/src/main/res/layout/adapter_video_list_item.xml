@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="#ffffff">
+
+    <FrameLayout
+        android:id="@+id/item_layout_video"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/video_cover_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/video_cover_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/video_duration_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/post_img_count_height"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="@dimen/padding_size_m"
+            android:layout_marginRight="@dimen/padding_size_m"
+            android:background="@drawable/post_img_count_bg"
+            android:gravity="center"
+            android:paddingLeft="@dimen/padding_size_l"
+            android:paddingRight="@dimen/padding_size_l"
+            android:textColor="@color/tv_color_white"
+            android:textSize="@dimen/post_img_count_tv_size" />
+
+        <ImageView
+            android:id="@+id/video_play_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/icon_video_stop"
+            />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/video_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_size_l"
+        android:textColor="@color/tv_color_white"
+        android:textSize="@dimen/text_size_m" />
+
+</FrameLayout>

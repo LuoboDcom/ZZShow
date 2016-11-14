@@ -7,9 +7,12 @@
     <color name="gray_text">#333333</color>
 
     <color name="tv_color_black">#222222</color>
+    <color name="tv_color_dark_gray">#6e6e6e</color>
     <color name="tv_color_gray">#f3f3f3</color>
+    <color name="tv_color_white">#ffffff</color>
 
     <color name="background_gray">#eeeeee</color>
+    <color name="background_white">#ffffff</color>
     <color name="background_half_transparent">#96000000</color>
 
     <color name="image_place_holder">#DFDFDF</color>

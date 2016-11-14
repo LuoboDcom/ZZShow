@@ -2,19 +2,17 @@ package com.ys.yoosir.zzshow.apis;
 
 import android.util.Log;
 
+import com.ys.yoosir.zzshow.apis.common.HostType;
 import com.ys.yoosir.zzshow.apis.interfaces.PostModuleApi;
 import com.ys.yoosir.zzshow.apis.listener.RequestCallBack;
-import com.ys.yoosir.zzshow.modle.PostBean;
-import com.ys.yoosir.zzshow.modle.toutiao.ArticleData;
-import com.ys.yoosir.zzshow.modle.toutiao.ArticleResult;
+import com.ys.yoosir.zzshow.mvp.modle.toutiao.ArticleData;
+import com.ys.yoosir.zzshow.mvp.modle.toutiao.ArticleResult;
+import com.ys.yoosir.zzshow.utils.httputil.RetrofitManager;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -35,13 +33,7 @@ public class PostModuleApiImpl{
     }
 
     private PostModuleApiImpl(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(Constants.URL_HOST)
-                .build();
-
-        service = retrofit.create(PostModuleApi.class);
+        service = RetrofitManager.getInstance(HostType.TOUTIAO_PHOTO).createService(PostModuleApi.class);
     }
 
     public void getArticles(final RequestCallBack<ArticleResult<List<ArticleData>>> callBack,long maxBehotTime){
@@ -60,7 +52,9 @@ public class PostModuleApiImpl{
                     public void onError(Throwable e) {
                         System.out.println("onError");
                         Log.i(TAG,"onError - error = " + e.getMessage());
-                        callBack.onError(e.getMessage());
+                        if(callBack != null) {
+                            callBack.onError(e.getMessage());
+                        }
                     }
 
                     @Override
@@ -68,7 +62,9 @@ public class PostModuleApiImpl{
                         System.out.println("onNext");
                         Log.i(TAG,"onNext");
                         Log.d(TAG,listArticleResult.toString());
-                        callBack.success(listArticleResult);
+                        if(callBack != null) {
+                            callBack.success(listArticleResult);
+                        }
                     }
                 });
     }

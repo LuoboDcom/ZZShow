@@ -1,17 +1,26 @@
 package com.ys.yoosir.zzshow.apis;
 
+import android.app.Application;
+import android.support.test.runner.AndroidJUnit4;
+import android.test.ApplicationTestCase;
+import android.test.suitebuilder.annotation.SmallTest;
+
 import com.ys.yoosir.zzshow.ApplicationTest;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
 /**
- * Created by Administrator on 2016/10/20 0020.
+ * @version 1.0
+ * Created by Yoosir on 2016/10/20 0020.
  */
-public class PostModuleApiImplTest extends ApplicationTest {
+@RunWith(AndroidJUnit4.class)
+@SmallTest
+public class PostModuleApiImplTest {
 
     @Before
     public void setUp() throws Exception {
