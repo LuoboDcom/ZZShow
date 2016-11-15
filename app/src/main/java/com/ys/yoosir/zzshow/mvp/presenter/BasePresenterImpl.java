@@ -37,17 +37,23 @@ public class BasePresenterImpl<T extends BaseView,E> implements BasePresenter ,R
 
     @Override
     public void beforeRequest() {
-        mView.showProgress();
+        if(mView != null) {
+            mView.showProgress();
+        }
     }
 
     @Override
     public void success(E data) {
-        mView.hideProgress();
+        if(mView != null) {
+            mView.hideProgress();
+        }
     }
 
     @Override
     public void onError(String errorMsg) {
-        mView.hideProgress();
-        mView.showMsg(errorMsg);
+        if(mView != null) {
+            mView.hideProgress();
+            mView.showMsg(errorMsg);
+        }
     }
 }

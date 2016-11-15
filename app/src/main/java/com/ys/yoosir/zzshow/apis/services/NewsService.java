@@ -1,5 +1,6 @@
-package com.ys.yoosir.zzshow.apis.interfaces;
+package com.ys.yoosir.zzshow.apis.services;
 
+import com.ys.yoosir.zzshow.mvp.modle.netease.NewsDetail;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsSummary;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import rx.Observable;
 
@@ -24,6 +26,10 @@ public interface NewsService {
             @Path("id") String id,
             @Path("startPage") int startPage);
 
-
+    @GET("nc/article/{postId}/full.html")
+    Observable<Map<String,NewsDetail>> getNewsDetail(
+        @Header("Cache-Control") String cacheControl,
+        @Path("postId") String postId
+    );
 
 }

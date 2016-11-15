@@ -19,6 +19,8 @@ public class ApiConstants {
      *
      * example：http://c.m.163.com/nc/article/headline/T1348647909107/0-20.html
      *
+     * example：http://c.m.163.com/nc/article/BG6CGA9M00264N2N/full.html
+     *
      * @param newsType ：headline为头条,house为房产，list为其他
      */
     /** --------------------------  ID ------------------------------**/

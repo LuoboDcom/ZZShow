@@ -22,6 +22,7 @@ import com.ys.yoosir.zzshow.mvp.modle.netease.NewsSummary;
 import com.ys.yoosir.zzshow.mvp.presenter.NewsListPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsListPresenter;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PostListPresenter;
+import com.ys.yoosir.zzshow.mvp.ui.activities.NewsDetailActivity;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.NewsListAdapter;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.RecyclerListener;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
@@ -58,7 +59,6 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
 
-    private List<NewsSummary> mNewsSummaryList;
     private NewsListAdapter mAdapter;
     private boolean isFirst = true;
     private boolean hasMore = false;
@@ -92,13 +92,17 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
     }
 
     private void initRecyclerView() {
+        final int leftRightPadding = getResources().getDimensionPixelSize(R.dimen.padding_size_l);
+        final int topBottomPadding = getResources().getDimensionPixelOffset(R.dimen.padding_size_s);
+
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                super.getItemOffsets(outRect, view, parent, state);
+                outRect.set(leftRightPadding,topBottomPadding,leftRightPadding,topBottomPadding);
+//                super.getItemOffsets(outRect, view, parent, state);
             }
         });
 
@@ -167,22 +171,25 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
             mNewsChannelId = getArguments().getString(NEWS_CHANNEL_ID);
             mNewsChannelIndex = getArguments().getInt(NEWS_CHANNEL_INDEX);
         }
-        mNewsSummaryList = new ArrayList<>();
-        mAdapter = new NewsListAdapter(getActivity(),this,mNewsSummaryList);
+        mAdapter = new NewsListAdapter(getActivity(),this);
     }
 
     @Override
     public void OnItemClickListener(View view, int type, int position) {
-
+        if(NewsListAdapter.TYPE_PHOTO_SET == type){
+            Toast.makeText(getActivity(),"正在施工中...",Toast.LENGTH_SHORT).show();
+        }else{
+            List<NewsSummary> mNewsSummaryList = mAdapter.getData();
+            NewsSummary newsSummary = mNewsSummaryList.get(position);
+            startActivity(NewsDetailActivity.getNewsDetailIntent(getActivity(),newsSummary.getPostid(),newsSummary.getImgsrc()));
+        }
     }
 
     @Override
     public void setNewsList(List<NewsSummary> newsSummaryList, int loadType) {
         switch (loadType){
             case LoadDataType.TYPE_FIRST_LOAD:
-                mNewsSummaryList.clear();
-                mNewsSummaryList.addAll(newsSummaryList);
-                mAdapter.notifyDataSetChanged();
+                mAdapter.setData(newsSummaryList,true);
                 break;
         }
     }

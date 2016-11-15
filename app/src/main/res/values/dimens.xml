@@ -23,4 +23,6 @@
     <dimen name="img_size_l">80dp</dimen>
     <dimen name="img_size_width">100dp</dimen>
     <dimen name="img_size_height">75dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

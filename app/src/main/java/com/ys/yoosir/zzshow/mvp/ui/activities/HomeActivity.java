@@ -81,6 +81,7 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public void initViews() {
+        setSupportActionBar(mToolbar);
         mFloatActionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,12 +96,6 @@ public class HomeActivity extends BaseActivity
         toggle.syncState();
 
         mNavigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setSupportActionBar(mToolbar);
     }
 
     @Override

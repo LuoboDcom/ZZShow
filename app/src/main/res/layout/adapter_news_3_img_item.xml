@@ -16,52 +16,48 @@
 
         <TextView
             android:id="@+id/news_title_tv"
-            style="@style/news_title_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:lines="2" />
+            style="@style/news_title_style" />
 
         <LinearLayout
+            android:id="@+id/news_picture_group"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/news_picture_1_iv"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent" />
+                style="@style/news_group_picture" />
 
             <ImageView
                 android:id="@+id/news_picture_2_iv"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent" />
+                style="@style/news_group_picture"
+                android:layout_marginLeft="@dimen/padding_size_l"
+                android:layout_marginRight="@dimen/padding_size_l"
+                />
 
             <ImageView
                 android:id="@+id/news_picture_3_iv"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent" />
+                style="@style/news_group_picture" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/news_ptime_tv"
-            style="@style/news_footer_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            />
 
-        <TextView
-            android:id="@+id/news_source_tv"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/news_footer_style"
-            android:layout_gravity="left"
-            />
+            >
+            <TextView
+                android:id="@+id/news_ptime_tv"
+                style="@style/news_footer_style"
+                android:layout_gravity="right"
+                />
+
+            <TextView
+                android:id="@+id/news_source_tv"
+                style="@style/news_footer_style"
+                android:layout_gravity="left"
+                />
+        </FrameLayout>
 
     </LinearLayout>
 

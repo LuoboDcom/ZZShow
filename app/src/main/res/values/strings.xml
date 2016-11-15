@@ -10,11 +10,11 @@
     <string name="network_error">网络异常，请检查网络设置</string>
     <string name="db_error">数据库出错了</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="refresh_empty_text">点我一下，重新加载</string>
     <string name="post_img_count_value">￥%1$d图</string>
+
+    <string name="news_content_from_value">%1$s %2$s</string>
+
 
     <string name="N_A">N/A</string>
     <string name="close">Close</string>
@@ -67,4 +67,6 @@
     <string name="VideoView_player_AndroidMediaPlayer">Player: AndroidMediaPlayer</string>
     <string name="VideoView_player_IjkMediaPlayer">Player: IjkMediaPlayer</string>
     <string name="VideoView_player_IjkExoMediaPlayer">Player: IjkExoMediaPlayer</string>
+    <string name="title_activity_news_detail">NewsDetailActivity</string>
+
 </resources>

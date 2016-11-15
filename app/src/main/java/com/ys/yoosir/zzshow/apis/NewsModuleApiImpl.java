@@ -3,7 +3,7 @@ package com.ys.yoosir.zzshow.apis;
 import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.apis.common.HostType;
 import com.ys.yoosir.zzshow.apis.interfaces.NewsModuleApi;
-import com.ys.yoosir.zzshow.apis.interfaces.NewsService;
+import com.ys.yoosir.zzshow.apis.services.NewsService;
 import com.ys.yoosir.zzshow.apis.listener.RequestCallBack;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsSummary;
 import com.ys.yoosir.zzshow.utils.DateUtil;
