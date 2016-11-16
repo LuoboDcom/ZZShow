@@ -27,7 +27,12 @@
         <activity
             android:name=".mvp.ui.activities.NewsDetailActivity"
             android:label="@string/title_activity_news_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".mvp.ui.activities.NewsPhotoDetailActivity"
+            android:theme="@style/PhotoActivityTheme">
+
+        </activity>
     </application>
 
 </manifest>

@@ -82,4 +82,5 @@ dependencies {
     compile 'tv.danmaku.ijk.media:ijkplayer-exo:0.6.3'
     compile 'tv.danmaku.ijk.media:ijkplayer-x86:0.6.3'
     compile 'tv.danmaku.ijk.media:ijkplayer-armv5:0.6.3'
+    compile 'com.github.chrisbanes:PhotoView:1.2.6'
 }

@@ -1,6 +1,7 @@
 package com.ys.yoosir.zzshow.mvp.ui.fragments;
 
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,11 +19,13 @@ import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.apis.common.ApiConstants;
 import com.ys.yoosir.zzshow.apis.common.LoadDataType;
+import com.ys.yoosir.zzshow.mvp.modle.NewsPhotoDetail;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsSummary;
 import com.ys.yoosir.zzshow.mvp.presenter.NewsListPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsListPresenter;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PostListPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsDetailActivity;
+import com.ys.yoosir.zzshow.mvp.ui.activities.NewsPhotoDetailActivity;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.NewsListAdapter;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.RecyclerListener;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
@@ -176,14 +179,50 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
 
     @Override
     public void OnItemClickListener(View view, int type, int position) {
+        List<NewsSummary> mNewsSummaryList = mAdapter.getData();
+        NewsSummary newsSummary = mNewsSummaryList.get(position);
         if(NewsListAdapter.TYPE_PHOTO_SET == type){
-            Toast.makeText(getActivity(),"正在施工中...",Toast.LENGTH_SHORT).show();
+            NewsPhotoDetail mNewsPhotoDetail = setNewsPhotoDetail(newsSummary);
+            startActivity(NewsPhotoDetailActivity.getNewsDetailIntent(getActivity(),mNewsPhotoDetail));
+            KLog.d(TAG,"postId = " + newsSummary.getPostid() +"--- postSetId= "+ newsSummary.getPhotosetID());
         }else{
-            List<NewsSummary> mNewsSummaryList = mAdapter.getData();
-            NewsSummary newsSummary = mNewsSummaryList.get(position);
             startActivity(NewsDetailActivity.getNewsDetailIntent(getActivity(),newsSummary.getPostid(),newsSummary.getImgsrc()));
         }
     }
+
+    private NewsPhotoDetail setNewsPhotoDetail(NewsSummary newsSummary){
+        List<NewsSummary.AdsBean> adsBeanList =  newsSummary.getAds();
+        List<NewsSummary.ImgextraBean> imgextraBeanList = newsSummary.getImgextra();
+        List<NewsPhotoDetail.PictureItem> pictureItemList = new ArrayList<>();
+        NewsPhotoDetail mNewsPhotoDetail = new NewsPhotoDetail();
+        mNewsPhotoDetail.setTitle(newsSummary.getTitle());
+
+        setValuesAndAddToList(pictureItemList,newsSummary.getTitle(),newsSummary.getImgsrc());
+        if(adsBeanList != null) {
+            for (NewsSummary.AdsBean adsBean : adsBeanList) {
+                setValuesAndAddToList(pictureItemList,adsBean.getTitle(),adsBean.getImgsrc());
+            }
+        }
+        if(imgextraBeanList != null) {
+            for (NewsSummary.ImgextraBean imgtra : imgextraBeanList) {
+                setValuesAndAddToList(pictureItemList,null,imgtra.getImgsrc());
+            }
+        }
+        mNewsPhotoDetail.setPictureItemList(pictureItemList);
+        return mNewsPhotoDetail;
+    }
+
+    private void setValuesAndAddToList(List<NewsPhotoDetail.PictureItem> pictureItemList, String description, String imgPath) {
+        NewsPhotoDetail.PictureItem picture = new NewsPhotoDetail.PictureItem();
+        if (description == null) {
+            description = "这是一个描述";
+        }
+        picture.setDescription(description);
+        picture.setImgPath(imgPath);
+
+        pictureItemList.add(picture);
+    }
+
 
     @Override
     public void setNewsList(List<NewsSummary> newsSummaryList, int loadType) {
