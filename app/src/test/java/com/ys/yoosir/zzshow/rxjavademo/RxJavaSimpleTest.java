@@ -132,5 +132,9 @@ public class RxJavaSimpleTest {
         mRxJavaSimple.scheduler();
     }
 
+    @Test
+    public void testJava() throws Exception{
+        mRxJavaSimple.testJava();
+    }
 
 }

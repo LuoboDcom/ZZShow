@@ -783,4 +783,13 @@ public class RxJavaSimple {
                     }
                 });
     }
+
+    public void testJava(){
+        String str = "asdc|";
+        String[] array = str.split("\\|");
+        System.out.println("length = "+ array.length);
+        for (int i = 0; i < array.length; i++) {
+            System.out.println("--"+ array[i] +"--");
+        }
+    }
 }
