@@ -1,12 +1,13 @@
 package com.ys.yoosir.zzshow.mvp.ui.activities;
 
 import android.content.pm.ActivityInfo;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.SwitchCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,19 +17,19 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.modle.PostChannelTable;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.presenter.HomePresenterImpl;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.PostFragmentPagerAdapter;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.NewsListFragment;
-import com.ys.yoosir.zzshow.mvp.ui.fragments.PostListFragment;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.VideoListFragment;
 import com.ys.yoosir.zzshow.mvp.view.HomeView;
+import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
 import com.ys.yoosir.zzshow.utils.TabLayoutUtil;
 import com.ys.yoosir.zzshow.widget.video.VideoPlayView;
 
@@ -79,6 +80,8 @@ public class HomeActivity extends BaseActivity
         mPresenter.attachView(this);
     }
 
+
+
     @Override
     public void initViews() {
         setSupportActionBar(mToolbar);
@@ -94,9 +97,65 @@ public class HomeActivity extends BaseActivity
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
+        mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                if(ismIsAddedView()){
+                    setmIsAddedView(false);
+                    getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
+                    recreate();
+                }
+            }
+        });
 
         mNavigationView.setNavigationItemSelectedListener(this);
+        initNightModeSwitch();
     }
+
+    /**
+     *  日/夜 模式切换
+     */
+    private void initNightModeSwitch() {
+        MenuItem menuNightMode = mNavigationView.getMenu().findItem(R.id.nav_night);
+        SwitchCompat dayNightSwitch = (SwitchCompat) MenuItemCompat.getActionView(menuNightMode);
+        setCheckedState(dayNightSwitch);
+        setCheckedEvent(dayNightSwitch);
+    }
+
+    /**
+     *  切换状态
+     * @param dayNightSwitch
+     */
+    private void setCheckedState(SwitchCompat dayNightSwitch){
+        if(SharedPreferencesUtil.isNightMode()){
+            dayNightSwitch.setChecked(true);
+        }else{
+            dayNightSwitch.setChecked(false);
+        }
+    }
+
+    /**
+     *  Switch 按钮 切换事件
+     * @param dayNightSwitch  按钮
+     */
+    private void setCheckedEvent(SwitchCompat dayNightSwitch){
+        dayNightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    changeToNight();
+                    SharedPreferencesUtil.saveNightMode(true);
+                }else{
+                    changeToDay();
+                    SharedPreferencesUtil.saveNightMode(false);
+                }
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -136,17 +195,17 @@ public class HomeActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_news) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_photo) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_video) {
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_about) {
+
+        } else if (id == R.id.nav_night) {
 
         }
 

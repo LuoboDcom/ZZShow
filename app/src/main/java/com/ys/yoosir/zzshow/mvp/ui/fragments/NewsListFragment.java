@@ -1,9 +1,13 @@
 package com.ys.yoosir.zzshow.mvp.ui.fragments;
 
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,10 +16,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.socks.library.KLog;
+import com.ys.yoosir.zzshow.Constants;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.apis.common.ApiConstants;
 import com.ys.yoosir.zzshow.apis.common.LoadDataType;
@@ -186,7 +192,23 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
             startActivity(NewsPhotoDetailActivity.getNewsDetailIntent(getActivity(),mNewsPhotoDetail));
             KLog.d(TAG,"postId = " + newsSummary.getPostid() +"--- postSetId= "+ newsSummary.getPhotosetID());
         }else{
-            startActivity(NewsDetailActivity.getNewsDetailIntent(getActivity(),newsSummary.getPostid(),newsSummary.getImgsrc()));
+            Intent intent = NewsDetailActivity.getNewsDetailIntent(getActivity(),newsSummary.getPostid(),newsSummary.getImgsrc());
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ImageView animationIv = (ImageView) view.findViewById(R.id.news_picture_iv);
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
+                        getActivity(),
+                        animationIv,
+                        Constants.TRANSITION_ANIMATION_NEWS_PHOTOS);
+                startActivity(intent,options.toBundle());
+            }else{
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeScaleUpAnimation(
+                        view,
+                        view.getWidth() / 2,
+                        view.getHeight() / 2,
+                        0,
+                        0);
+                ActivityCompat.startActivity(getActivity(),intent,optionsCompat.toBundle());
+            }
         }
     }
 

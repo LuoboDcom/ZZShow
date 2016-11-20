@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_news"
+            android:icon="@mipmap/ic_menu_news"
+            android:title="@string/menu_news" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_photo"
+            android:icon="@mipmap/ic_menu_photo"
+            android:title="@string/menu_photo" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_video"
+            android:icon="@mipmap/ic_menu_video"
+            android:title="@string/menu_video" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/menu_title_other">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="@string/menu_share" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_about"
+                android:icon="@mipmap/ic_menu_about"
+                android:title="@string/menu_about" />
+            <item
+                android:id="@+id/nav_night"
+                android:icon="@mipmap/ic_menu_night_mode"
+                android:title="@string/menu_night_mode"
+                app:actionLayout="@layout/menu_night_drawer_switch"/>
         </menu>
     </item>
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ys.yoosir.zzshow.mvp.ui.activities.SplashActivity">
+
+    <ImageView
+        android:id="@+id/logo_outer_iv"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_launcher_outer"/>
+
+    <ImageView
+        android:id="@+id/logo_inner_iv"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_launcher_inner"
+        tools:alpha="1"/>
+
+    <TextView
+        android:id="@+id/app_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:alpha="0"
+        android:text="@string/app_name"
+        android:textColor="@color/tv_color_white"
+        android:textSize="@dimen/text_size_m"
+        tools:alpha="1"/>
+    
+</FrameLayout>

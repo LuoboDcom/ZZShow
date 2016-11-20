@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="night_mask">#00000000</color>
+
     <color name="gray_text">#333333</color>
 
     <color name="tv_color_black">#222222</color>

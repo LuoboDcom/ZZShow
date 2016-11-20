@@ -28,9 +28,10 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
+                android:transitionName="@string/transition_photo"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7"
-                />
+                tools:targetApi="lollipop" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

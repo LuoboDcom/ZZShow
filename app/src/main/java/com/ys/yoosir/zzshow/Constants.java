@@ -34,4 +34,6 @@ public class Constants {
 
      **/
     public static final String VIDEO_PATH = "article/feed/";
+
+    public static final String TRANSITION_ANIMATION_NEWS_PHOTOS = "transition_animation_news_photos";
 }

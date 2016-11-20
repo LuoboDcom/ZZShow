@@ -9,6 +9,7 @@ import com.ys.yoosir.zzshow.utils.httputil.OkHttpUtil;
 import com.ys.yoosir.zzshow.utils.httputil.RetrofitManager;
 import com.ys.yoosir.zzshow.utils.httputil.RxJavaCustomTransform;
 
+import java.util.List;
 import java.util.Map;
 
 import rx.Subscriber;
@@ -28,7 +29,9 @@ public class NewsDetailModuleApiImpl implements NewsDetailModuleApi<NewsDetail>{
                 .map(new Func1<Map<String,NewsDetail>, NewsDetail>() {
                     @Override
                     public NewsDetail call(Map<String, NewsDetail> stringNewsDetailMap) {
-                        return stringNewsDetailMap.get(postId);
+                        NewsDetail newsDetail = stringNewsDetailMap.get(postId);
+                        changeNewsDetail(newsDetail);
+                        return newsDetail;
                     }
                 })
                 .compose(RxJavaCustomTransform.<NewsDetail>defaultSchedulers())
@@ -48,5 +51,31 @@ public class NewsDetailModuleApiImpl implements NewsDetailModuleApi<NewsDetail>{
                         callBack.success(newsDetail);
                     }
                 });
+    }
+
+    private void changeNewsDetail(NewsDetail newsDetail) {
+        List<NewsDetail.ImgBean> imgSrcs = newsDetail.getImg();
+        if(imgSrcs != null){
+            String newsBody = newsDetail.getBody();
+            //替换 newsBody 中的 img 标签
+            newsBody = changeNewsBody(imgSrcs,newsBody);
+            System.out.println("body = " + newsBody);
+            newsDetail.setBody(newsBody);
+        }
+    }
+
+    /**
+     * 替换 newsBody 的 IMG 标签
+     * @param imgSrcs   图片路径集合
+     * @param newsBody  新闻主体
+     * @return String
+     */
+    private String changeNewsBody(List<NewsDetail.ImgBean> imgSrcs, String newsBody) {
+        for (NewsDetail.ImgBean bean:imgSrcs) {
+            String oldChars = bean.getRef();
+            String newsChars = "<img src='"+bean.getSrc()+"' />";
+            newsBody = newsBody.replace(oldChars,newsChars);
+        }
+        return newsBody;
     }
 }

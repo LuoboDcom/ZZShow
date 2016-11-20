@@ -45,7 +45,7 @@ public class NewsDetail {
     private List<?> ydbaike;
     private int     replyCount;
     private List<?> link;
-    private List<?> img;
+    private List<ImgBean> img;
     private List<?> votes;
     private String  shareLink;
     private String  digest;
@@ -61,11 +61,11 @@ public class NewsDetail {
     private int     threadAgainst;
     private List<?> boboList;
     private String  replyBoard;
-    private List<?> huati;
+    private List<HuatiBean> huati;
     private String  source;
     private boolean hasNext;
     private String  voicecomment;
-    private List<?> relative_sys;
+    private List<RelativeSysBean> relative_sys;
     private String  ptime;
 
 
@@ -109,11 +109,11 @@ public class NewsDetail {
         this.link = link;
     }
 
-    public List<?> getImg() {
+    public List<ImgBean> getImg() {
         return img;
     }
 
-    public void setImg(List<?> img) {
+    public void setImg(List<ImgBean> img) {
         this.img = img;
     }
 
@@ -237,11 +237,11 @@ public class NewsDetail {
         this.replyBoard = replyBoard;
     }
 
-    public List<?> getHuati() {
+    public List<HuatiBean> getHuati() {
         return huati;
     }
 
-    public void setHuati(List<?> huati) {
+    public void setHuati(List<HuatiBean> huati) {
         this.huati = huati;
     }
 
@@ -269,11 +269,11 @@ public class NewsDetail {
         this.voicecomment = voicecomment;
     }
 
-    public List<?> getRelative_sys() {
+    public List<RelativeSysBean> getRelative_sys() {
         return relative_sys;
     }
 
-    public void setRelative_sys(List<?> relative_sys) {
+    public void setRelative_sys(List<RelativeSysBean> relative_sys) {
         this.relative_sys = relative_sys;
     }
 

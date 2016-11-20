@@ -20,9 +20,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:theme="@style/AppTheme.AppBarOverlay"
         app:navigationIcon="@mipmap/ic_arrow_back"
         app:collapseIcon="@mipmap/ic_launcher"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        />
     
     <FrameLayout
         android:id="@+id/photo_text_layout"
