@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsSummary;
-import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.RecyclerListener;
+import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.MyRecyclerListener;
 import com.ys.yoosir.zzshow.utils.DimenUtil;
 
 import java.util.ArrayList;
@@ -33,14 +33,14 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private RecyclerListener mItemListener;
+    private MyRecyclerListener mItemListener;
     private List<NewsSummary>   mData = new ArrayList<>();
 
     private float photoThreeHeight;
     private float photoTwoHeight;
     private float photoOneHeight;
 
-    public NewsListAdapter(Context context,RecyclerListener itemListener){
+    public NewsListAdapter(Context context,MyRecyclerListener itemListener){
         this.mContext = context;
         this.mItemListener = itemListener;
         mInflater = LayoutInflater.from(context);
@@ -196,7 +196,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.news_source_tv)
         TextView newsSourceTv;
 
-        NormalViewHolder(View itemView, final RecyclerListener itemListener,final int viewType) {
+        NormalViewHolder(View itemView, final MyRecyclerListener itemListener, final int viewType) {
             super(itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -231,7 +231,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.news_source_tv)
         TextView newsSourceTv;
 
-        PhotoSetViewHolder(View itemView, final RecyclerListener itemListener,final int viewType) {
+        PhotoSetViewHolder(View itemView, final MyRecyclerListener itemListener, final int viewType) {
             super(itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

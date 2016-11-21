@@ -13,9 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -23,17 +21,15 @@ import android.widget.Toast;
 import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.Constants;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.apis.common.ApiConstants;
 import com.ys.yoosir.zzshow.apis.common.LoadDataType;
 import com.ys.yoosir.zzshow.mvp.modle.NewsPhotoDetail;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsSummary;
 import com.ys.yoosir.zzshow.mvp.presenter.NewsListPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsListPresenter;
-import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PostListPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsDetailActivity;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsPhotoDetailActivity;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.NewsListAdapter;
-import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.RecyclerListener;
+import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.MyRecyclerListener;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
 import com.ys.yoosir.zzshow.mvp.view.NewsListView;
 
@@ -47,7 +43,7 @@ import butterknife.BindView;
  * Use the {@link NewsListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewsListFragment extends BaseFragment<NewsListPresenter> implements RecyclerListener,NewsListView{
+public class NewsListFragment extends BaseFragment<NewsListPresenter> implements MyRecyclerListener,NewsListView{
 
     private static final String TAG = "NewsListFragment";
 

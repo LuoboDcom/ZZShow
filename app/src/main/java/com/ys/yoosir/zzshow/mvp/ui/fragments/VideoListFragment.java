@@ -13,7 +13,7 @@ import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.apis.common.LoadDataType;
 import com.ys.yoosir.zzshow.mvp.modle.toutiao.VideoData;
 import com.ys.yoosir.zzshow.mvp.presenter.VideoListPresenterImpl;
-import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.RecyclerListener;
+import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.MyRecyclerListener;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
 import com.ys.yoosir.zzshow.mvp.view.VideoListView;
 import com.ys.yoosir.zzshow.widget.video.VideoListLayout;
@@ -29,7 +29,7 @@ import butterknife.BindView;
  * Use the {@link VideoListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VideoListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,VideoListView,RecyclerListener{
+public class VideoListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,VideoListView,MyRecyclerListener {
 
     private static final String TAG = VideoListFragment.class.getSimpleName();
 
