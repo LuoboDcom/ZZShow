@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#333333</color>
+    <color name="colorPrimaryDark">#222222</color>
+    <color name="colorAccent">#aa4444</color>
+
+    <color name="night_mask">#00000000</color>
+
+    <color name="gray_text">#333333</color>
+
+    <color name="tv_color_black">#f3f3f3</color>
+    <color name="tv_color_dark_gray">#eeeeee</color>
+    <color name="tv_color_gray">#222222</color>
+    <color name="tv_color_white">#000000</color>
+    <color name="tv_color_primary_white">#200000</color>
+
+    <color name="background_black">#ffffff</color>
+    <color name="background_half_transportation">#40000000</color>
+    <color name="background_gray">#3e3e3e</color>
+    <color name="background_white">#000000</color>
+    <color name="background_half_transparent">#96000000</color>
+
+    <color name="image_place_holder">#DFDFDF</color>
+</resources>

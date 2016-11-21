@@ -68,5 +68,13 @@
     <string name="VideoView_player_IjkMediaPlayer">Player: IjkMediaPlayer</string>
     <string name="VideoView_player_IjkExoMediaPlayer">Player: IjkExoMediaPlayer</string>
     <string name="title_activity_news_detail">NewsDetailActivity</string>
+    <string name="menu_about">关于</string>
+    <string name="menu_share">分享</string>
+    <string name="menu_video">视频</string>
+    <string name="menu_photo">图片</string>
+    <string name="menu_news">新闻</string>
+    <string name="menu_night_mode">夜间模式</string>
+    <string name="menu_title_other">其他</string>
+    <string name="transition_photo">transition_animation_news_photos</string>
 
 </resources>

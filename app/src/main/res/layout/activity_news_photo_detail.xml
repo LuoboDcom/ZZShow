@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_news_photo_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_black"
+    tools:context="com.ys.yoosir.zzshow.mvp.ui.activities.NewsPhotoDetailActivity">
+
+    <com.ys.yoosir.zzshow.widget.photoview.HackyViewPager
+        android:id="@+id/photo_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    </com.ys.yoosir.zzshow.widget.photoview.HackyViewPager>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:navigationIcon="@mipmap/ic_arrow_back"
+        app:collapseIcon="@mipmap/ic_launcher"
+        />
+    
+    <FrameLayout
+        android:id="@+id/photo_text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_gravity="bottom"
+        android:background="@color/background_half_transportation"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/photo_count_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:textColor="@color/tv_color_white"
+            android:textSize="14sp"
+            android:text="1/7"/>
+
+        <TextView
+            android:id="@+id/photo_news_title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="56dp"
+            android:layout_gravity="top|left"
+            android:lines="2"
+            android:textColor="@color/tv_color_white"
+            android:textSize="18sp"
+            android:text="济南泉水直饮点变取水点 水桶水管齐上阵"
+            />
+
+        <TextView
+            android:id="@+id/photo_news_desc_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:textColor="@color/tv_color_white"
+            android:textSize="14sp"
+            android:text="这是描述描述描述"
+            />
+
+    </FrameLayout>
+
+</FrameLayout>
