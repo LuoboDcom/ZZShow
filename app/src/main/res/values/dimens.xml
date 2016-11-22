@@ -18,6 +18,7 @@
 
 
     <dimen name="text_size_m">14sp</dimen>
+    <dimen name="text_size_l">16ps</dimen>
     <dimen name="text_size_xxl">20sp</dimen>
 
     <dimen name="img_size_l">80dp</dimen>

@@ -45,7 +45,7 @@ public class PhotoTextView extends TextView {
         setText(Html.fromHtml(text, imgGetter,null));
         //加这句才能让里面的超链接生效,
         //修复卡机崩溃的问题
-        setLongClickable(false);
-        setMovementMethod(LinkMovementMethod.getInstance());
+//        setLongClickable(false);
+//        setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

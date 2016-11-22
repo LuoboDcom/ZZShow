@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
