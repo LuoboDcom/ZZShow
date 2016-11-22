@@ -6,6 +6,9 @@ package com.ys.yoosir.zzshow;
  */
 public class Constants {
 
+    public static final int NEWS_CHANNEL_MINE = 1;
+    public static final int NEWS_CHANNEL_RECOMMEND = 0;
+
     /**
      * http://www.toutiao.com/api/article/recent/?source=2&count=20&category=gallery_detail
      *          &max_behot_time=1476919670&utm_source=toutiao

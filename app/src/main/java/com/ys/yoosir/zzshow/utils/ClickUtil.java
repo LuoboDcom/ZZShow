@@ -13,6 +13,10 @@ public class ClickUtil {
     private static long mLastClickTime = 0;
     private static final int SPACE_TIME = 500;
 
+    /**
+     * 屏蔽快速点击
+     * @return boolean
+     */
     public static boolean isFastDoubleClick(){
         long time = SystemClock.elapsedRealtime();
         if(time - mLastClickTime <= SPACE_TIME){

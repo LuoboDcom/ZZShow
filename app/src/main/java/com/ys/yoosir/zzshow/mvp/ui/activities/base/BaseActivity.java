@@ -14,6 +14,7 @@ import com.ys.yoosir.zzshow.mvp.presenter.interfaces.BasePresenter;
 import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
 
 import butterknife.ButterKnife;
+import rx.Subscription;
 
 /**
  * 绑定 presenter
@@ -27,6 +28,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     private View mNightView = null;
     private boolean mIsAddedView;
 
+    protected Subscription mSubscription;
 
     public abstract int getLayoutId();
 
@@ -56,6 +58,10 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             mPresenter.onDestroy();
         }
         removeNightModeMask();
+        //TODO unSubscribe
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
     }
 
     public boolean ismIsAddedView() {

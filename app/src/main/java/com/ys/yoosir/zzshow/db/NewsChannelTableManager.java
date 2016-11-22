@@ -37,7 +37,15 @@ public class NewsChannelTableManager {
      * @return 已被选择的频道
      */
     public static List<NewsChannelTable> loadNewsChannelsMine(){
-        return DBManager.init(MyApplication.getInstance()).loadNewsChannelsMine();
+        return DBManager.init(MyApplication.getInstance()).loadNewsChannels("1");
+    }
+
+    /**
+     *  加载 推荐频道
+     * @return 推荐频道列表
+     */
+    public static List<NewsChannelTable> loadNewsChannelsRecommend(){
+        return DBManager.init(MyApplication.getInstance()).loadNewsChannels("0");
     }
 
 }

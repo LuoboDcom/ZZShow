@@ -56,12 +56,12 @@ public class DBManager {
         return rowId;
     }
 
-    public List<NewsChannelTable> loadNewsChannelsMine(){
+    public List<NewsChannelTable> loadNewsChannels(String isSelect){
         List<NewsChannelTable> list = new ArrayList<>();
         db.beginTransaction();
         Cursor cursor = null;
         try{
-            cursor = db.query(DBHelper.TABLE_NEWS_CHANNEL,null,"news_channel_select = ? ",new String[]{"1"},null,null,"news_channel_index asc");
+            cursor = db.query(DBHelper.TABLE_NEWS_CHANNEL,null,"news_channel_select = ? ",new String[]{isSelect},null,null,"news_channel_index asc");
             if(cursor.moveToFirst()) {
                 while (cursor.moveToNext()) {
                     String channelName = cursor.getString(cursor.getColumnIndex("news_channel_name"));
