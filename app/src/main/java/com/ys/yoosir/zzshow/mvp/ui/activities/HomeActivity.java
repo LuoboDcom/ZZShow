@@ -1,5 +1,6 @@
 package com.ys.yoosir.zzshow.mvp.ui.activities;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class HomeActivity extends BaseActivity
         implements HomeView,NavigationView.OnNavigationItemSelectedListener,VideoListFragment.OnVideoFIListener {
@@ -68,6 +70,13 @@ public class HomeActivity extends BaseActivity
 
     @BindView(R.id.full_screen)
     FrameLayout mFullScreenLayout;
+
+    @OnClick(R.id.add_channel_iv)
+    public void onClick(View v){
+        if(v.getId() == R.id.add_channel_iv){
+            startActivity(new Intent(HomeActivity.this,NewsChannelActivity.class));
+        }
+    }
 
     @Override
     public int getLayoutId() {

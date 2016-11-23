@@ -159,7 +159,7 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void OnItemClickListener(View view, int type, int position) {
+    public void OnItemClickListener(View view, int position) {
 
     }
 

@@ -86,4 +86,143 @@ public class DBManager {
         return list;
     }
 
+    /**
+     * 修改
+     * @param channelTable 对象
+     */
+    public int update (NewsChannelTable channelTable){
+        db.beginTransaction();
+        int index = -1;
+        try {
+            ContentValues values = new ContentValues();
+            values.put("news_channel_name", channelTable.getNewsChannelName());
+            values.put("news_channel_id", channelTable.getNewsChannelId());
+            values.put("news_channel_type", channelTable.getNewsChannelType());
+            values.put("news_channel_select", channelTable.isNewsChannelSelect() ? 1:0);
+            values.put("news_channel_index", channelTable.getNewsChannelIndex());
+            values.put("news_channel_fixed", channelTable.isNewsChannelFixed()? 1:0);
+            index = db.update(DBHelper.TABLE_NEWS_CHANNEL,values,"news_channel_id = ?",new String[]{channelTable.getNewsChannelId()});
+            db.setTransactionSuccessful();
+        }catch (Exception e){
+            KLog.e(e.getMessage());
+        }finally {
+            db.endTransaction();
+        }
+        return index;
+    }
+
+    /**
+     *  根据 条件查询  频道列表
+     * @param selection     where 语句
+     * @param selectionArgs  值
+     * @return  返回数据
+     */
+    public List<NewsChannelTable> loadNewsChannelsByWhere(String selection, String[] selectionArgs) {
+        List<NewsChannelTable> list = new ArrayList<>();
+        db.beginTransaction();
+        Cursor cursor = null;
+        try{
+            cursor = db.query(DBHelper.TABLE_NEWS_CHANNEL,null, selection ,selectionArgs ,null,null,"news_channel_index asc");
+            if(cursor.moveToFirst()) {
+                while (cursor.moveToNext()) {
+                    String channelName = cursor.getString(cursor.getColumnIndex("news_channel_name"));
+                    String channelId   = cursor.getString(cursor.getColumnIndex("news_channel_id"));
+                    String channelType = cursor.getString(cursor.getColumnIndex("news_channel_type"));
+                    boolean channelSelect = cursor.getInt(cursor.getColumnIndex("news_channel_select")) == 1;
+                    int channelIndex  = cursor.getInt(cursor.getColumnIndex("news_channel_index"));
+                    boolean channelFixed = cursor.getInt(cursor.getColumnIndex("news_channel_fixed")) == 1;
+                    list.add(new NewsChannelTable(channelName,channelId,channelType,channelSelect,channelIndex,channelFixed));
+                }
+            }
+        }catch (Exception e){
+            /**
+             *  exception log
+             */
+            KLog.e(e.getMessage());
+        }finally {
+            if(cursor != null){
+                cursor.close();
+            }
+        }
+        return list;
+    }
+
+    /**
+     *  获取 记录条数
+     * @return 记录条数
+     */
+    public long getCount(){
+        db.beginTransaction();
+        long count = 0;
+        try {
+            Cursor cursor = db.rawQuery("select count(news_channel_id) from " + DBHelper.TABLE_NEWS_CHANNEL,null);
+            cursor.moveToFirst();
+            count = cursor.getLong(0);
+            db.setTransactionSuccessful();
+        }catch (Exception e){
+            KLog.e(e.getMessage());
+        }finally {
+            db.endTransaction();
+        }
+        return count;
+    }
+
+
+    /**
+     * 根据条件查询记录条数
+     *
+     * @param selection    条件
+     * @param selectionArgs  值
+     * @return
+     */
+    public long getCountByWhere(String selection,String[] selectionArgs){
+        db.beginTransaction();
+        long count = 0;
+        try {
+            Cursor cursor = db.rawQuery("select count(news_channel_id) from " + DBHelper.TABLE_NEWS_CHANNEL + " where " + selection,selectionArgs);
+            cursor.moveToFirst();
+            count = cursor.getLong(0);
+            db.setTransactionSuccessful();
+        }catch (Exception e){
+            KLog.e(e.getMessage());
+        }finally {
+            db.endTransaction();
+        }
+        return count;
+    }
+
+    /**
+     *  根据 index 查询频道
+     * @param index  频道值
+     * @return
+     */
+    public NewsChannelTable findNewsChannelByIndex(int index) {
+        NewsChannelTable newsChannel = null;
+        db.beginTransaction();
+        Cursor cursor = null;
+        try{
+            cursor = db.query(DBHelper.TABLE_NEWS_CHANNEL,null, "news_channel_index = ? " ,new String[]{index+""} ,null,null,null);
+            if(cursor.moveToFirst()) {
+                while (cursor.moveToNext()) {
+                    String channelName = cursor.getString(cursor.getColumnIndex("news_channel_name"));
+                    String channelId   = cursor.getString(cursor.getColumnIndex("news_channel_id"));
+                    String channelType = cursor.getString(cursor.getColumnIndex("news_channel_type"));
+                    boolean channelSelect = cursor.getInt(cursor.getColumnIndex("news_channel_select")) == 1;
+                    int channelIndex  = cursor.getInt(cursor.getColumnIndex("news_channel_index"));
+                    boolean channelFixed = cursor.getInt(cursor.getColumnIndex("news_channel_fixed")) == 1;
+                    newsChannel = new NewsChannelTable(channelName,channelId,channelType,channelSelect,channelIndex,channelFixed);
+                }
+            }
+        }catch (Exception e){
+            /**
+             *  exception log
+             */
+            KLog.e(e.getMessage());
+        }finally {
+            if(cursor != null){
+                cursor.close();
+            }
+        }
+        return newsChannel;
+    }
 }

@@ -74,7 +74,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemListener.OnItemClickListener(v,0,getAdapterPosition());
+                    itemListener.OnItemClickListener(v,getAdapterPosition());
                 }
             });
             ButterKnife.bind(this,itemView);

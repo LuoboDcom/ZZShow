@@ -167,7 +167,7 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
     }
 
     @Override
-    public void OnItemClickListener(View view, int type, int position) {
+    public void OnItemClickListener(View view, int position) {
 
     }
 

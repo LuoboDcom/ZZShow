@@ -1,6 +1,9 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
+import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.Constants;
+import com.ys.yoosir.zzshow.apis.NewsChannelApiImpl;
+import com.ys.yoosir.zzshow.apis.interfaces.NewsChannelApi;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsChannelPresenter;
 import com.ys.yoosir.zzshow.mvp.view.NewsChannelView;
@@ -17,10 +20,27 @@ import java.util.Map;
 public class NewsChannelPresenterImpl extends BasePresenterImpl<NewsChannelView,
         Map<Integer,List<NewsChannelTable>>> implements NewsChannelPresenter {
 
+    private NewsChannelApi<Map<Integer,List<NewsChannelTable>>> mNewsApi;
+    private boolean mIsChannelChanged;
+
+
+    public NewsChannelPresenterImpl(){
+        mNewsApi =  new NewsChannelApiImpl();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        mNewsApi.loadNewsChannels(this);
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mIsChannelChanged) {
+            //TODO 当我的频道改变时，就通知新闻列表改变
+            KLog.d("NewsChannelPresenterImpl","mine channel has changed");
+        }
     }
 
     @Override
@@ -36,6 +56,13 @@ public class NewsChannelPresenterImpl extends BasePresenterImpl<NewsChannelView,
 
     @Override
     public void onItemSwap(int fromPosition, int toPosition) {
+        mNewsApi.swapDB(fromPosition,toPosition);
+        mIsChannelChanged = true;
+    }
 
+    @Override
+    public void onItemAddOrRemove(NewsChannelTable newsChannel, boolean isChannelMine) {
+        mNewsApi.updateDB(newsChannel,isChannelMine);
+        mIsChannelChanged = true;
     }
 }

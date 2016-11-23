@@ -180,10 +180,10 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
     }
 
     @Override
-    public void OnItemClickListener(View view, int type, int position) {
+    public void OnItemClickListener(View view, int position) {
         List<NewsSummary> mNewsSummaryList = mAdapter.getData();
         NewsSummary newsSummary = mNewsSummaryList.get(position);
-        if(NewsListAdapter.TYPE_PHOTO_SET == type){
+        if(NewsListAdapter.TYPE_PHOTO_SET == mAdapter.getItemViewType(position)){
             NewsPhotoDetail mNewsPhotoDetail = setNewsPhotoDetail(newsSummary);
             startActivity(NewsPhotoDetailActivity.getNewsDetailIntent(getActivity(),mNewsPhotoDetail));
             KLog.d(TAG,"postId = " + newsSummary.getPostid() +"--- postSetId= "+ newsSummary.getPhotosetID());

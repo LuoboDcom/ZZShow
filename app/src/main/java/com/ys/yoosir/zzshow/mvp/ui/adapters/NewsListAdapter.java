@@ -201,7 +201,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemListener.OnItemClickListener(v,viewType,getAdapterPosition());
+                    itemListener.OnItemClickListener(v,getAdapterPosition());
                 }
             });
             ButterKnife.bind(this,itemView);
@@ -236,7 +236,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemListener.OnItemClickListener(v,viewType,getAdapterPosition());
+                    itemListener.OnItemClickListener(v,getAdapterPosition());
                 }
             });
             ButterKnife.bind(this,itemView);

@@ -1,5 +1,7 @@
 package com.ys.yoosir.zzshow.mvp.presenter.interfaces;
 
+import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
+
 /**
  *
  * @version 1.0
@@ -11,4 +13,5 @@ public interface NewsChannelPresenter extends BasePresenter{
 
     void onItemSwap(int fromPosition,int toPosition);
 
+    void onItemAddOrRemove(NewsChannelTable newsChannel,boolean isChannelMine);
 }
