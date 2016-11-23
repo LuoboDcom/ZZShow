@@ -4,10 +4,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.events.ChannelItemMoveEvent;
@@ -113,9 +113,9 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
         mRecommendAdapter.setOnItemClickListener(new MyRecyclerListener() {
             @Override
             public void OnItemClickListener(View view, int position) {
-                NewsChannelTable newsChannel = mMineAdapter.getList().get(position);
-                mRecommendAdapter.add(mRecommendAdapter.getItemCount(), newsChannel);
-                mMineAdapter.delete(position);
+                NewsChannelTable newsChannel = mRecommendAdapter.getList().get(position);
+                mMineAdapter.add(mMineAdapter.getItemCount(), newsChannel);
+                mRecommendAdapter.delete(position);
                 mPresenter.onItemAddOrRemove(newsChannel, false);
             }
         });
