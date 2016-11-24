@@ -24,4 +24,9 @@
 
     <color name="image_place_holder">#DFDFDF</color>
 
+    <color name="lighter_gray">#ddd</color>
+    <color name="darker_gray">#aaa</color>
+
+    <color name="channel_bg_lighter_gray">#eeeeee</color>
+    <color name="channel_bg_dark_gray">#e1e1e1</color>
 </resources>

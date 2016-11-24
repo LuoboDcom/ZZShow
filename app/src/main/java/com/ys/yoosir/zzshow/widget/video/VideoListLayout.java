@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.modle.toutiao.VideoData;
+import com.ys.yoosir.zzshow.mvp.modle.videos.VideoData;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.VideoListAdapter;
 import com.ys.yoosir.zzshow.utils.mediavideo.IjkVideoView;
 
@@ -142,7 +142,8 @@ public class VideoListLayout extends RelativeLayout{
                 frameLayout.removeAllViews();
                 frameLayout.addView(mVideoItemView);
                 //播放
-                String videoUrl = "http://flv2.bn.netease.com/tvmrepo/2016/4/N/C/EBKQMCMNC/SD/EBKQMCMNC-mobile.mp4";
+                List<VideoData> videoList = mAdapter.getData();
+                String videoUrl = videoList.get(position).getMp4_url();
                 mVideoItemView.start(videoUrl);
                 //
                 lastPosition = position;

@@ -2,8 +2,8 @@ package com.ys.yoosir.zzshow.mvp.presenter;
 
 import com.ys.yoosir.zzshow.apis.common.LoadDataType;
 import com.ys.yoosir.zzshow.apis.VideoModuleApiImpl;
-import com.ys.yoosir.zzshow.mvp.modle.toutiao.ArticleResult;
-import com.ys.yoosir.zzshow.mvp.modle.toutiao.VideoData;
+import com.ys.yoosir.zzshow.apis.interfaces.VideoModuleApi;
+import com.ys.yoosir.zzshow.mvp.modle.videos.VideoData;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.VideoListPresenter;
 import com.ys.yoosir.zzshow.mvp.view.VideoListView;
 
@@ -13,14 +13,17 @@ import java.util.List;
  *  视频 MVP  P 类
  * Created by Yoosir on 2016/10/24 0024.
  */
-public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,ArticleResult<List<VideoData>>> implements VideoListPresenter{
+public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,List<VideoData>> implements VideoListPresenter{
 
     private int mLoadDataType = LoadDataType.TYPE_FIRST_LOAD;
 
-    private VideoModuleApiImpl mVideoModuleService;
+    private VideoModuleApi<List<VideoData>> moduleApi;
+
+    private String mVideoType;
+    private int mStartPage;
 
     public VideoListPresenterImpl(){
-        mVideoModuleService = VideoModuleApiImpl.getInstance();
+        moduleApi = new VideoModuleApiImpl();
     }
 
     @Override
@@ -28,21 +31,26 @@ public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,Arti
         super.onCreate();
         if(mView != null){
             beforeRequest();
+            mStartPage = 0;
             loadData();
         }
     }
 
     @Override
-    public void loadData() {
-        mLoadDataType = LoadDataType.TYPE_FIRST_LOAD;
-        long maxBehotTime = System.currentTimeMillis()/1000 - 3 * 60 * 60;
-        mVideoModuleService.getVideoList(this,maxBehotTime);
+    public void setVideoType(String videoType) {
+        mVideoType = videoType;
     }
 
     @Override
-    public void success(ArticleResult<List<VideoData>> data) {
-        super.success(data);
-        mView.setVideoList(data.getData(),data.isHas_more(),mLoadDataType);
+    public void loadData() {
+        mLoadDataType = LoadDataType.TYPE_FIRST_LOAD;
+        moduleApi.getVideoList(this,mVideoType,mStartPage);
+    }
+
+    @Override
+    public void success(List<VideoData> videoList) {
+        super.success(videoList);
+        mView.setVideoList(videoList,mLoadDataType);
     }
 
     @Override

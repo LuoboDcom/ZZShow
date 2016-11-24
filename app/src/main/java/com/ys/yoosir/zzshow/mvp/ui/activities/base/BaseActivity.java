@@ -1,7 +1,9 @@
 package com.ys.yoosir.zzshow.mvp.ui.activities.base;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +11,11 @@ import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.BasePresenter;
+import com.ys.yoosir.zzshow.mvp.ui.activities.NewsDetailActivity;
+import com.ys.yoosir.zzshow.mvp.ui.activities.NewsPhotoDetailActivity;
 import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
 
 import butterknife.ButterKnife;
@@ -40,8 +45,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int layoutId = getLayoutId();
-
         setNightOrDayMode();
+        setStatusBarTranslucent();
         setContentView(layoutId);
         initVariables();
         ButterKnife.bind(this);
@@ -70,6 +75,16 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     public void setmIsAddedView(boolean mIsAddedView) {
         this.mIsAddedView = mIsAddedView;
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    protected void setStatusBarTranslucent(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setStatusBarTintResource(R.color.colorPrimary);
+        }
     }
 
     public void changeToDay() {

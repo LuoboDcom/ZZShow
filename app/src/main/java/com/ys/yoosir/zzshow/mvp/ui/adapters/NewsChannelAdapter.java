@@ -39,7 +39,7 @@ public class NewsChannelAdapter extends BaseRecyclerViewAdapter<NewsChannelTable
 
     private ItemDragHelperCallback mItemDragHelperCallback;
 
-    public void setmItemDragHelperCallback(ItemDragHelperCallback itemDragHelperCallback) {
+    public void setItemDragHelperCallback(ItemDragHelperCallback itemDragHelperCallback) {
         this.mItemDragHelperCallback = itemDragHelperCallback;
     }
 
@@ -98,6 +98,11 @@ public class NewsChannelAdapter extends BaseRecyclerViewAdapter<NewsChannelTable
             colorId = R.color.tv_color_black;
         }
         viewHolder.mChannelNameTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),colorId));
+        if(newsChannel.isNewsChannelSelect()){
+            viewHolder.mDeleteIv.setVisibility(View.VISIBLE);
+        }else{
+            viewHolder.mDeleteIv.setVisibility(View.GONE);
+        }
     }
 
     @Override

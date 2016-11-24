@@ -70,6 +70,7 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
 
     @Override
     public void initViews() {
+        setSupportActionBar(mToolbar);
         initRecyclerView(mMineRecyclerView);
         initRecyclerView(mRecommendRecyclerView);
     }
@@ -126,7 +127,7 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragHelperCallback);
         itemTouchHelper.attachToRecyclerView(mMineRecyclerView);
 
-        mMineAdapter.setmItemDragHelperCallback(itemDragHelperCallback);
+        mMineAdapter.setItemDragHelperCallback(itemDragHelperCallback);
     }
 
     private void setMineChannelOnItemClick() {
