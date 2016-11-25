@@ -57,11 +57,15 @@ public class NewsListPresenterImpl extends BasePresenterImpl<NewsListView,List<N
     @Override
     public void refreshData() {
         mStartPage = 0;
+        mLoadDataType = LoadDataType.TYPE_REFRESH;
+        loadNewsData();
     }
 
     @Override
     public void loadMore() {
-
+        mStartPage += 20;
+        mLoadDataType = LoadDataType.TYPE_LOAD_MORE;
+        loadNewsData();
     }
 
     public void loadNewsData(){

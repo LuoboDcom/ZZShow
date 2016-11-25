@@ -1,11 +1,8 @@
 package com.ys.yoosir.zzshow.mvp.ui.activities;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -27,7 +24,6 @@ import com.ys.yoosir.zzshow.widget.photoview.HackyViewPager;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -49,7 +45,7 @@ public class NewsPhotoDetailActivity extends BaseActivity {
     TextView mPhotoCountTv;
 
     @BindView(R.id.photo_news_title_tv)
-    TextView mPhotoTitletv;
+    TextView mPhotoTitleTv;
 
     @BindView(R.id.photo_news_desc_tv)
     TextView mPhotoDescTv;
@@ -97,6 +93,12 @@ public class NewsPhotoDetailActivity extends BaseActivity {
 
     @Override
     public void initViews() {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         setSupportActionBar(mToolbar);
         mPhotoTextLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +106,7 @@ public class NewsPhotoDetailActivity extends BaseActivity {
                 Toast.makeText(NewsPhotoDetailActivity.this,"被电击",Toast.LENGTH_SHORT).show();
             }
         });
-        mPhotoTitletv.setText(mNewsPhotoDetail.getTitle());
+        mPhotoTitleTv.setText(mNewsPhotoDetail.getTitle());
         mPhotoDescTv.setText(mPictureList.get(0).getDescription());
         mPhotoCountTv.setText("1/"+mPictureList.size());
         mHackyViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

@@ -102,6 +102,12 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
 
     @Override
     public void initViews() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         setSupportActionBar(toolbar);
         toolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.tv_color_white));
         toolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.tv_color_primary_white));
@@ -113,6 +119,7 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
             }
         });
         Glide.with(this).load(mPostImgPath).asBitmap()
+                .centerCrop()
                 .placeholder(R.mipmap.ic_loading)
                 .format(DecodeFormat.PREFER_ARGB_8888)
                 .error(R.mipmap.ic_load_fail)

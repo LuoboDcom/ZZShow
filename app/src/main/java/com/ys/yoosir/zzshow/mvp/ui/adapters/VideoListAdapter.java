@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.modle.toutiao.VideoData;
+import com.ys.yoosir.zzshow.mvp.modle.videos.VideoData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +38,10 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
+    public List<VideoData> getData(){
+        return mVideoDatas;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new VideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_video_list_item, parent, false));
@@ -47,10 +51,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final VideoViewHolder mHolder = (VideoViewHolder) holder;
         VideoData data = mVideoDatas.get(position);
-        if("null".equals(data.getMedia_url()) || data.getMedia_url() == null){
-            return;
-        }
-        String imgPath = data.getImage_url();
+        String imgPath = data.getCover();
         //TODO show iv
         Glide.with(MyApplication.getInstance())
                 .load(imgPath)
@@ -58,7 +59,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 .error(R.mipmap.ic_load_fail)
                 .into(mHolder.videoCoverIv);
         mHolder.videoTitleTv.setText(data.getTitle());
-        mHolder.videoDurationTv.setText(data.getVideo_duration_str());
+        mHolder.videoDurationTv.setText(data.getSectiontitle());
 
         // load video file
         String videoUrl = "http://v6.pstatp.com/video/c/a930338a6087407d8ae568afc3a51eb3/?Signature=Udk9e0SkjMBgMVsanZc2BnpMaNI%3D&Expires=1477912023&KSSAccessKeyId=qh0h9TdcEMrm1VlR2ad/";

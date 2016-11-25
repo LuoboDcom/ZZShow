@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_news_channel_name"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_margin="@dimen/padding_size_m"
+        android:background="@drawable/shape_stroke_black_4_bg"
+        android:gravity="center"
+        android:textColor="@color/tv_color_black"
+        android:textSize="@dimen/text_size_m"
+        />
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:src="@mipmap/ic_delete"/>
+
+</FrameLayout>

@@ -10,9 +10,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.modle.PostBean;
 import com.ys.yoosir.zzshow.mvp.modle.toutiao.ArticleData;
-import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.RecyclerListener;
+import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.MyRecyclerListener;
 
 import java.util.List;
 
@@ -25,10 +24,10 @@ import butterknife.ButterKnife;
  */
 public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private RecyclerListener mItemListener;
+    private MyRecyclerListener mItemListener;
     private List<ArticleData>   mPostList;
 
-    public PostListAdapter(RecyclerListener itemListener, List<ArticleData> postList){
+    public PostListAdapter(MyRecyclerListener itemListener, List<ArticleData> postList){
         this.mItemListener = itemListener;
         this.mPostList = postList;
     }
@@ -70,12 +69,12 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.post_title_tv)
         TextView postTitleTv;
 
-        public PostViewHolder(View itemView, final RecyclerListener itemListener) {
+        public PostViewHolder(View itemView, final MyRecyclerListener itemListener) {
             super(itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemListener.OnItemClickListener(v,0,getAdapterPosition());
+                    itemListener.OnItemClickListener(v,getAdapterPosition());
                 }
             });
             ButterKnife.bind(this,itemView);

@@ -13,9 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -23,17 +21,15 @@ import android.widget.Toast;
 import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.Constants;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.apis.common.ApiConstants;
 import com.ys.yoosir.zzshow.apis.common.LoadDataType;
 import com.ys.yoosir.zzshow.mvp.modle.NewsPhotoDetail;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsSummary;
 import com.ys.yoosir.zzshow.mvp.presenter.NewsListPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsListPresenter;
-import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PostListPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsDetailActivity;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsPhotoDetailActivity;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.NewsListAdapter;
-import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.RecyclerListener;
+import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.MyRecyclerListener;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
 import com.ys.yoosir.zzshow.mvp.view.NewsListView;
 
@@ -48,7 +44,7 @@ import butterknife.OnClick;
  * Use the {@link NewsListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewsListFragment extends BaseFragment<NewsListPresenter> implements RecyclerListener,NewsListView{
+public class NewsListFragment extends BaseFragment<NewsListPresenter> implements MyRecyclerListener,NewsListView{
 
     private static final String TAG = "NewsListFragment";
 
@@ -128,11 +124,14 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
                 int visibleItemCount = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
 
-                if(!isLoading && hasMore && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
+                if(!isLoading && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
                         && lastVisibleItemPosition >= totalItemCount - 1){
                     //TODO load more % show footer
                     isLoading = true;
-//                    ((PostListPresenter)mPresenter).loadMoreData();
+                    if(mAdapter != null) {
+                        mAdapter.showFooter();
+                    }
+                    mPresenter.loadMore();
                 }
             }
 
@@ -141,6 +140,7 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+        mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -150,6 +150,7 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
             @Override
             public void onRefresh() {
                 //TODO refresh data
+                mPresenter.refreshData();
             }
         });
     }
@@ -181,14 +182,14 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
             mNewsChannelId = getArguments().getString(NEWS_CHANNEL_ID);
             mNewsChannelIndex = getArguments().getInt(NEWS_CHANNEL_INDEX);
         }
-        mAdapter = new NewsListAdapter(getActivity(),this);
+        mAdapter = new NewsListAdapter(null);
     }
 
     @Override
-    public void OnItemClickListener(View view, int type, int position) {
-        List<NewsSummary> mNewsSummaryList = mAdapter.getData();
+    public void OnItemClickListener(View view, int position) {
+        List<NewsSummary> mNewsSummaryList = mAdapter.getList();
         NewsSummary newsSummary = mNewsSummaryList.get(position);
-        if(NewsListAdapter.TYPE_PHOTO_SET == type){
+        if(NewsListAdapter.TYPE_PHOTO_SET == mAdapter.getItemViewType(position)){
             NewsPhotoDetail mNewsPhotoDetail = setNewsPhotoDetail(newsSummary);
             startActivity(NewsPhotoDetailActivity.getNewsDetailIntent(getActivity(),mNewsPhotoDetail));
             KLog.d(TAG,"postId = " + newsSummary.getPostid() +"--- postSetId= "+ newsSummary.getPhotosetID());
@@ -251,7 +252,35 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
     public void setNewsList(List<NewsSummary> newsSummaryList, int loadType) {
         switch (loadType){
             case LoadDataType.TYPE_FIRST_LOAD:
-                mAdapter.setData(newsSummaryList,true);
+                mAdapter.setList(newsSummaryList);
+                mAdapter.notifyDataSetChanged();
+                break;
+            case LoadDataType.TYPE_REFRESH:
+                mSwipeRefreshLayout.setRefreshing(false);
+                mAdapter.setList(newsSummaryList);
+                mAdapter.notifyDataSetChanged();
+                break;
+            case LoadDataType.TYPE_LOAD_MORE:
+                isLoading = false;
+                mAdapter.hideFooter();
+                mAdapter.addMore(newsSummaryList);
+                break;
+        }
+    }
+
+    @Override
+    public void updateErrorView(String errorMsg, int loadType) {
+        Toast.makeText(getActivity(),errorMsg,Toast.LENGTH_SHORT).show();
+        switch (loadType){
+            case LoadDataType.TYPE_FIRST_LOAD:
+
+                break;
+            case LoadDataType.TYPE_REFRESH:
+                mSwipeRefreshLayout.setRefreshing(false);
+                break;
+            case LoadDataType.TYPE_LOAD_MORE:
+                isLoading = false;
+                mAdapter.hideFooter();
                 break;
         }
     }

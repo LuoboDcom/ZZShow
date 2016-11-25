@@ -73,9 +73,11 @@ public class HomeActivity extends BaseActivity
 
     @OnClick(R.id.add_channel_iv)
     public void onClick(View v){
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.add_channel_iv:
-                startActivity(new Intent(this,NewsChannelActivity.class));
+                startActivity(new Intent(this, NewsChannelActivity.class));
+                break;
+            default:
                 break;
         }
     }

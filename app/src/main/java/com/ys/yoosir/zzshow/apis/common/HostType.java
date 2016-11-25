@@ -15,10 +15,10 @@ public class HostType {
     /**
      *  多少种 Host 类型
      */
-    public static final int TYPE_COUNT = 4;
+    public static final int TYPE_COUNT = 5;
 
     /**
-     *  网易新闻视频的 Host
+     *  网易新闻的 Host
      */
     public static final int NETEASE_NEWS_VIDEO = 1;
 
@@ -38,9 +38,14 @@ public class HostType {
     public static final int TOUTIAO_PHOTO = 4;
 
     /**
+     *  网易视频的 Host
+     */
+    public static final int VIDEO_HOST = 5;
+
+    /**
      * 替代枚举的方案，使用 IntDef保证类型安全
      */
-    @IntDef({NETEASE_NEWS_VIDEO,GANK_GIRL_PHOTO,NEWS_DETAIL_HTML_PHOTO,TOUTIAO_PHOTO})
+    @IntDef({NETEASE_NEWS_VIDEO,GANK_GIRL_PHOTO,NEWS_DETAIL_HTML_PHOTO,TOUTIAO_PHOTO,VIDEO_HOST})
     @Retention(RetentionPolicy.SOURCE)
     public @interface HostTypeChecker{
 

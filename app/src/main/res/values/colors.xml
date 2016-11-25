@@ -13,7 +13,9 @@
     <color name="tv_color_gray">#f3f3f3</color>
     <color name="tv_color_white">#ffffff</color>
     <color name="tv_color_primary_white">#dfffff</color>
+    <color name="tv_color_red">#ff3333</color>
 
+    <color name="background_red">#ff3333</color>
     <color name="background_black">#000000</color>
     <color name="background_half_transportation">#40000000</color>
     <color name="background_gray">#eeeeee</color>
@@ -21,4 +23,10 @@
     <color name="background_half_transparent">#96000000</color>
 
     <color name="image_place_holder">#DFDFDF</color>
+
+    <color name="lighter_gray">#ddd</color>
+    <color name="darker_gray">#aaa</color>
+
+    <color name="channel_bg_lighter_gray">#eeeeee</color>
+    <color name="channel_bg_dark_gray">#e1e1e1</color>
 </resources>

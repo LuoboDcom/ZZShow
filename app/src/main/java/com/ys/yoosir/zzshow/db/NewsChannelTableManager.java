@@ -33,11 +33,66 @@ public class NewsChannelTableManager {
     }
 
     /**
+     *  查询 index > ?  频道
+     * @param index
+     */
+    public static List<NewsChannelTable> loadNewsChannelsIndexGt(int index){
+        return DBManager.init(MyApplication.getInstance()).loadNewsChannelsByWhere("news_channel_index > ? ",new String[]{index+""});
+    }
+
+
+
+    /**
+     * 修改频道
+     * @param channelTable
+     */
+    public static void update(NewsChannelTable channelTable) {
+        DBManager.init(MyApplication.getInstance()).update(channelTable);
+    }
+
+    /**
      *  加载 用户已选中的频道
      * @return 已被选择的频道
      */
     public static List<NewsChannelTable> loadNewsChannelsMine(){
-        return DBManager.init(MyApplication.getInstance()).loadNewsChannelsMine();
+        return DBManager.init(MyApplication.getInstance()).loadNewsChannels("1");
     }
 
+    /**
+     *  加载 推荐频道
+     * @return 推荐频道列表
+     */
+    public static List<NewsChannelTable> loadNewsChannelsRecommend(){
+        return DBManager.init(MyApplication.getInstance()).loadNewsChannels("0");
+    }
+
+    public static int getCount(){
+        return (int) DBManager.init(MyApplication.getInstance()).getCount();
+    }
+
+    /**
+     *  index < channelIndex ，且 未被选中的
+     * @param channelIndex
+     * @return
+     */
+    public static List<NewsChannelTable> loadNewsChannelsIndexLtAndIsUnselect(int channelIndex) {
+        return DBManager.init(MyApplication.getInstance()).loadNewsChannelsByWhere("news_channel_index < ? and news_channel_select = ? ",new String[]{channelIndex+"","0"});
+    }
+
+    /**
+     *  查询被选中的频道数量
+     * @return
+     */
+    public static int getNewsChannelSelectSize() {
+        return (int) DBManager.init(MyApplication.getInstance()).getCountByWhere(" news_channel_select = ? ",new String[]{"1"});
+    }
+
+    public static NewsChannelTable loadNewsChannel(int index) {
+        return DBManager.init(MyApplication.getInstance()).findNewsChannelByIndex(index);
+    }
+
+    public static List<NewsChannelTable> loadNewsChannelsWithin(int from, int to) {
+        return DBManager.init(MyApplication.getInstance())
+                .loadNewsChannelsByWhere("news_channel_index BETWEEN ? AND ? ",new String[]{from+"",to+""});
+    }
 }

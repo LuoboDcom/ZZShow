@@ -6,6 +6,7 @@
     android:background="@color/background_gray"
     tools:context=".mvp.ui.fragments.VideoListFragment">
 
+
     <!-- video list -->
     <com.ys.yoosir.zzshow.widget.video.VideoListLayout
         android:id="@+id/video_list_layout"

@@ -17,8 +17,9 @@
     <dimen name="post_img_count_tv_size">9sp</dimen>
 
 
+    <dimen name="text_size_s">12sp</dimen>
     <dimen name="text_size_m">14sp</dimen>
-    <dimen name="text_size_l">16ps</dimen>
+    <dimen name="text_size_l">16sp</dimen>
     <dimen name="text_size_xxl">20sp</dimen>
 
     <dimen name="img_size_l">80dp</dimen>
@@ -26,4 +27,7 @@
     <dimen name="img_size_height">75dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="height_size_l">40dp</dimen>
+    <dimen name="height_size_m">36dp</dimen>
 </resources>

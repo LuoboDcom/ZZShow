@@ -75,8 +75,13 @@
     <string name="menu_news">新闻</string>
     <string name="menu_night_mode">夜间模式</string>
     <string name="menu_title_other">其他</string>
+
     <string name="transition_photo">transition_animation_news_photos</string>
+
+    <string name="news_channel_my_title">我的频道</string>
+    <string name="edit_text">编辑</string>
+    <string name="news_channel_recommend_title">频道推荐</string>
     <string name="news_channel_title">频道管理</string>
-    <string name="news_channel_hint_value">点击可增删/长按并拖拽可排序</string>
+    <string name="loading">努力加载中...</string>
 
 </resources>

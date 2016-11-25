@@ -1,8 +1,6 @@
 package com.ys.yoosir.zzshow.mvp.ui.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,10 +11,9 @@ import com.bumptech.glide.Glide;
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsSummary;
-import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.RecyclerListener;
+import com.ys.yoosir.zzshow.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 import com.ys.yoosir.zzshow.utils.DimenUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,57 +23,57 @@ import butterknife.ButterKnife;
  * 新闻列表适配器
  * Created by Yoosir on 2016/10/19 0019.
  */
-public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary>{
 
-    public static final int TYPE_NORMAL = 1;
     public static final int TYPE_PHOTO_SET = 2;
-
-    private Context mContext;
-    private LayoutInflater mInflater;
-    private RecyclerListener mItemListener;
-    private List<NewsSummary>   mData = new ArrayList<>();
 
     private float photoThreeHeight;
     private float photoTwoHeight;
     private float photoOneHeight;
 
-    public NewsListAdapter(Context context,RecyclerListener itemListener){
-        this.mContext = context;
-        this.mItemListener = itemListener;
-        mInflater = LayoutInflater.from(context);
+    public NewsListAdapter(List<NewsSummary> list){
+        super(list);
         photoThreeHeight = DimenUtil.dp2px(90);
         photoTwoHeight =  DimenUtil.dp2px(120);
         photoOneHeight =  DimenUtil.dp2px(150);
     }
 
-    public void setData(List<NewsSummary> data,boolean isClear){
-        if(!mData.isEmpty()&&isClear){
-            mData.clear();
+    @Override
+    public int getItemViewType(int position) {
+        if(mIsShowFooter && isFooterPosition(position)){
+            return TYPE_FOOTER;
+        }else if("photoset".equals(mList.get(position).getSkipType())){
+            return TYPE_PHOTO_SET;
+        }else {
+            return TYPE_ITEM;
         }
-        if(data != null) {
-            mData.addAll(data);
-        }
-        notifyDataSetChanged();
-    }
-
-    public void addMore(List<NewsSummary> data){
-        int startPosition = mData.size();
-        if(data != null) {
-            mData.addAll(data);
-        }
-        notifyItemRangeChanged(startPosition,mData.size());
-    }
-
-    public List<NewsSummary> getData(){
-        return mData;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == TYPE_PHOTO_SET){
-            return new PhotoSetViewHolder(mInflater.inflate(R.layout.adapter_news_3_img_item, parent, false),mItemListener,viewType);
-        }else{
-            return new NormalViewHolder(mInflater.inflate(R.layout.adapter_news_1_img_item, parent, false),mItemListener,viewType);
+        switch (viewType){
+            case TYPE_FOOTER:
+                return new FooterViewHolder(getView(parent,R.layout.adapter_footer_item));
+            case TYPE_PHOTO_SET:
+                PhotoSetViewHolder photoSetViewHolder = new PhotoSetViewHolder(getView(parent,R.layout.adapter_news_3_img_item));
+                setItemOnClickEvent(photoSetViewHolder);
+                return photoSetViewHolder;
+            case TYPE_ITEM:
+            default:
+                NormalViewHolder normalViewHolder = new NormalViewHolder(getView(parent,R.layout.adapter_news_1_img_item));
+                setItemOnClickEvent(normalViewHolder);
+                return normalViewHolder;
+        }
+    }
+
+    private void setItemOnClickEvent(final RecyclerView.ViewHolder holder){
+        if(mOnItemClickListener != null){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.OnItemClickListener(v,holder.getLayoutPosition());
+                }
+            });
         }
     }
 
@@ -86,13 +83,15 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int viewType = getItemViewType(position);
         if(viewType == TYPE_PHOTO_SET){
             updatePhotoSetViews((PhotoSetViewHolder) holder,position);
-        }else{
+        }else if(viewType == TYPE_ITEM){
             updateNormalViews((NormalViewHolder)holder,position);
+        }else {
+            //TODO footer
         }
     }
 
     private void updateNormalViews(NormalViewHolder holder,int position){
-        NewsSummary data = mData.get(position);
+        NewsSummary data = mList.get(position);
         String imgPath = data.getImgsrc();
         Glide.with(MyApplication.getInstance())
                 .load(imgPath)
@@ -108,7 +107,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private void updatePhotoSetViews(PhotoSetViewHolder holder,int position){
 
         float photoHeight;
-        NewsSummary data = mData.get(position);
+        NewsSummary data = mList.get(position);
         holder.newsTitleTv.setText(data.getTitle());
         holder.newsPtimeTv.setText(data.getPtime());
         holder.newsSourceTv.setText(data.getSource());
@@ -164,24 +163,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 .into(view);
     }
 
-    @Override
-    public int getItemCount() {
-        return mData == null ? 0 : mData.size();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if(mData != null && position < mData.size() && position >= 0){
-            return "photoset".equals(mData.get(position).getSkipType()) ? TYPE_PHOTO_SET : TYPE_NORMAL;
-        }
-        return TYPE_NORMAL;
-    }
-
     static class NormalViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.news_picture_iv)
@@ -196,14 +177,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.news_source_tv)
         TextView newsSourceTv;
 
-        NormalViewHolder(View itemView, final RecyclerListener itemListener,final int viewType) {
+        NormalViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemListener.OnItemClickListener(v,viewType,getAdapterPosition());
-                }
-            });
             ButterKnife.bind(this,itemView);
         }
     }
@@ -231,14 +206,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.news_source_tv)
         TextView newsSourceTv;
 
-        PhotoSetViewHolder(View itemView, final RecyclerListener itemListener,final int viewType) {
+        PhotoSetViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemListener.OnItemClickListener(v,viewType,getAdapterPosition());
-                }
-            });
             ButterKnife.bind(this,itemView);
         }
     }

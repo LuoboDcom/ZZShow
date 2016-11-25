@@ -11,9 +11,10 @@ import android.widget.ProgressBar;
 
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.apis.common.LoadDataType;
-import com.ys.yoosir.zzshow.mvp.modle.toutiao.VideoData;
+import com.ys.yoosir.zzshow.mvp.modle.videos.VideoData;
 import com.ys.yoosir.zzshow.mvp.presenter.VideoListPresenterImpl;
-import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.RecyclerListener;
+import com.ys.yoosir.zzshow.mvp.presenter.interfaces.VideoListPresenter;
+import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.MyRecyclerListener;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
 import com.ys.yoosir.zzshow.mvp.view.VideoListView;
 import com.ys.yoosir.zzshow.widget.video.VideoListLayout;
@@ -29,18 +30,14 @@ import butterknife.BindView;
  * Use the {@link VideoListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VideoListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,VideoListView,RecyclerListener{
+public class VideoListFragment extends BaseFragment<VideoListPresenter> implements VideoListView,MyRecyclerListener {
 
     private static final String TAG = VideoListFragment.class.getSimpleName();
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String VIDEO_CHANNEL_TYPE = "VIDEO_CHANNEL_TYPE";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mVideoType;
 
     @BindView(R.id.video_list_layout)
     VideoListLayout mVideoListLayout;
@@ -60,18 +57,12 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment VideoListFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static VideoListFragment newInstance(String param1, String param2) {
+    public static VideoListFragment newInstance(String videoChannelType) {
         Log.d(TAG,"newInstance");
         VideoListFragment fragment = new VideoListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(VIDEO_CHANNEL_TYPE, videoChannelType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -81,8 +72,7 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         Log.d(TAG,"onCreate");
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mVideoType = getArguments().getString(VIDEO_CHANNEL_TYPE);
         }
     }
 
@@ -95,13 +85,19 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void initViews(View view) {
         Log.d(TAG,"initViews");
+        initSwipeRefreshLayout();
         initPresenter();
+    }
+
+    private void initSwipeRefreshLayout() {
+
     }
 
     private void initPresenter(){
         Log.d(TAG,"initPresenter");
         mPresenter = new VideoListPresenterImpl();
         mPresenter.attachView(this);
+        mPresenter.setVideoType(mVideoType);
         mPresenter.onCreate();
     }
 
@@ -123,13 +119,7 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
     }
 
     @Override
-    public void onRefresh() {
-
-    }
-
-    @Override
-    public void setVideoList(List<VideoData> videoDataList, boolean hasMore, int loadType) {
-        this.hasMore = hasMore;
+    public void setVideoList(List<VideoData> videoDataList, int loadType) {
         switch (loadType){
             case LoadDataType.TYPE_FIRST_LOAD:
                 if (!mVideoList.isEmpty()) {
@@ -167,7 +157,7 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
     }
 
     @Override
-    public void OnItemClickListener(View view, int type, int position) {
+    public void OnItemClickListener(View view, int position) {
 
     }
 

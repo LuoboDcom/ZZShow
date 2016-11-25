@@ -18,7 +18,7 @@ import com.ys.yoosir.zzshow.mvp.modle.toutiao.ArticleData;
 import com.ys.yoosir.zzshow.mvp.presenter.PostListPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PostListPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.PostListAdapter;
-import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.RecyclerListener;
+import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.MyRecyclerListener;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
 import com.ys.yoosir.zzshow.mvp.view.PostListView;
 
@@ -32,7 +32,7 @@ import butterknife.BindView;
  * Use the {@link PostListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PostListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,RecyclerListener,PostListView{
+public class PostListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,MyRecyclerListener,PostListView{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String NEWS_CHANNEL_ID = "NEWS_CHANNEL_ID";
@@ -159,7 +159,7 @@ public class PostListFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void OnItemClickListener(View view, int type, int position) {
+    public void OnItemClickListener(View view, int position) {
 
     }
 
