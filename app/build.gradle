@@ -35,19 +35,15 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // Required for local unit tests (JUnit 4 framework)
-    testCompile 'junit:junit:4.12'
     // Required for instrumented tests
-    androidTestCompile 'com.android.support:support-annotations:23.1.0'
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support.test:rules:0.5'
+    
 
     //RxJava
 
     //Retrofit
 
     //ButterKnife
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
-
+    
     //okHttp
 
     //Glide
@@ -59,6 +55,10 @@ dependencies {
 
     //media ijkplayer
 
+    
+    //Retrofit
+
+    
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.android.support:cardview-v7:23.4.0'
@@ -66,9 +66,6 @@ dependencies {
     compile 'com.android.support:support-v4:23.4.0'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.1'
-
-    //Retrofit
-
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
@@ -83,6 +80,10 @@ dependencies {
     compile 'tv.danmaku.ijk.media:ijkplayer-x86:0.6.3'
     compile 'tv.danmaku.ijk.media:ijkplayer-armv5:0.6.3'
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
-
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support:support-annotations:23.4.0'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }

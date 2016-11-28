@@ -93,13 +93,13 @@ public class NewsPhotoDetailActivity extends BaseActivity {
 
     @Override
     public void initViews() {
+        setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        setSupportActionBar(mToolbar);
         mPhotoTextLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

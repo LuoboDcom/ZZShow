@@ -6,11 +6,12 @@ import com.ys.yoosir.zzshow.mvp.view.base.BaseView;
 import java.util.List;
 
 /**
- *   首页
+ *   @version 1.0
+ *   @author  yoosir
  * Created by Administrator on 2016/10/19 0019.
  */
-public interface HomeView extends BaseView {
+public interface NewsView extends BaseView {
 
-
+    void initViewPager(List<NewsChannelTable> newsChannels);
 
 }

@@ -1,8 +1,9 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
-import com.ys.yoosir.zzshow.apis.NewsModuleApiImpl;
+import com.socks.library.KLog;
+import com.ys.yoosir.zzshow.apis.NewsListModuleApiImpl;
 import com.ys.yoosir.zzshow.apis.common.LoadDataType;
-import com.ys.yoosir.zzshow.apis.interfaces.NewsModuleApi;
+import com.ys.yoosir.zzshow.apis.interfaces.NewsListModuleApi;
 import com.ys.yoosir.zzshow.apis.listener.RequestCallBack;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsSummary;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsListPresenter;
@@ -17,18 +18,19 @@ import java.util.List;
 public class NewsListPresenterImpl extends BasePresenterImpl<NewsListView,List<NewsSummary>>
         implements NewsListPresenter,RequestCallBack<List<NewsSummary>>{
 
-    private NewsModuleApi<List<NewsSummary>> moduleApi;
+    private NewsListModuleApi<List<NewsSummary>> moduleApi;
     private int mLoadDataType;
     private String mNewsType,mNewsId;
     private int mStartPage;
 
     public NewsListPresenterImpl(){
-        moduleApi = new NewsModuleApiImpl();
+        moduleApi = new NewsListModuleApiImpl();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        KLog.d("NewsListFragment","NewsListPresenterImpl");
         if(mView != null){
             beforeRequest();
             mLoadDataType = LoadDataType.TYPE_FIRST_LOAD;

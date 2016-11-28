@@ -1,4 +1,4 @@
-package com.ys.yoosir.zzshow.mvp.ui.fragments;
+package com.ys.yoosir.zzshow.mvp.ui.fragments.News;
 
 
 import android.app.ActivityOptions;
@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -161,6 +160,7 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
         mPresenter.setNewsTypeAndId(mNewsChannelType, mNewsChannelId);
         KLog.d(TAG,"initPresenter - mNewsChannelIndex = "+ mNewsChannelIndex);
         if(getUserVisibleHint() && isFirst){
+            KLog.d(TAG,"initPresenter - mNewsChannelIndex = "+ mNewsChannelIndex + " -- onCreate");
             mPresenter.onCreate();
         }
     }

@@ -1,13 +1,9 @@
 package com.ys.yoosir.zzshow.mvp.ui.activities;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SwitchCompat;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,32 +16,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
-import com.ys.yoosir.zzshow.mvp.presenter.HomePresenterImpl;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
-import com.ys.yoosir.zzshow.mvp.ui.adapters.PostFragmentPagerAdapter;
-import com.ys.yoosir.zzshow.mvp.ui.fragments.NewsListFragment;
+import com.ys.yoosir.zzshow.mvp.ui.fragments.News.NewsFragment;
+import com.ys.yoosir.zzshow.mvp.ui.fragments.VideoFragment;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.VideoListFragment;
-import com.ys.yoosir.zzshow.mvp.view.HomeView;
 import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
-import com.ys.yoosir.zzshow.utils.TabLayoutUtil;
 import com.ys.yoosir.zzshow.widget.video.VideoPlayView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class HomeActivity extends BaseActivity
-        implements HomeView,NavigationView.OnNavigationItemSelectedListener,VideoListFragment.OnVideoFIListener {
+        implements NavigationView.OnNavigationItemSelectedListener,VideoListFragment.OnVideoFIListener {
 
-    private ArrayList<Fragment> mNewsFragmentList = new ArrayList<>();
-    private String mCurrentViewPagerName;
-    private List<String> mChannelNames;
+    private final String CHILD_FRAGMENT_TAG = "child_news" ;
+
+    private NewsFragment mNewsFragment;
+    private VideoFragment mVideoFragment;
+
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -56,31 +45,8 @@ public class HomeActivity extends BaseActivity
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.tab_layout)
-    TabLayout mTabLayout;
-
-    @BindView(R.id.add_channel_iv)
-    ImageView addChannelIv;
-
-    @BindView(R.id.view_pager)
-    ViewPager mViewPager;
-
-    @BindView(R.id.fab)
-    FloatingActionButton mFloatActionBtn;
-
     @BindView(R.id.full_screen)
     FrameLayout mFullScreenLayout;
-
-    @OnClick(R.id.add_channel_iv)
-    public void onClick(View v){
-        switch (v.getId()) {
-            case R.id.add_channel_iv:
-                startActivity(new Intent(this, NewsChannelActivity.class));
-                break;
-            default:
-                break;
-        }
-    }
 
     @Override
     public int getLayoutId() {
@@ -89,20 +55,12 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public void initVariables() {
-        mPresenter = new HomePresenterImpl();
-        mPresenter.attachView(this);
+        mNewsFragment = new NewsFragment();
     }
 
     @Override
     public void initViews() {
         setSupportActionBar(mToolbar);
-        mFloatActionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -122,6 +80,7 @@ public class HomeActivity extends BaseActivity
 
         mNavigationView.setNavigationItemSelectedListener(this);
         initNightModeSwitch();
+        setChildFragment();
     }
 
     /**
@@ -166,6 +125,13 @@ public class HomeActivity extends BaseActivity
         });
     }
 
+
+    private void setChildFragment(){
+        FragmentManager mFragmentManager = getSupportFragmentManager();
+        FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.replace(R.id.show_content_layout,mNewsFragment,CHILD_FRAGMENT_TAG);
+        mFragmentTransaction.commit();
+    }
 
 
     @Override
@@ -225,49 +191,7 @@ public class HomeActivity extends BaseActivity
         return true;
     }
 
-    private void setViewPager(List<String> channelNames) {
-        PostFragmentPagerAdapter adapter = new PostFragmentPagerAdapter(
-                getSupportFragmentManager(),channelNames,mNewsFragmentList);
-        mViewPager.setAdapter(adapter);
-        mTabLayout.setupWithViewPager(mViewPager);
-        TabLayoutUtil.dynamicSetTabLayoutMode(mTabLayout);
-        setPageChangeListener();
 
-        mChannelNames = channelNames;
-        int currentViewPagerPosition = getCurrentViewPagerPosition();
-        mViewPager.setCurrentItem(currentViewPagerPosition,false);
-    }
-
-    private void setPageChangeListener() {
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mCurrentViewPagerName = mChannelNames.get(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
-
-    private int getCurrentViewPagerPosition(){
-        int position = 0;
-        if(mCurrentViewPagerName != null){
-            for (int i = 0; i < mChannelNames.size(); i++) {
-                if (mCurrentViewPagerName.equals(mChannelNames.get(i))){
-                    position = i;
-                }
-            }
-        }
-        return position;
-    }
 
     /**
      *  VideoListFragment  交互接口
@@ -294,43 +218,5 @@ public class HomeActivity extends BaseActivity
             }
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void initViewPager(List<NewsChannelTable> newsChannels) {
-        final List<String> channelNames = new ArrayList<>();
-        if(newsChannels != null){
-            setNewsList(newsChannels,channelNames);
-            setViewPager(channelNames);
-        }
-    }
-
-    private void setNewsList(List<NewsChannelTable> newsChannels, List<String> channelNames) {
-        mNewsFragmentList.clear();
-        for (NewsChannelTable newsChannelTable: newsChannels) {
-            NewsListFragment newsListFragment = createListFragment(newsChannelTable);
-            mNewsFragmentList.add(newsListFragment);
-            channelNames.add(newsChannelTable.getNewsChannelName());
-        }
-    }
-
-    private NewsListFragment createListFragment(NewsChannelTable newsChannelTable){
-        NewsListFragment fragment =  NewsListFragment.newInstance(newsChannelTable.getNewsChannelType(),newsChannelTable.getNewsChannelId(),newsChannelTable.getNewsChannelIndex());
-        return fragment;
-    }
-
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
-    public void showMsg(String message) {
-
     }
 }

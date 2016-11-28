@@ -1,8 +1,8 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
+import com.ys.yoosir.zzshow.apis.VideoListModuleApiImpl;
 import com.ys.yoosir.zzshow.apis.common.LoadDataType;
-import com.ys.yoosir.zzshow.apis.VideoModuleApiImpl;
-import com.ys.yoosir.zzshow.apis.interfaces.VideoModuleApi;
+import com.ys.yoosir.zzshow.apis.interfaces.VideoListModuleApi;
 import com.ys.yoosir.zzshow.mvp.modle.videos.VideoData;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.VideoListPresenter;
 import com.ys.yoosir.zzshow.mvp.view.VideoListView;
@@ -17,13 +17,13 @@ public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,List
 
     private int mLoadDataType = LoadDataType.TYPE_FIRST_LOAD;
 
-    private VideoModuleApi<List<VideoData>> moduleApi;
+    private VideoListModuleApi<List<VideoData>> moduleApi;
 
     private String mVideoType;
     private int mStartPage;
 
     public VideoListPresenterImpl(){
-        moduleApi = new VideoModuleApiImpl();
+        moduleApi = new VideoListModuleApiImpl();
     }
 
     @Override

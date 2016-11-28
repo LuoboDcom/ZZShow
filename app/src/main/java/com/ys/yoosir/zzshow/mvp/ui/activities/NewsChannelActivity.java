@@ -70,13 +70,13 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
 
     @Override
     public void initViews() {
+        setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        setSupportActionBar(mToolbar);
         initRecyclerView(mMineRecyclerView);
         initRecyclerView(mRecommendRecyclerView);
     }

@@ -3,7 +3,6 @@ package com.ys.yoosir.zzshow.apis;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.ys.yoosir.zzshow.ApplicationTest;
 import com.ys.yoosir.zzshow.apis.common.ApiConstants;
 import com.ys.yoosir.zzshow.apis.listener.RequestCallBack;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsSummary;
@@ -14,8 +13,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import rx.Scheduler;
 import rx.plugins.RxJavaPlugins;
@@ -32,11 +29,11 @@ import static org.junit.Assert.*;
 @SmallTest
 public class NewsModuleApiImplTest{
 
-    private NewsModuleApiImpl moduleApi;
+    private NewsListModuleApiImpl moduleApi;
 
     @Before
     public void setUp() throws Exception {
-        moduleApi = new NewsModuleApiImpl();
+        moduleApi = new NewsListModuleApiImpl();
     }
 
     @After

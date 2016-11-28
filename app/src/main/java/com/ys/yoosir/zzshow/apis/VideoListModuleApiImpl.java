@@ -1,12 +1,9 @@
 package com.ys.yoosir.zzshow.apis;
 
-import android.util.Log;
-
 import com.ys.yoosir.zzshow.apis.common.HostType;
-import com.ys.yoosir.zzshow.apis.interfaces.VideoModuleApi;
+import com.ys.yoosir.zzshow.apis.interfaces.VideoListModuleApi;
 import com.ys.yoosir.zzshow.apis.listener.RequestCallBack;
 import com.ys.yoosir.zzshow.apis.services.VideoService;
-import com.ys.yoosir.zzshow.mvp.modle.toutiao.ArticleResult;
 import com.ys.yoosir.zzshow.mvp.modle.videos.VideoData;
 import com.ys.yoosir.zzshow.utils.DateUtil;
 import com.ys.yoosir.zzshow.utils.httputil.OkHttpUtil;
@@ -27,12 +24,12 @@ import rx.functions.Func1;
  * @author  yoosir
  * Created by Yoosir on 2016/10/24 0024.
  */
-public class VideoModuleApiImpl implements VideoModuleApi<List<VideoData>> {
+public class VideoListModuleApiImpl implements VideoListModuleApi<List<VideoData>> {
 
-    private static final String TAG = "VideoModuleApiImpl";
+    private static final String TAG = "VideoListModuleApiImpl";
 
 
-    public VideoModuleApiImpl(){}
+    public VideoListModuleApiImpl(){}
 
 
     @Override
