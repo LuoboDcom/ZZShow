@@ -1,6 +1,5 @@
 package com.ys.yoosir.zzshow.mvp.ui.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +12,8 @@ import com.bumptech.glide.Glide;
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.modle.videos.VideoData;
+import com.ys.yoosir.zzshow.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,33 +23,40 @@ import butterknife.ButterKnife;
  * 帖子列表适配器
  * Created by Yoosir on 2016/10/19 0019.
  */
-public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class VideoListAdapter extends BaseRecyclerViewAdapter<VideoData>{
 
-    private List<VideoData>   mVideoDatas;
 
-    public VideoListAdapter(Context context){
-        this.mVideoDatas = new ArrayList<>();
+    public VideoListAdapter(List<VideoData> list) {
+        super(list);
     }
 
-    public void setData(List<VideoData> videoDatas){
-        mVideoDatas.clear();
-        mVideoDatas.addAll(videoDatas);
-        notifyDataSetChanged();
-    }
-
-    public List<VideoData> getData(){
-        return mVideoDatas;
+    @Override
+    public int getItemViewType(int position) {
+        if(mIsShowFooter && isFooterPosition(position)){
+            return TYPE_FOOTER;
+        }else{
+            return TYPE_ITEM;
+        }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new VideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_video_list_item, parent, false));
+        if(viewType == TYPE_FOOTER){
+            return new FooterViewHolder(getView(parent,R.layout.adapter_footer_item));
+        }else {
+            return new VideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_video_list_item, parent, false));
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        final VideoViewHolder mHolder = (VideoViewHolder) holder;
-        VideoData data = mVideoDatas.get(position);
+        if(getItemViewType(position) == TYPE_ITEM){
+            updateVideoView((VideoViewHolder) holder,position);
+        }
+    }
+
+    private void updateVideoView(final VideoViewHolder mHolder, final int position){
+        VideoData data = mList.get(position);
         String imgPath = data.getCover();
         //TODO show iv
         Glide.with(MyApplication.getInstance())
@@ -61,24 +67,16 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         mHolder.videoTitleTv.setText(data.getTitle());
         mHolder.videoDurationTv.setText(data.getSectiontitle());
 
-        // load video file
-        String videoUrl = "http://v6.pstatp.com/video/c/a930338a6087407d8ae568afc3a51eb3/?Signature=Udk9e0SkjMBgMVsanZc2BnpMaNI%3D&Expires=1477912023&KSSAccessKeyId=qh0h9TdcEMrm1VlR2ad/";
-
         mHolder.videoCoverLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO start play video
                 v.setVisibility(View.GONE);
-                if(mStartClick != null){
-                    mStartClick.onClick(position);
+                if(mOnItemClickListener != null){
+                    mOnItemClickListener.OnItemClickListener(mHolder.itemView,position);
                 }
             }
         });
-    }
-
-    @Override
-    public int getItemCount() {
-        return mVideoDatas == null ? 0 : mVideoDatas.size();
     }
 
     class VideoViewHolder extends RecyclerView.ViewHolder{
@@ -105,15 +103,5 @@ public class VideoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
-    }
-
-    private StartClick mStartClick;
-
-    public void setStartClick(StartClick startClick){
-        this.mStartClick = startClick;
-    }
-
-    public interface StartClick{
-        void onClick(int position);
     }
 }

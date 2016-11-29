@@ -2,11 +2,15 @@ package com.ys.yoosir.zzshow.mvp.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.ys.yoosir.zzshow.R;
@@ -20,12 +24,15 @@ import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
 import com.ys.yoosir.zzshow.mvp.view.NewsView;
 import com.ys.yoosir.zzshow.mvp.view.VideoView;
 import com.ys.yoosir.zzshow.utils.TabLayoutUtil;
+import com.ys.yoosir.zzshow.utils.mediavideo.IjkVideoView;
+import com.ys.yoosir.zzshow.widget.video.VideoPlayView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 /**
  *  @version 1.0
@@ -49,9 +56,10 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
     TabLayout mTabLayout;
 
 
-    private ArrayList<Fragment> mNewsFragmentList = new ArrayList<>();
+    private ArrayList<Fragment> mVideoFragmentList = new ArrayList<>();
     private String mCurrentViewPagerName;
     private List<String> mChannelNames;
+    private int mCurrentItem = 0;
 
     public VideoFragment() {
         // Required empty public constructor
@@ -77,12 +85,36 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_news;
+        return R.layout.fragment_video;
     }
 
     @Override
     public void initViews(View view) {
         initPresenter();
+        initVideoPlayView();
+    }
+
+    private VideoPlayView mVideoPlayerView;
+    private void initVideoPlayView() {
+        mVideoPlayerView = new VideoPlayView(getContext());
+        mVideoPlayerView.setCompletionListener(new VideoPlayView.CompletionListener() {
+            @Override
+            public void completion(IMediaPlayer mp) {
+                //播放完还原播放画面
+                ViewGroup parent = (ViewGroup) mVideoPlayerView.getParent();
+                mVideoPlayerView.release();
+                if(parent != null){
+                    parent.removeAllViews();
+                    if(parent.getId() != R.id.full_screen){
+                        ViewGroup grandParent = (ViewGroup) parent.getParent();
+                        if(grandParent != null){
+                            //TODO 改变 ItemView
+                            ((VideoListFragment)mVideoFragmentList.get(mViewPager.getCurrentItem())).onCompletionListener(grandParent);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void initPresenter() {
@@ -104,11 +136,82 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (context instanceof OnVideoFIListener) {
+            mListener = (OnVideoFIListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mVideoPlayerView != null) {
+            ViewGroup view = (ViewGroup) mVideoPlayerView.getParent();
+            if (view != null) {
+                view.removeAllViews();
+            }
+            mVideoPlayerView.stop();
+            mVideoPlayerView.release();
+            mVideoPlayerView.onDestory();
+            mVideoPlayerView = null;
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if(hasVideoItem(newConfig)){
+            if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+                //从横屏切换到竖屏
+                updateOrientationPortrait();
+            }else{
+                //从竖屏切换到横屏
+                updateOrientationLandscape();
+            }
+        }else{
+            mListener.onVideoFI(3,null);
+        }
+    }
+
+    /**
+     *  是否有 VideoPlayView
+     * @return true 有 ；false 没有
+     */
+    public boolean hasVideoItem(Configuration newConfig){
+        boolean flag = mVideoPlayerView != null;
+        if(mVideoPlayerView != null){
+            mVideoPlayerView.onChanged(newConfig);
+        }
+        return flag;
+    }
+
+    /**
+     *  切换到竖屏时操作
+     */
+    public void updateOrientationPortrait(){
+        mListener.onVideoFI(1,null);
+        ((VideoListFragment)mVideoFragmentList.get(mViewPager.getCurrentItem())).updateOrientation();
+    }
+
+    /**
+     *  切换到横屏时操作
+     * @return
+     */
+    public void updateOrientationLandscape(){
+        //将 VideoView 重竖屏移除
+        ViewGroup viewGroup = (ViewGroup) mVideoPlayerView.getParent();
+        if(viewGroup != null) {
+            viewGroup.removeAllViews();
+            mListener.onVideoFI(2,mVideoPlayerView);
+        }
     }
 
 
@@ -123,22 +226,21 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
 
 
     private void setNewsList(List<VideoChannel> videoChannelList, List<String> channelNames) {
-        mNewsFragmentList.clear();
+        mVideoFragmentList.clear();
         for (VideoChannel videoChannel: videoChannelList) {
             VideoListFragment videoListFragment = createListFragment(videoChannel);
-            mNewsFragmentList.add(newsListFragment);
-            channelNames.add(newsChannelTable.getNewsChannelName());
+            mVideoFragmentList.add(videoListFragment);
+            channelNames.add(videoChannel.getVideoChannelName());
         }
     }
 
-    private VideoListFragment createListFragment(NewsChannelTable newsChannelTable){
-        NewsListFragment fragment =  NewsListFragment.newInstance(newsChannelTable.getNewsChannelType(),newsChannelTable.getNewsChannelId(),newsChannelTable.getNewsChannelIndex());
-        return fragment;
+    private VideoListFragment createListFragment(VideoChannel videoChannel){
+        return VideoListFragment.newInstance(videoChannel.getVideoChannelID());
     }
 
     private void setViewPager(List<String> channelNames) {
         PostFragmentPagerAdapter adapter = new PostFragmentPagerAdapter(
-                getChildFragmentManager(),channelNames,mNewsFragmentList);
+                getChildFragmentManager(),channelNames,mVideoFragmentList);
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
         TabLayoutUtil.dynamicSetTabLayoutMode(mTabLayout);
@@ -146,7 +248,9 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
 
         mChannelNames = channelNames;
         int currentViewPagerPosition = getCurrentViewPagerPosition();
-        mViewPager.setCurrentItem(currentViewPagerPosition,false);
+        mCurrentItem = currentViewPagerPosition;
+        mViewPager.setCurrentItem(mCurrentItem,false);
+        ((VideoListFragment)mVideoFragmentList.get(mCurrentItem)).setVideoPlayView(mVideoPlayerView);
     }
 
     private void setPageChangeListener() {
@@ -158,7 +262,13 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
 
             @Override
             public void onPageSelected(int position) {
+                Log.d("VideoFragment","onPageSelected mCurrentItem="+mCurrentItem+"--position="+position);
                 mCurrentViewPagerName = mChannelNames.get(position);
+                if(mCurrentItem != position){
+                    ((VideoListFragment)mVideoFragmentList.get(mCurrentItem)).onDetachFromWindow();
+                    ((VideoListFragment)mVideoFragmentList.get(position)).setVideoPlayView(mVideoPlayerView);
+                    mCurrentItem = position;
+                }
             }
 
             @Override
@@ -195,4 +305,10 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
 
     }
 
+    private OnVideoFIListener mListener;
+
+    public interface OnVideoFIListener {
+        // TODO: Update argument type and name
+        void onVideoFI(int stateCode,VideoPlayView playView);
+    }
 }

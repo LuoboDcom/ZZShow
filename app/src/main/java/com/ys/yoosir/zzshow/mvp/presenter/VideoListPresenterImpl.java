@@ -1,5 +1,7 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
+import android.util.Log;
+
 import com.ys.yoosir.zzshow.apis.VideoListModuleApiImpl;
 import com.ys.yoosir.zzshow.apis.common.LoadDataType;
 import com.ys.yoosir.zzshow.apis.interfaces.VideoListModuleApi;
@@ -29,9 +31,10 @@ public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,List
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d("VideoListPresenterImpl","onCreate mStartPage="+mStartPage+" -- mVideoType="+mVideoType);
         if(mView != null){
             beforeRequest();
-            mStartPage = 0;
+            mStartPage = 10;
             loadData();
         }
     }
@@ -44,6 +47,7 @@ public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,List
     @Override
     public void loadData() {
         mLoadDataType = LoadDataType.TYPE_FIRST_LOAD;
+        Log.d("VideoListPresenterImpl","loadData mStartPage="+mStartPage+" -- mVideoType="+mVideoType);
         moduleApi.getVideoList(this,mVideoType,mStartPage);
     }
 

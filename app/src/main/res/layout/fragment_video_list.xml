@@ -8,13 +8,27 @@
 
 
     <!-- video list -->
-    <com.ys.yoosir.zzshow.widget.video.VideoListLayout
-        android:id="@+id/video_list_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+    <!--<com.ys.yoosir.zzshow.widget.video.VideoListLayout-->
+        <!--android:id="@+id/video_list_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:visibility="gone">-->
 
-    </com.ys.yoosir.zzshow.widget.video.VideoListLayout>
+    <!--</com.ys.yoosir.zzshow.widget.video.VideoListLayout>-->
+    
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/video_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/empty_view"

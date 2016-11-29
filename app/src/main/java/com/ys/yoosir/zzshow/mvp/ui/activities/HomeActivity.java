@@ -21,14 +21,14 @@ import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.News.NewsFragment;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.VideoFragment;
-import com.ys.yoosir.zzshow.mvp.ui.fragments.VideoListFragment;
+import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
 import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
 import com.ys.yoosir.zzshow.widget.video.VideoPlayView;
 
 import butterknife.BindView;
 
 public class HomeActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener,VideoListFragment.OnVideoFIListener {
+        implements NavigationView.OnNavigationItemSelectedListener,VideoFragment.OnVideoFIListener {
 
     private final String CHILD_FRAGMENT_TAG = "child_news" ;
 
@@ -56,6 +56,7 @@ public class HomeActivity extends BaseActivity
     @Override
     public void initVariables() {
         mNewsFragment = new NewsFragment();
+        mVideoFragment = new VideoFragment();
     }
 
     @Override
@@ -80,7 +81,7 @@ public class HomeActivity extends BaseActivity
 
         mNavigationView.setNavigationItemSelectedListener(this);
         initNightModeSwitch();
-        setChildFragment();
+        setChildFragment(mNewsFragment);
     }
 
     /**
@@ -126,10 +127,10 @@ public class HomeActivity extends BaseActivity
     }
 
 
-    private void setChildFragment(){
+    private void setChildFragment(BaseFragment childFragment){
         FragmentManager mFragmentManager = getSupportFragmentManager();
         FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.replace(R.id.show_content_layout,mNewsFragment,CHILD_FRAGMENT_TAG);
+        mFragmentTransaction.replace(R.id.show_content_layout,childFragment,CHILD_FRAGMENT_TAG);
         mFragmentTransaction.commit();
     }
 
@@ -173,11 +174,11 @@ public class HomeActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_news) {
-            // Handle the camera action
+            setChildFragment(mNewsFragment);
         } else if (id == R.id.nav_photo) {
-
+            setChildFragment(mNewsFragment);
         } else if (id == R.id.nav_video) {
-
+            setChildFragment(mVideoFragment);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_about) {

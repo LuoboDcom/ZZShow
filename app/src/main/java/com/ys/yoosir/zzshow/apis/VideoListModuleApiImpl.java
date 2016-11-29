@@ -51,22 +51,26 @@ public class VideoListModuleApiImpl implements VideoListModuleApi<List<VideoData
                         return videoData;
                     }
                 })
-                .distinct()
-                .toSortedList()
+                .toList()
                 .compose(RxJavaCustomTransform.<List<VideoData>>defaultSchedulers())
                 .subscribe(new Subscriber<List<VideoData>>() {
                     @Override
                     public void onCompleted() {
-
+                        System.out.println("--------------------- onCompleted");
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        System.out.println("--------------------- onError:"+e.getMessage());
                         callBack.onError(e.getMessage());
                     }
 
                     @Override
                     public void onNext(List<VideoData> videoDatas) {
+                        System.out.println("--------------------- onNext:"+videoDatas.size());
+                        for (VideoData v:videoDatas) {
+                            System.out.println(v.getCover() +" ,"+v.getTitle());
+                        }
                         callBack.success(videoDatas);
                     }
                 });
