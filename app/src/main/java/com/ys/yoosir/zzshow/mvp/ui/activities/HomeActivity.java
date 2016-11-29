@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.News.NewsFragment;
+import com.ys.yoosir.zzshow.mvp.ui.fragments.PhotoFragment;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.VideoFragment;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
 import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
@@ -34,6 +35,7 @@ public class HomeActivity extends BaseActivity
 
     private NewsFragment mNewsFragment;
     private VideoFragment mVideoFragment;
+    private PhotoFragment mPhotoFragment;
 
 
     @BindView(R.id.drawer_layout)
@@ -57,6 +59,7 @@ public class HomeActivity extends BaseActivity
     public void initVariables() {
         mNewsFragment = new NewsFragment();
         mVideoFragment = new VideoFragment();
+        mPhotoFragment = new PhotoFragment();
     }
 
     @Override
@@ -176,7 +179,7 @@ public class HomeActivity extends BaseActivity
         if (id == R.id.nav_news) {
             setChildFragment(mNewsFragment);
         } else if (id == R.id.nav_photo) {
-            setChildFragment(mNewsFragment);
+            setChildFragment(mPhotoFragment);
         } else if (id == R.id.nav_video) {
             setChildFragment(mVideoFragment);
         } else if (id == R.id.nav_share) {

@@ -50,6 +50,7 @@ public class VideoListAdapter extends BaseRecyclerViewAdapter<VideoData>{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        super.onBindViewHolder(holder,position);
         if(getItemViewType(position) == TYPE_ITEM){
             updateVideoView((VideoViewHolder) holder,position);
         }

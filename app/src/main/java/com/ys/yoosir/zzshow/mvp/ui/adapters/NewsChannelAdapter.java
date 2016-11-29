@@ -88,6 +88,7 @@ public class NewsChannelAdapter extends BaseRecyclerViewAdapter<NewsChannelTable
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        super.onBindViewHolder(holder,position);
         NewsChannelTable newsChannel = mList.get(position);
         NewsChannelViewHolder viewHolder = (NewsChannelViewHolder) holder;
         viewHolder.mChannelNameTv.setText(newsChannel.getNewsChannelName());

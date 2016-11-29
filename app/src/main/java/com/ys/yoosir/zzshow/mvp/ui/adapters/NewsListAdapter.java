@@ -79,14 +79,12 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary>{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        super.onBindViewHolder(holder,position);
         int viewType = getItemViewType(position);
         if(viewType == TYPE_PHOTO_SET){
             updatePhotoSetViews((PhotoSetViewHolder) holder,position);
         }else if(viewType == TYPE_ITEM){
             updateNormalViews((NormalViewHolder)holder,position);
-        }else {
-            //TODO footer
         }
     }
 
