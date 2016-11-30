@@ -131,10 +131,11 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerVie
      */
     public void hideFooter() {
         mIsShowFooter = false;
-        notifyItemInserted(getItemCount());
+        notifyItemRemoved(getItemCount());
     }
 
     protected class FooterViewHolder extends RecyclerView.ViewHolder{
+
         public FooterViewHolder(View itemView) {
             super(itemView);
         }

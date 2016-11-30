@@ -10,4 +10,7 @@ public interface PhotoPresenter extends BasePresenter {
 
     void loadPhotoData();
 
+    void refreshData();
+
+    void loadMore();
 }

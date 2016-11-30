@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.modle.photos.PhotoGirl;
@@ -69,6 +70,7 @@ public class PhotoGirlAdapter extends BaseRecyclerViewAdapter<PhotoGirl> {
                     .load(bean.getUrl())
                     .placeholder(R.color.image_place_holder)
                     .error(R.mipmap.ic_load_fail)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(mHolder.mPhotoIv);
         }
     }

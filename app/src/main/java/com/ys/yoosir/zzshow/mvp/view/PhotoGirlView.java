@@ -15,4 +15,5 @@ public interface PhotoGirlView extends BaseView{
 
     void updateListView(List<PhotoGirl> photoGirlList,int loadType);
 
+    void updateErrorView(int loadType);
 }
