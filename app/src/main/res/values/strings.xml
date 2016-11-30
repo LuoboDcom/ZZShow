@@ -87,5 +87,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_photo">图片</string>
-
+    <string name="share">分享</string>
+    <string name="share_contents">来自「吱吱」的分享：%1$s %2$s</string>
+    <string name="picture_already_save_to">图片已保存至%1$s</string>
+    <string name="set_wallpaper_success">设置壁纸成功</string>
+    <string name="save">保存</string>
+    <string name="set_wallpaper">设置壁纸</string>
 </resources>

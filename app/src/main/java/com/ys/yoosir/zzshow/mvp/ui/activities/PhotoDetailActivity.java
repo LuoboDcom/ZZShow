@@ -7,18 +7,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ys.yoosir.zzshow.R;
+import com.ys.yoosir.zzshow.mvp.presenter.PhotoDetailPresenterImpl;
+import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PhotoDetailPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
+import com.ys.yoosir.zzshow.mvp.view.PhotoDetailView;
 
 import butterknife.BindView;
 import uk.co.senab.photoview.PhotoView;
 
-public class PhotoDetailActivity extends BaseActivity {
+public class PhotoDetailActivity extends BaseActivity<PhotoDetailPresenter> implements PhotoDetailView {
 
     private static final String PHOTO_URL = "PHOTO_URL";
 
@@ -40,6 +45,28 @@ public class PhotoDetailActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_photo_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_save:
+                mPresenter.savePhoto(mPhotoUrl);
+                return true;
+            case R.id.action_share:
+                mPresenter.sharePhoto(mPhotoUrl);
+                return true;
+            case R.id.action_set_wallpaper:
+                mPresenter.setWallpaper(mPhotoUrl);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_photo_detail;
     }
@@ -47,6 +74,12 @@ public class PhotoDetailActivity extends BaseActivity {
     @Override
     public void initVariables() {
         mPhotoUrl = getIntent().getStringExtra(PHOTO_URL);
+        initPresenter();
+    }
+
+    private void initPresenter() {
+        mPresenter = new PhotoDetailPresenterImpl(this);
+        mPresenter.attachView(this);
     }
 
     @Override
@@ -61,7 +94,6 @@ public class PhotoDetailActivity extends BaseActivity {
 
         Glide.with(this).load(mPhotoUrl)
                 .asBitmap()
-                .centerCrop()
                 .placeholder(R.mipmap.ic_loading)
                 .error(R.mipmap.ic_load_fail)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -107,10 +139,24 @@ public class PhotoDetailActivity extends BaseActivity {
     private void loadPhotoView(){
         Glide.with(this).load(mPhotoUrl)
                 .asBitmap()
-                .centerCrop()
                 .placeholder(R.mipmap.ic_loading)
                 .error(R.mipmap.ic_load_fail)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(mPhotoIv);
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showMsg(String message) {
+
     }
 }

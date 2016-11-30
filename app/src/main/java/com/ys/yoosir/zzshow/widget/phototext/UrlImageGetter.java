@@ -15,14 +15,18 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.utils.httputil.RxJavaCustomTransform;
+
+import java.util.concurrent.ExecutionException;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func0;
+import rx.functions.Func1;
 
 /**
  * @version 1.0
@@ -36,6 +40,7 @@ public class UrlImageGetter implements Html.ImageGetter{
     TextView mTextView;
 
     int mScreenWidth;
+    private UrlDrawable urlDrawable = null;
 
     public UrlImageGetter(TextView t, Context context,int screenWidth){
         this.mContext = context;
@@ -46,11 +51,67 @@ public class UrlImageGetter implements Html.ImageGetter{
 
 
     @Override
-    public Drawable getDrawable(String source) {
+    public Drawable getDrawable(final String source) {
         Log.d("YHtml","-------------getDrawable");
 //        String imgSrc = getImgSrc(source);
+        urlDrawable = new UrlDrawable();
+        Observable.create(new Observable.OnSubscribe<Bitmap>() {
+            @Override
+            public void call(Subscriber<? super Bitmap> subscriber) {
+                Bitmap bitmap = null;
+                try {
+                    bitmap = Glide.with(mContext)
+                            .load(source)
+                            .asBitmap()
+                            .format(DecodeFormat.PREFER_ARGB_8888)
+                            .error(R.mipmap.ic_load_fail)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            .get();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    subscriber.onError(e);
+                }
+                if(bitmap == null){
+                    subscriber.onError(new Exception("下载图片失败"));
+                }
+                subscriber.onNext(bitmap);
+                subscriber.onCompleted();
+            }
+        }).flatMap(new Func1<Bitmap, Observable<Bitmap>>() {
+            @Override
+            public Observable<Bitmap> call(Bitmap bitmap) {
 
-        final  UrlDrawable urlDrawable = new UrlDrawable();
+                float scaleWidth = ((float) mScreenWidth) / bitmap.getWidth();
+                Matrix matrix = new Matrix();
+                matrix.postScale(scaleWidth, scaleWidth);
+                Bitmap screenBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+                        bitmap.getWidth(), bitmap.getHeight(),
+                        matrix, true);
+                bitmap.recycle();
+                return Observable.just(screenBitmap);
+            }
+        }).subscribe(new Subscriber<Bitmap>() {
+            @Override
+            public void onCompleted() {
+                mTextView.setText(mTextView.getText());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                urlDrawable = null;
+            }
+
+            @Override
+            public void onNext(Bitmap bitmap) {
+                urlDrawable.mBitmap = bitmap;
+                urlDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+            }
+        });
+
+        return urlDrawable;
+
+        /**
         Glide.with(mContext)
                 .load(source)
                 .asBitmap()
@@ -100,6 +161,7 @@ public class UrlImageGetter implements Html.ImageGetter{
                 });
 
         return urlDrawable;
+         **/
     }
 
 
