@@ -75,6 +75,7 @@ public class HomeActivity extends BaseActivity
 
         mNavigationView.setNavigationItemSelectedListener(this);
         initNightModeSwitch();
+        mNavigationView.setCheckedItem(R.id.nav_news);
         setChildFragment(mNewsFragment);
     }
 

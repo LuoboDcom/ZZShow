@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.ys.yoosir.zzshow.mvp.ui.activities.PhotoDetailActivity">
+    <item
+        android:id="@+id/action_share"
+        android:icon="@mipmap/ic_share"
+        android:title="@string/share"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_save"
+        android:orderInCategory="90"
+        android:title="@string/save"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_set_wallpaper"
+        android:orderInCategory="100"
+        android:title="@string/set_wallpaper"
+        app:showAsAction="never"/>
+</menu>

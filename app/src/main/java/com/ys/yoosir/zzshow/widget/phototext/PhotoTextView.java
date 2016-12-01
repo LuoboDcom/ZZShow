@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.R;
 
 import org.xml.sax.XMLReader;
@@ -21,6 +22,9 @@ import org.xml.sax.XMLReader;
  */
 
 public class PhotoTextView extends TextView {
+
+    UrlImageGetter imgGetter;
+
     public PhotoTextView(Context context) {
         super(context);
     }
@@ -47,5 +51,18 @@ public class PhotoTextView extends TextView {
         //修复卡机崩溃的问题
 //        setLongClickable(false);
 //        setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    /**
+     *  解绑ImageGetterSubscription
+     */
+    public void cancelImageGetterSubscription(){
+        if(imgGetter != null){
+            try {
+                imgGetter.unSubscribe();
+            }catch (Exception e){
+                KLog.e("解绑 UrlImageGetter Subscription 异常");
+            }
+        }
     }
 }

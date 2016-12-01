@@ -52,11 +52,14 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsVie
     @BindView(R.id.add_channel_iv)
     ImageView addChannelIv;
 
-    @OnClick(R.id.add_channel_iv)
+    @OnClick({R.id.add_channel_iv,R.id.fab})
     public void onClick(View v){
         switch (v.getId()) {
             case R.id.add_channel_iv:
                 startActivity(new Intent(getActivity(), NewsChannelActivity.class));
+                break;
+            case R.id.fab:
+                ((NewsListFragment)mNewsFragmentList.get(mViewPager.getCurrentItem())).scrollToTop();
                 break;
             default:
                 break;

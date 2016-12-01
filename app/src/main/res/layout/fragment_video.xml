@@ -24,7 +24,7 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMinWidth="80dp">
+            >
 
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:src="@mipmap/ic_arrow_upward"
+        app:layout_behavior=".widget.ScrollAwareFABBehavior" />
 
 </android.support.design.widget.CoordinatorLayout>

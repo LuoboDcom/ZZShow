@@ -165,6 +165,10 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
         }
     }
 
+    public void scrollToTop(){
+        mRecyclerView.getLayoutManager().scrollToPosition(0);
+    }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);

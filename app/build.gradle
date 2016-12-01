@@ -86,4 +86,6 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

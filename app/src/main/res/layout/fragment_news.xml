@@ -27,10 +27,9 @@
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tab_layout"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:tabMinWidth="80dp"
+                android:layout_weight="1"
                 >
 
             </android.support.design.widget.TabLayout>
@@ -43,8 +42,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:maxHeight="?attr/actionBarSize"
                 android:padding="@dimen/padding_size_l"
-                android:src="@mipmap/ic_add"
-                />
+                android:src="@mipmap/ic_add" />
         </LinearLayout>
 
 
@@ -63,6 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:src="@mipmap/ic_arrow_upward"
+        app:layout_behavior=".widget.ScrollAwareFABBehavior"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

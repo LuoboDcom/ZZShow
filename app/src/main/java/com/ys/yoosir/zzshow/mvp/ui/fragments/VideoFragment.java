@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -58,6 +59,8 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
 
+    @BindView(R.id.fab)
+    FloatingActionButton mFABtn;
 
     private ArrayList<Fragment> mVideoFragmentList = new ArrayList<>();
     private String mCurrentViewPagerName;
@@ -94,6 +97,12 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
     @Override
     public void initViews(View view) {
         mListener.onVideoToolbar(mToolbar);
+        mFABtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((VideoListFragment)mVideoFragmentList.get(mCurrentItem)).scrollToTop();
+            }
+        });
         initPresenter();
         initVideoPlayView();
     }

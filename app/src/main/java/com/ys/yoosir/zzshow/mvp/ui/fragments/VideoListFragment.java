@@ -237,6 +237,10 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
         }
     }
 
+    public void scrollToTop(){
+        mVideoListView.getLayoutManager().scrollToPosition(0);
+    }
+
     /**
      *  改变 List item view
      * @param parent 此 item view

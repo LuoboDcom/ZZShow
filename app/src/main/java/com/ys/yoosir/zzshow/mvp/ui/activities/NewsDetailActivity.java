@@ -72,9 +72,7 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
     @Override
     protected void onDestroy() {
         if(newsContentTextTv != null){
-            ViewGroup parent = (ViewGroup) newsContentTextTv.getParent();
-            parent.removeView(newsContentTextTv);
-            newsContentTextTv.destroyDrawingCache();
+            newsContentTextTv.cancelImageGetterSubscription();
         }
         super.onDestroy();
     }
@@ -119,7 +117,6 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
             }
         });
         Glide.with(this).load(mPostImgPath).asBitmap()
-                .centerCrop()
                 .placeholder(R.mipmap.ic_loading)
                 .format(DecodeFormat.PREFER_ARGB_8888)
                 .error(R.mipmap.ic_load_fail)
@@ -144,6 +141,8 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     public void showProgress() {

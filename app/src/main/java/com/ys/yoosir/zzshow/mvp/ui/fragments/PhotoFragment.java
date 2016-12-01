@@ -58,10 +58,15 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
 
-    @OnClick(R.id.empty_view)
+    @OnClick({R.id.empty_view,R.id.fab})
     public void onClick(View v){
-        if(v.getId() == R.id.empty_view){
-            mPresenter.loadPhotoData();
+        switch (v.getId()){
+            case R.id.empty_view:
+                mPresenter.loadPhotoData();
+                break;
+            case R.id.fab:
+                mPhotoRecyclerView.getLayoutManager().scrollToPosition(0);
+                break;
         }
     }
 

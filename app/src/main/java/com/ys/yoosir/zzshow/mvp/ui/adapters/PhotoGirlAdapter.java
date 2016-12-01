@@ -68,6 +68,7 @@ public class PhotoGirlAdapter extends BaseRecyclerViewAdapter<PhotoGirl> {
             PhotoGirlViewHolder mHolder = (PhotoGirlViewHolder) holder;
             Glide.with(MyApplication.getInstance())
                     .load(bean.getUrl())
+                    .asBitmap()
                     .placeholder(R.color.image_place_holder)
                     .error(R.mipmap.ic_load_fail)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
