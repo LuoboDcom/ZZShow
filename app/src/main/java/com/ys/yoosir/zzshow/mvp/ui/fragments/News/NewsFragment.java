@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -39,6 +40,8 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsVie
     private String mParam1;
     private String mParam2;
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
@@ -93,6 +96,7 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsVie
 
     @Override
     public void initViews(View view) {
+        mListener.onNewsToolbar(mToolbar);
         initPresenter();
     }
 
@@ -115,11 +119,18 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsVie
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (context instanceof OnNewsFIListener) {
+            mListener = (OnNewsFIListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mListener = null;
     }
 
 
@@ -206,4 +217,9 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsVie
 
     }
 
+    private OnNewsFIListener mListener;
+
+    public interface OnNewsFIListener {
+        void onNewsToolbar(Toolbar toolbar);
+    }
 }

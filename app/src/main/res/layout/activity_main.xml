@@ -13,30 +13,14 @@
         android:layout_height="match_parent"
         tools:openDrawer="start">
 
-        <LinearLayout
+        <!-- 展示内容 -->
+        <FrameLayout
+            android:id="@+id/show_content_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:fitsSystemWindows="true"
             >
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-            <!-- 展示内容 -->
-            <FrameLayout
-                android:id="@+id/show_content_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </FrameLayout>
-
-        </LinearLayout>
+        </FrameLayout>
 
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"

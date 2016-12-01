@@ -1,6 +1,7 @@
 package com.ys.yoosir.zzshow.mvp.ui.fragments;
 
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -10,6 +11,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -41,6 +43,9 @@ import butterknife.OnClick;
 
 public class PhotoFragment extends BaseFragment<PhotoPresenter> implements PhotoGirlView,MyRecyclerListener{
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -64,12 +69,30 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
     private boolean isLoading = false;
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnPhotoFIListener) {
+            mListener = (OnPhotoFIListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.fragment_photo;
     }
 
     @Override
     public void initViews(View view) {
+        mListener.onPhotoToolbar(mToolbar);
         initSwipeRefreshLayout();
         initRecyclerView();
         initPresenter();
@@ -202,5 +225,11 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
                     0);
             ActivityCompat.startActivity(getActivity(),intent,optionsCompat.toBundle());
         }
+    }
+
+    private OnPhotoFIListener mListener;
+
+    public interface OnPhotoFIListener {
+        void onPhotoToolbar(Toolbar toolbar);
     }
 }

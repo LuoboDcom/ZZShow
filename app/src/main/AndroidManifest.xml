@@ -23,19 +23,18 @@
         <activity
             android:name=".mvp.ui.activities.HomeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoTrans"/>
         <activity
             android:name=".mvp.ui.activities.NewsDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoTrans" />
         <activity
             android:name=".mvp.ui.activities.NewsPhotoDetailActivity"
-            android:theme="@style/PhotoActivityTheme"/>
+            android:theme="@style/AppTheme.Trans"/>
         <activity
             android:name=".mvp.ui.activities.NewsChannelActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoTrans" />
         <activity android:name=".mvp.ui.activities.PhotoDetailActivity"
-            android:theme="@style/PhotoActivityTheme"/>
+            android:theme="@style/AppTheme.Trans"/>
     </application>
 
 </manifest>

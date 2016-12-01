@@ -1,36 +1,54 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".mvp.ui.fragments.News.NewsFragment">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal"
-        >
+        android:background="?attr/colorPrimary"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="0dp"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:tabMinWidth="80dp">
+            android:orientation="horizontal">
 
-        </android.support.design.widget.TabLayout>
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:tabMinWidth="80dp"
+                >
 
-        <ImageView
-            android:id="@+id/add_channel_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:maxHeight="?attr/actionBarSize"
-            android:padding="@dimen/padding_size_l"
-            android:src="@mipmap/ic_add" />
-    </LinearLayout>
+            </android.support.design.widget.TabLayout>
+
+            <ImageView
+                android:id="@+id/add_channel_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:maxHeight="?attr/actionBarSize"
+                android:padding="@dimen/padding_size_l"
+                android:src="@mipmap/ic_add"
+                />
+        </LinearLayout>
+
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
@@ -39,4 +57,12 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.ys.yoosir.zzshow.mvp.ui.fragments.News.NewsFragment" />
 
-</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_dialog_email" />
+
+</android.support.design.widget.CoordinatorLayout>

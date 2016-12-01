@@ -19,10 +19,11 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:navigationIcon="@mipmap/ic_arrow_back"
-        app:collapseIcon="@mipmap/ic_launcher"
+        app:title="@string/title_news_photo_detail"
         />
     
     <FrameLayout

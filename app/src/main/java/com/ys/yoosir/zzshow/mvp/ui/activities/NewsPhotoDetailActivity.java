@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.modle.NewsPhotoDetail;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
+import com.ys.yoosir.zzshow.utils.SystemUiVisibilityUtil;
 import com.ys.yoosir.zzshow.widget.photoview.HackyViewPager;
 
 import java.util.List;
@@ -54,6 +55,7 @@ public class NewsPhotoDetailActivity extends BaseActivity {
     private List<NewsPhotoDetail.PictureItem> mPictureList;
 
     private boolean isHidden = false;
+    private boolean mIsStatusBarHidden = false;
 
     public static Intent getNewsDetailIntent(Context context, NewsPhotoDetail newsPhotoDetail){
         Intent intent = new Intent(context,NewsPhotoDetailActivity.class);
@@ -129,6 +131,15 @@ public class NewsPhotoDetailActivity extends BaseActivity {
         mHackyViewPager.setAdapter(new PhotoPagerAdapter());
     }
 
+    private void hideOrShowStatusBar() {
+        if (mIsStatusBarHidden) {
+            SystemUiVisibilityUtil.enter(NewsPhotoDetailActivity.this);
+        } else {
+            SystemUiVisibilityUtil.exit(NewsPhotoDetailActivity.this);
+        }
+        mIsStatusBarHidden = !mIsStatusBarHidden;
+    }
+
     public void hideToolBarAndTextView(){
         isHidden = !isHidden;
         if(isHidden){
@@ -188,6 +199,7 @@ public class NewsPhotoDetailActivity extends BaseActivity {
                 @Override
                 public void onPhotoTap(View view, float v, float v1) {
                     hideToolBarAndTextView();
+                    hideOrShowStatusBar();
                 }
 
                 @Override

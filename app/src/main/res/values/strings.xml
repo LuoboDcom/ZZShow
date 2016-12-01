@@ -86,6 +86,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_photo">图片</string>
+    <string name="title_photo">妹子</string>
+    <string name="title_news_photo_detail">图集</string>
 
 </resources>

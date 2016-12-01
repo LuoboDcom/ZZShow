@@ -29,7 +29,7 @@ import com.ys.yoosir.zzshow.widget.video.VideoPlayView;
 import butterknife.BindView;
 
 public class HomeActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener,VideoFragment.OnVideoFIListener {
+        implements NavigationView.OnNavigationItemSelectedListener,VideoFragment.OnVideoFIListener,NewsFragment.OnNewsFIListener,PhotoFragment.OnPhotoFIListener {
 
     private final String CHILD_FRAGMENT_TAG = "child_news" ;
 
@@ -43,9 +43,6 @@ public class HomeActivity extends BaseActivity
 
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
 
     @BindView(R.id.full_screen)
     FrameLayout mFullScreenLayout;
@@ -64,12 +61,6 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public void initViews() {
-        setSupportActionBar(mToolbar);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
         mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -85,6 +76,14 @@ public class HomeActivity extends BaseActivity
         mNavigationView.setNavigationItemSelectedListener(this);
         initNightModeSwitch();
         setChildFragment(mNewsFragment);
+    }
+
+    public void setToolbar(Toolbar toolbar){
+        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
     }
 
     /**
@@ -211,6 +210,21 @@ public class HomeActivity extends BaseActivity
         }else if(stateCode == 3){
             mFullScreenLayout.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onVideoToolbar(Toolbar toolbar) {
+        setToolbar(toolbar);
+    }
+
+    @Override
+    public void onNewsToolbar(Toolbar toolbar) {
+        setToolbar(toolbar);
+    }
+
+    @Override
+    public void onPhotoToolbar(Toolbar toolbar) {
+        setToolbar(toolbar);
     }
 
     @Override

@@ -3,10 +3,12 @@ package com.ys.yoosir.zzshow.mvp.ui.fragments.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.BasePresenter;
 
 import butterknife.ButterKnife;
@@ -47,5 +49,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment{
             mPresenter.onDestroy();
         }
     }
+
+
 
 }

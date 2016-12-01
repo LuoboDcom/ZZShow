@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,8 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
     private String mParam1;
     private String mParam2;
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
@@ -90,6 +93,7 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
 
     @Override
     public void initViews(View view) {
+        mListener.onVideoToolbar(mToolbar);
         initPresenter();
         initVideoPlayView();
     }
@@ -310,5 +314,6 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
     public interface OnVideoFIListener {
         // TODO: Update argument type and name
         void onVideoFI(int stateCode,VideoPlayView playView);
+        void onVideoToolbar(Toolbar toolbar);
     }
 }
