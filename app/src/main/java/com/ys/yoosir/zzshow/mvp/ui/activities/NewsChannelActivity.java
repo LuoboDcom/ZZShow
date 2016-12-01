@@ -34,8 +34,6 @@ import rx.functions.Action1;
 
 public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> implements NewsChannelView {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
 
     @BindView(R.id.tv_edit)
     TextView mEditBtn;
@@ -70,13 +68,6 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
 
     @Override
     public void initViews() {
-        setSupportActionBar(mToolbar);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         initRecyclerView(mMineRecyclerView);
         initRecyclerView(mRecommendRecyclerView);
     }

@@ -137,13 +137,6 @@ public class PhotoDetailActivity extends BaseActivity<PhotoDetailPresenter> impl
 
     @Override
     public void initViews() {
-        setSupportActionBar(mToolbar);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         Picasso.with(this)
                 .load(mPhotoUrl)

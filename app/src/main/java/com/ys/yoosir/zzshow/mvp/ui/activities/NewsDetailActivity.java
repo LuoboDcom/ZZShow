@@ -3,6 +3,7 @@ package com.ys.yoosir.zzshow.mvp.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -32,6 +33,7 @@ import com.ys.yoosir.zzshow.widget.phototext.UrlImageGetter;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -42,12 +44,11 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
 
     private String mPostId;
     private String mPostImgPath;
+    private String mShareLink;
+    private String mNewsTitle;
 
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout toolbarLayout;
-
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
@@ -61,6 +62,13 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
     @BindView(R.id.news_detail_picture_iv)
     ImageView newsDetailPictureIv;
 
+    @OnClick(R.id.fab)
+    public void onClick(View v){
+        if(v.getId() == R.id.fab){
+            share();
+        }
+    }
+
     public static Intent getNewsDetailIntent(Context context, String postId, String postImgPath){
         Intent intent = new Intent(context,NewsDetailActivity.class);
         intent.putExtra(NEWS_POST_ID,postId);
@@ -68,6 +76,21 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
         return intent;
     }
 
+    private void share() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
+        intent.putExtra(Intent.EXTRA_TEXT, getShareContents());
+        startActivity(Intent.createChooser(intent, getTitle()));
+    }
+
+    @NonNull
+    private String getShareContents() {
+        if (mShareLink == null) {
+            mShareLink = "";
+        }
+        return getString(R.string.share_contents, mNewsTitle, mShareLink);
+    }
 
     @Override
     protected void onDestroy() {
@@ -100,13 +123,7 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
 
     @Override
     public void initViews() {
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
         toolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.tv_color_white));
         toolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.tv_color_primary_white));
         fab.setOnClickListener(new View.OnClickListener() {
@@ -161,8 +178,9 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
 
     @Override
     public void showNewsContent(NewsDetail newsDetail) {
-        String mShareLink = newsDetail.getShareLink();
-        toolbarLayout.setTitle(newsDetail.getTitle());
+        mShareLink = newsDetail.getShareLink();
+        mNewsTitle = newsDetail.getTitle();
+        toolbarLayout.setTitle(mNewsTitle);
         newsContentFromTv.setText(getString(R.string.news_content_from_value,newsDetail.getSource(),newsDetail.getPtime()));
         newsContentTextTv.setContainText(newsDetail.getBody(),false);
 //        setBodyView(newsDetail.getBody());

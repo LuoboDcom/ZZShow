@@ -37,4 +37,5 @@ public class SystemUiVisibilityUtil {
         view.setSystemUiVisibility(view.getSystemUiVisibility() & ~flags);
         // & ~flags 清除 view.getSystemUiVisibility()中的flags
     }
+
 }

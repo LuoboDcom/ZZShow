@@ -30,4 +30,5 @@
 
     <dimen name="height_size_l">40dp</dimen>
     <dimen name="height_size_m">36dp</dimen>
+    <dimen name="text_size_big">28sp</dimen>
 </resources>

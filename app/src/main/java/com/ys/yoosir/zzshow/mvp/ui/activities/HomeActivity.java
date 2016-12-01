@@ -1,6 +1,8 @@
 package com.ys.yoosir.zzshow.mvp.ui.activities;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
@@ -183,9 +186,9 @@ public class HomeActivity extends BaseActivity
         } else if (id == R.id.nav_video) {
             setChildFragment(mVideoFragment);
         } else if (id == R.id.nav_share) {
-
+            share();
         } else if (id == R.id.nav_about) {
-
+            startActivity(new Intent(HomeActivity.this,AboutActivity.class));
         } else if (id == R.id.nav_night) {
 
         }
@@ -195,7 +198,13 @@ public class HomeActivity extends BaseActivity
         return true;
     }
 
-
+    private void share() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
+        intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.app_share_text));
+        startActivity(Intent.createChooser(intent, getTitle()));
+    }
 
     /**
      *  VideoListFragment  交互接口
@@ -215,16 +224,19 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public void onVideoToolbar(Toolbar toolbar) {
+        toolbar.setTitle(R.string.menu_video);
         setToolbar(toolbar);
     }
 
     @Override
     public void onNewsToolbar(Toolbar toolbar) {
+        toolbar.setTitle(R.string.menu_news);
         setToolbar(toolbar);
     }
 
     @Override
     public void onPhotoToolbar(Toolbar toolbar) {
+        toolbar.setTitle(R.string.menu_photo);
         setToolbar(toolbar);
     }
 

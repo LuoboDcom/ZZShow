@@ -95,17 +95,10 @@ public class NewsPhotoDetailActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-        setSupportActionBar(mToolbar);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         mPhotoTextLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(NewsPhotoDetailActivity.this,"被电击",Toast.LENGTH_SHORT).show();
+
             }
         });
         mPhotoTitleTv.setText(mNewsPhotoDetail.getTitle());

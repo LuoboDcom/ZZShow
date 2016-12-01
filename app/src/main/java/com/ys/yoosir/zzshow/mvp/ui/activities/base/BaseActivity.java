@@ -8,12 +8,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.BasePresenter;
+import com.ys.yoosir.zzshow.mvp.ui.activities.HomeActivity;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsDetailActivity;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsPhotoDetailActivity;
 import com.ys.yoosir.zzshow.mvp.ui.activities.PhotoDetailActivity;
@@ -51,10 +54,32 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         setContentView(layoutId);
         initVariables();
         ButterKnife.bind(this);
+        initToolBar();
         initViews();
         if(mPresenter != null){
             mPresenter.onCreate();
         }
+    }
+
+    protected void initToolBar(){
+        if(!(this instanceof HomeActivity)) {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAfterTransition();
+                } else {
+                    finish();
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
