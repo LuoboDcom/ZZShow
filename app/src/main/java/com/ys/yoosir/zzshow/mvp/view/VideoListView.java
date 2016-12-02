@@ -13,5 +13,5 @@ public interface VideoListView extends BaseView{
 
     void setVideoList(List<VideoData> videoDataList, int loadType);
 
-
+    void updateErrorView(int loadType);
 }

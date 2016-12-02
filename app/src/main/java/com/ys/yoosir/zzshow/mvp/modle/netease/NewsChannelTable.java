@@ -74,4 +74,16 @@ public class NewsChannelTable {
     public void setNewsChannelFixed(boolean newsChannelFixed) {
         this.newsChannelFixed = newsChannelFixed;
     }
+
+    @Override
+    public String toString() {
+        return "NewsChannelTable{" +
+                "newsChannelName='" + newsChannelName + '\'' +
+                ", newsChannelId='" + newsChannelId + '\'' +
+                ", newsChannelType='" + newsChannelType + '\'' +
+                ", newsChannelSelect=" + newsChannelSelect +
+                ", newsChannelIndex=" + newsChannelIndex +
+                ", newsChannelFixed=" + newsChannelFixed +
+                '}';
+    }
 }

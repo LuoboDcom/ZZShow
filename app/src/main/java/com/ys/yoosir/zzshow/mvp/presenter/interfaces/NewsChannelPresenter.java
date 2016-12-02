@@ -14,4 +14,6 @@ public interface NewsChannelPresenter extends BasePresenter{
     void onItemSwap(int fromPosition,int toPosition);
 
     void onItemAddOrRemove(NewsChannelTable newsChannel,boolean isChannelMine);
+
+    void selectIndex(String newsChannelId);
 }

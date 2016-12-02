@@ -63,16 +63,20 @@ public class DBManager {
         try{
             cursor = db.query(DBHelper.TABLE_NEWS_CHANNEL,null,"news_channel_select = ? ",new String[]{isSelect},null,null,"news_channel_index asc");
             if(cursor.moveToFirst()) {
-                while (cursor.moveToNext()) {
+                while (!cursor.isAfterLast()) {
                     String channelName = cursor.getString(cursor.getColumnIndex("news_channel_name"));
                     String channelId   = cursor.getString(cursor.getColumnIndex("news_channel_id"));
                     String channelType = cursor.getString(cursor.getColumnIndex("news_channel_type"));
                     boolean channelSelect = cursor.getInt(cursor.getColumnIndex("news_channel_select")) == 1;
                     int channelIndex  = cursor.getInt(cursor.getColumnIndex("news_channel_index"));
                     boolean channelFixed = cursor.getInt(cursor.getColumnIndex("news_channel_fixed")) == 1;
-                    list.add(new NewsChannelTable(channelName,channelId,channelType,channelSelect,channelIndex,channelFixed));
+                    NewsChannelTable channelTable = new NewsChannelTable(channelName,channelId,channelType,channelSelect,channelIndex,channelFixed);
+                    KLog.d("FIND--","loadNewsChannels--"+channelTable.toString());
+                    list.add(channelTable);
+                    cursor.moveToNext();
                 }
             }
+            db.setTransactionSuccessful();
         }catch (Exception e){
             /**
              *  exception log
@@ -82,6 +86,7 @@ public class DBManager {
             if(cursor != null){
                 cursor.close();
             }
+            db.endTransaction();
         }
         return list;
     }
@@ -124,25 +129,28 @@ public class DBManager {
         try{
             cursor = db.query(DBHelper.TABLE_NEWS_CHANNEL,null, selection ,selectionArgs ,null,null,"news_channel_index asc");
             if(cursor.moveToFirst()) {
-                while (cursor.moveToNext()) {
+                while (!cursor.isAfterLast()) {
                     String channelName = cursor.getString(cursor.getColumnIndex("news_channel_name"));
                     String channelId   = cursor.getString(cursor.getColumnIndex("news_channel_id"));
                     String channelType = cursor.getString(cursor.getColumnIndex("news_channel_type"));
                     boolean channelSelect = cursor.getInt(cursor.getColumnIndex("news_channel_select")) == 1;
                     int channelIndex  = cursor.getInt(cursor.getColumnIndex("news_channel_index"));
                     boolean channelFixed = cursor.getInt(cursor.getColumnIndex("news_channel_fixed")) == 1;
-                    list.add(new NewsChannelTable(channelName,channelId,channelType,channelSelect,channelIndex,channelFixed));
+                    NewsChannelTable channelTable = new NewsChannelTable(channelName,channelId,channelType,channelSelect,channelIndex,channelFixed);
+                    KLog.d("FIND--","loadNewsChannelsByWhere--"+channelTable.toString());
+                    list.add(channelTable);
+                    cursor.moveToNext();
                 }
             }
+            db.setTransactionSuccessful();
         }catch (Exception e){
-            /**
-             *  exception log
-             */
+            e.printStackTrace();
             KLog.e(e.getMessage());
         }finally {
             if(cursor != null){
                 cursor.close();
             }
+            db.endTransaction();
         }
         return list;
     }
@@ -154,14 +162,16 @@ public class DBManager {
     public long getCount(){
         db.beginTransaction();
         long count = 0;
+        Cursor cursor = null;
         try {
-            Cursor cursor = db.rawQuery("select count(news_channel_id) from " + DBHelper.TABLE_NEWS_CHANNEL,null);
+            cursor = db.rawQuery("select count(news_channel_id) from " + DBHelper.TABLE_NEWS_CHANNEL,null);
             cursor.moveToFirst();
             count = cursor.getLong(0);
             db.setTransactionSuccessful();
         }catch (Exception e){
             KLog.e(e.getMessage());
         }finally {
+            if(cursor != null) cursor.close();
             db.endTransaction();
         }
         return count;
@@ -178,14 +188,16 @@ public class DBManager {
     public long getCountByWhere(String selection,String[] selectionArgs){
         db.beginTransaction();
         long count = 0;
+        Cursor cursor = null;
         try {
-            Cursor cursor = db.rawQuery("select count(news_channel_id) from " + DBHelper.TABLE_NEWS_CHANNEL + " where " + selection,selectionArgs);
+            cursor = db.rawQuery("select count(news_channel_id) from " + DBHelper.TABLE_NEWS_CHANNEL + " where " + selection,selectionArgs);
             cursor.moveToFirst();
             count = cursor.getLong(0);
             db.setTransactionSuccessful();
         }catch (Exception e){
             KLog.e(e.getMessage());
         }finally {
+            if(cursor != null) cursor.close();
             db.endTransaction();
         }
         return count;
@@ -203,25 +215,23 @@ public class DBManager {
         try{
             cursor = db.query(DBHelper.TABLE_NEWS_CHANNEL,null, "news_channel_index = ? " ,new String[]{index+""} ,null,null,null);
             if(cursor.moveToFirst()) {
-                while (cursor.moveToNext()) {
-                    String channelName = cursor.getString(cursor.getColumnIndex("news_channel_name"));
-                    String channelId   = cursor.getString(cursor.getColumnIndex("news_channel_id"));
-                    String channelType = cursor.getString(cursor.getColumnIndex("news_channel_type"));
-                    boolean channelSelect = cursor.getInt(cursor.getColumnIndex("news_channel_select")) == 1;
-                    int channelIndex  = cursor.getInt(cursor.getColumnIndex("news_channel_index"));
-                    boolean channelFixed = cursor.getInt(cursor.getColumnIndex("news_channel_fixed")) == 1;
-                    newsChannel = new NewsChannelTable(channelName,channelId,channelType,channelSelect,channelIndex,channelFixed);
-                }
+                String channelName = cursor.getString(cursor.getColumnIndex("news_channel_name"));
+                String channelId = cursor.getString(cursor.getColumnIndex("news_channel_id"));
+                String channelType = cursor.getString(cursor.getColumnIndex("news_channel_type"));
+                boolean channelSelect = cursor.getInt(cursor.getColumnIndex("news_channel_select")) == 1;
+                int channelIndex = cursor.getInt(cursor.getColumnIndex("news_channel_index"));
+                boolean channelFixed = cursor.getInt(cursor.getColumnIndex("news_channel_fixed")) == 1;
+                newsChannel = new NewsChannelTable(channelName, channelId, channelType, channelSelect, channelIndex, channelFixed);
+                KLog.d("FIND--", "findNewsChannelByIndex--" + newsChannel.toString());
             }
+            db.setTransactionSuccessful();
         }catch (Exception e){
-            /**
-             *  exception log
-             */
             KLog.e(e.getMessage());
         }finally {
             if(cursor != null){
                 cursor.close();
             }
+            db.endTransaction();
         }
         return newsChannel;
     }

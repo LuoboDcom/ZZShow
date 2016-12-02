@@ -10,7 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.R;
+import com.ys.yoosir.zzshow.events.ChannelChangeEvent;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.presenter.NewsPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsPresenter;
@@ -18,6 +20,7 @@ import com.ys.yoosir.zzshow.mvp.ui.activities.NewsChannelActivity;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.PostFragmentPagerAdapter;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
 import com.ys.yoosir.zzshow.mvp.view.NewsView;
+import com.ys.yoosir.zzshow.utils.RxBus;
 import com.ys.yoosir.zzshow.utils.TabLayoutUtil;
 
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  *  @version 1.0
@@ -116,6 +121,24 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsVie
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mSubscription = RxBus.getInstance().toObservable(ChannelChangeEvent.class)
+                .subscribe(new Action1<ChannelChangeEvent>() {
+                    @Override
+                    public void call(ChannelChangeEvent channelChangeEvent) {
+                        KLog.d("NewsChannelPresenterImpl","GET ---------------");
+                        if(channelChangeEvent.isChannelChanged()) {
+                            mPresenter.loadNewsChannels();
+                            if(channelChangeEvent.getChannelName() != null) {
+                                mCurrentViewPagerName = channelChangeEvent.getChannelName();
+                            }
+                        }else{
+                            if(channelChangeEvent.getChannelName() != null) {
+                                mCurrentViewPagerName = channelChangeEvent.getChannelName();
+                                mViewPager.setCurrentItem(getCurrentViewPagerPosition());
+                            }
+                        }
+                    }
+                });
     }
 
 

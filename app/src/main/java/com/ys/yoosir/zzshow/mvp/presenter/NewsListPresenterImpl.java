@@ -32,9 +32,7 @@ public class NewsListPresenterImpl extends BasePresenterImpl<NewsListView,List<N
         super.onCreate();
         KLog.d("NewsListFragment","NewsListPresenterImpl");
         if(mView != null){
-            beforeRequest();
-            mLoadDataType = LoadDataType.TYPE_FIRST_LOAD;
-            loadNewsData();
+            firstLoadData();
         }
     }
 
@@ -47,6 +45,7 @@ public class NewsListPresenterImpl extends BasePresenterImpl<NewsListView,List<N
     @Override
     public void onError(String errorMsg) {
         super.onError(errorMsg);
+        mView.updateErrorView(mLoadDataType);
     }
 
     @Override
@@ -54,6 +53,13 @@ public class NewsListPresenterImpl extends BasePresenterImpl<NewsListView,List<N
         mStartPage = 0;
         mNewsType = newsType;
         mNewsId = newsId;
+    }
+
+    @Override
+    public void firstLoadData() {
+        beforeRequest();
+        mLoadDataType = LoadDataType.TYPE_FIRST_LOAD;
+        loadNewsData();
     }
 
     @Override

@@ -33,8 +33,6 @@ public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,List
         super.onCreate();
         Log.d("VideoListPresenterImpl","onCreate mStartPage="+mStartPage+" -- mVideoType="+mVideoType);
         if(mView != null){
-            beforeRequest();
-            mStartPage = 10;
             loadData();
         }
     }
@@ -46,9 +44,28 @@ public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,List
 
     @Override
     public void loadData() {
+        beforeRequest();
         mLoadDataType = LoadDataType.TYPE_FIRST_LOAD;
-        Log.d("VideoListPresenterImpl","loadData mStartPage="+mStartPage+" -- mVideoType="+mVideoType);
-        moduleApi.getVideoList(this,mVideoType,mStartPage);
+        mStartPage = 10;
+        loadVideoData(mStartPage);
+    }
+
+    @Override
+    public void refreshData() {
+        mLoadDataType = LoadDataType.TYPE_REFRESH;
+        mStartPage = 10;
+        loadVideoData(mStartPage);
+    }
+
+    @Override
+    public void loadMoreData() {
+        mLoadDataType = LoadDataType.TYPE_LOAD_MORE;
+        mStartPage += 10;
+        loadVideoData(mStartPage);
+    }
+
+    private void loadVideoData(int startPage){
+        mSubscription = moduleApi.getVideoList(this,mVideoType,startPage);
     }
 
     @Override

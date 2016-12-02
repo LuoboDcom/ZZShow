@@ -32,7 +32,7 @@ public class VideoModuleApiIml implements VideoModuleApi<List<VideoChannel>> {
                 videoChannelList.add(new VideoChannel("热点", ApiConstants.VIDEO_HOT_ID));
                 videoChannelList.add(new VideoChannel("娱乐", ApiConstants.VIDEO_ENTERTAINMENT_ID));
                 videoChannelList.add(new VideoChannel("搞笑", ApiConstants.VIDEO_FUN_ID));
-                videoChannelList.add(new VideoChannel("精品", ApiConstants.VIDEO_CHOICE_ID));
+//                videoChannelList.add(new VideoChannel("精品", ApiConstants.VIDEO_CHOICE_ID));
                 subscriber.onNext(videoChannelList);
                 subscriber.onCompleted();
             }

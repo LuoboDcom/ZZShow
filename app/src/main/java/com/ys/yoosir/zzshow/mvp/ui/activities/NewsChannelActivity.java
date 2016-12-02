@@ -24,6 +24,7 @@ import com.ys.yoosir.zzshow.utils.RxBus;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import rx.functions.Action1;
 
 /**
@@ -44,13 +45,26 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
     @BindView(R.id.recommend_recycler_view)
     RecyclerView mRecommendRecyclerView;
 
-    private NewsChannelAdapter mMineAdapter;
-    private NewsChannelAdapter mRecommendAdapter;
+    @OnClick(R.id.tv_edit)
+    public void onClick(View v){
+        if(v.getId() == R.id.tv_edit){
+            if(mMineAdapter.isEdit()){
+                mEditBtn.setText(R.string.edit_text);
+                mMineAdapter.setEdit(false);
+            }else {
+                mEditBtn.setText(R.string.finish_text);
+                mMineAdapter.setEdit(true);
+            }
+        }
+    }
 
     @Override
     public int getLayoutId() {
         return R.layout.activity_news_channel;
     }
+    private NewsChannelAdapter mMineAdapter;
+
+    private NewsChannelAdapter mRecommendAdapter;
 
     @Override
     public void initVariables() {
@@ -58,12 +72,16 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
                 .subscribe(new Action1<ChannelItemMoveEvent>() {
                     @Override
                     public void call(ChannelItemMoveEvent channelItemMoveEvent) {
+                        if(!mMineAdapter.isEdit()){
+                            mEditBtn.setText(R.string.finish_text);
+                            mMineAdapter.setEdit(true);
+                        }
+                        mEditBtn.setText(R.string.finish_text);
                         mPresenter.onItemSwap(channelItemMoveEvent.getFromPosition(),channelItemMoveEvent.getToPosition());
                     }
                 });
         mPresenter = new NewsChannelPresenterImpl();
         mPresenter.attachView(this);
-        mPresenter.onCreate();
     }
 
     @Override
@@ -113,6 +131,10 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
             public void OnItemClickListener(View view, int position) {
                 NewsChannelTable newsChannel = mRecommendAdapter.getList().get(position);
                 newsChannel.setNewsChannelSelect(true);
+                if(!mMineAdapter.isEdit()) {
+                    mEditBtn.setText(R.string.finish_text);
+                    mMineAdapter.setEdit(true);
+                }
                 mMineAdapter.add(mMineAdapter.getItemCount(), newsChannel);
                 mRecommendAdapter.delete(position);
                 mPresenter.onItemAddOrRemove(newsChannel, false);
@@ -133,8 +155,12 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
         mMineAdapter.setOnItemClickListener(new MyRecyclerListener() {
             @Override
             public void OnItemClickListener(View view, int position) {
-
                 NewsChannelTable newsChannel = mMineAdapter.getList().get(position);
+                if(!mMineAdapter.isEdit()){
+                    mPresenter.selectIndex(newsChannel.getNewsChannelName());
+                    finish();
+                    return;
+                }
                 if(!newsChannel.isNewsChannelFixed()){
                     newsChannel.setNewsChannelSelect(false);
                     mRecommendAdapter.add(mRecommendAdapter.getItemCount(),newsChannel);

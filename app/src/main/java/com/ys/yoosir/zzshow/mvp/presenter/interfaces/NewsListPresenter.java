@@ -8,6 +8,8 @@ public interface NewsListPresenter extends BasePresenter {
 
     void setNewsTypeAndId(String newsType,String newsId);
 
+    void firstLoadData();
+
     void refreshData();
 
     void loadMore();

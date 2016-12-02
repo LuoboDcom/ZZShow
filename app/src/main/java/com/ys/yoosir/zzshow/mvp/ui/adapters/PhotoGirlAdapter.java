@@ -7,10 +7,12 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.squareup.picasso.Picasso;
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.modle.photos.PhotoGirl;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
+import com.ys.yoosir.zzshow.widget.StaggeredBitmapTransform;
 
 import java.util.List;
 
@@ -66,12 +68,21 @@ public class PhotoGirlAdapter extends BaseRecyclerViewAdapter<PhotoGirl> {
         if(getItemViewType(position) == TYPE_ITEM){
             PhotoGirl bean = mList.get(position);
             PhotoGirlViewHolder mHolder = (PhotoGirlViewHolder) holder;
-            Glide.with(MyApplication.getInstance())
+
+            //尝试使用 Glide的transform 设置图片宽高比时，会出现某张图片没有调用 transform的现象。奇怪！
+//            Glide.with(MyApplication.getInstance())
+//                    .load(bean.getUrl())
+//                    .asBitmap()
+//                    .transform(new StaggeredBitmapTransform(MyApplication.getInstance()))
+//                    .placeholder(R.color.image_place_holder)
+//                    .error(R.mipmap.ic_load_fail)
+//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                    .into(mHolder.mPhotoIv);
+            //Picasso 会自动计算图片的宽高比
+            Picasso.with(MyApplication.getInstance())
                     .load(bean.getUrl())
-                    .asBitmap()
                     .placeholder(R.color.image_place_holder)
                     .error(R.mipmap.ic_load_fail)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(mHolder.mPhotoIv);
         }
     }

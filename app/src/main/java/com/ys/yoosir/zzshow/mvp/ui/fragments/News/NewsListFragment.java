@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.socks.library.KLog;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,8 +63,20 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
     @BindView(R.id.news_rv)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.empty_view)
+    TextView mEmptyView;
+
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
+
+    @OnClick(R.id.empty_view)
+    public void onClick(View v){
+        switch (v.getId()){
+            case R.id.empty_view:
+                mPresenter.firstLoadData();
+                break;
+        }
+    }
 
     private NewsListAdapter mAdapter;
     private boolean isFirst = true;
@@ -131,6 +145,7 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
                         mAdapter.showFooter();
                     }
                     mPresenter.loadMore();
+                    mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
                 }
             }
 
@@ -256,6 +271,8 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
     public void setNewsList(List<NewsSummary> newsSummaryList, int loadType) {
         switch (loadType){
             case LoadDataType.TYPE_FIRST_LOAD:
+                mEmptyView.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 mAdapter.setList(newsSummaryList);
                 mAdapter.notifyDataSetChanged();
                 break;
@@ -273,18 +290,23 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
     }
 
     @Override
-    public void updateErrorView(String errorMsg, int loadType) {
-        Toast.makeText(getActivity(),errorMsg,Toast.LENGTH_SHORT).show();
+    public void updateErrorView(int loadType) {
         switch (loadType){
             case LoadDataType.TYPE_FIRST_LOAD:
-
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+                mEmptyView.setVisibility(View.VISIBLE);
                 break;
             case LoadDataType.TYPE_REFRESH:
                 mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+                mEmptyView.setVisibility(View.VISIBLE);
                 break;
             case LoadDataType.TYPE_LOAD_MORE:
                 isLoading = false;
                 mAdapter.hideFooter();
+                mAdapter.notifyDataSetChanged();
+                break;
+            default:
                 break;
         }
     }

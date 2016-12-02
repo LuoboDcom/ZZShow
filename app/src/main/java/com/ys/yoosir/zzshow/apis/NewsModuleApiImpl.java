@@ -27,7 +27,8 @@ public class NewsModuleApiImpl implements NewsModuleApi<List<NewsChannelTable>> 
             @Override
             public void call(Subscriber<? super List<NewsChannelTable>> subscriber) {
                 NewsChannelTableManager.initDB();
-                subscriber.onNext(NewsChannelTableManager.loadNewsChannelsMine());
+                List<NewsChannelTable> list = NewsChannelTableManager.loadNewsChannelsMine();
+                subscriber.onNext(list);
                 subscriber.onCompleted();
             }
         })
