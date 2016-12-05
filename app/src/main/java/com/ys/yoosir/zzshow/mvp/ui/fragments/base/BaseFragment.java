@@ -22,6 +22,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment{
 
     protected T mPresenter;
     protected View mFragmentView;
+    protected Subscription mSubscription;
 
     public abstract int getLayoutId();
     public abstract void initViews(View view);
@@ -47,6 +48,9 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment{
         super.onDestroy();
         if(mPresenter != null){
             mPresenter.onDestroy();
+        }
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
         }
     }
 

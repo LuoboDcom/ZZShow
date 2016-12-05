@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.events.ChannelItemMoveEvent;
 import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
@@ -38,6 +39,17 @@ public class NewsChannelAdapter extends BaseRecyclerViewAdapter<NewsChannelTable
     private static final int TYPE_CHANNEL_NO_FIXED = 1;
 
     private ItemDragHelperCallback mItemDragHelperCallback;
+
+    private boolean isEdit = false;
+
+    public void setEdit(boolean edit) {
+        isEdit = edit;
+        notifyDataSetChanged();
+    }
+
+    public boolean isEdit() {
+        return isEdit;
+    }
 
     public void setItemDragHelperCallback(ItemDragHelperCallback itemDragHelperCallback) {
         this.mItemDragHelperCallback = itemDragHelperCallback;
@@ -94,12 +106,12 @@ public class NewsChannelAdapter extends BaseRecyclerViewAdapter<NewsChannelTable
         viewHolder.mChannelNameTv.setText(newsChannel.getNewsChannelName());
         int colorId;
         if(newsChannel.isNewsChannelFixed()){
-            colorId = R.color.tv_color_gray;
+            colorId = R.color.tv_color_dark_gray;
         }else{
             colorId = R.color.tv_color_black;
         }
         viewHolder.mChannelNameTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),colorId));
-        if(newsChannel.isNewsChannelSelect()){
+        if(newsChannel.isNewsChannelSelect() && isEdit){
             viewHolder.mDeleteIv.setVisibility(View.VISIBLE);
         }else{
             viewHolder.mDeleteIv.setVisibility(View.GONE);
@@ -108,6 +120,7 @@ public class NewsChannelAdapter extends BaseRecyclerViewAdapter<NewsChannelTable
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
+        KLog.e("onItemMove","fromPosition="+fromPosition+"---toPosition="+toPosition);
         if(isChannelFixed(fromPosition,toPosition)) {
             return false;
         }

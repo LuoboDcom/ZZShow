@@ -37,7 +37,7 @@ public class NewsChannelTableManager {
      * @param index
      */
     public static List<NewsChannelTable> loadNewsChannelsIndexGt(int index){
-        return DBManager.init(MyApplication.getInstance()).loadNewsChannelsByWhere("news_channel_index > ? ",new String[]{index+""});
+        return DBManager.init(MyApplication.getInstance()).loadNewsChannelsByWhere(" news_channel_index > ? ",new String[]{index+""});
     }
 
 

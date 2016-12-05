@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.apis.common.LoadDataType;
@@ -27,6 +29,7 @@ import com.ys.yoosir.zzshow.widget.video.VideoPlayView;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +53,20 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @BindView(R.id.empty_view)
+    TextView mEmptyView;
+
+    @OnClick(R.id.empty_view)
+    public void onClick(View v){
+        switch (v.getId()){
+            case R.id.empty_view:
+                mPresenter.loadData();
+                break;
+            default:
+                break;
+        }
+    }
 
     private boolean isLoading = false;
     private boolean hasMore = false;
@@ -75,6 +92,9 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         Log.d(TAG,"setUserVisibleHint mVideoType="+mVideoType + "-- isVisibleToUser ="+isVisibleToUser);
+        if(isVisibleToUser && mPresenter != null){
+            mPresenter.onCreate();
+        }
     }
 
     @Override
@@ -105,7 +125,28 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                //TODO Stop Video
+                //有视频在播放 或 暂停中
+                if(mLastPosition != -1){
+                    if(mVideoPlayView.getVideoStatus() == IjkVideoView.STATE_PLAYING
+                            || mVideoPlayView.getVideoStatus() == IjkVideoView.STATE_PAUSED){
+                        //停止
+                        mVideoPlayView.stop();
+                        mVideoPlayView.release();
+                    }
+
+                    //并从Item View 中移除 video view
+                    ViewGroup lastParent = (ViewGroup) mVideoPlayView.getParent();
+                    if(lastParent != null){
+                        lastParent.removeAllViews();
+                        //找到 RecyclerView Item View
+                        ViewGroup lastGrandParent = (ViewGroup) lastParent.getParent();
+                        lastGrandParent.findViewById(R.id.video_cover_layout).setVisibility(View.VISIBLE);
+                    }
+                    mLastPosition = -1;
+                }
                 //TODO refresh data
+                mPresenter.refreshData();
             }
         });
     }
@@ -118,12 +159,37 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
     private void initRecyclerView() {
         mLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         mVideoListView.setLayoutManager(mLayoutManager);
+        mVideoListView.setHasFixedSize(true);
         mVideoListAdapter = new VideoListAdapter(null);
         mVideoListView.setAdapter(mVideoListAdapter);
         initActions();
     }
 
     private void initActions() {
+        mVideoListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+
+                int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager)
+                        .findLastVisibleItemPosition();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+
+                if(!isLoading && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItemPosition >= totalItemCount - 1){
+                    //TODO load more % show footer
+                    isLoading = true;
+                    if(mVideoListAdapter != null) {
+                        mVideoListAdapter.showFooter();
+                    }
+                    mPresenter.loadMoreData();
+//                    mVideoListView.scrollToPosition(mVideoListAdapter.getItemCount() - 1);
+                }
+            }
+        });
+
         mVideoListAdapter.setOnItemClickListener(new MyRecyclerListener() {
             @Override
             public void OnItemClickListener(View view, int position) {
@@ -170,7 +236,7 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
                 //当前被添加的 childView 的位置下标
                 int position = mVideoListView.getChildAdapterPosition(view);
                 //显示视频的封面View
-                view.findViewById(R.id.video_cover_layout).setVisibility(View.VISIBLE);
+//                view.findViewById(R.id.video_cover_layout).setVisibility(View.VISIBLE);
                 //判断此 childView 是否是当前正在操作的Item
                 if(position == mLastPosition){
                     //是，添加 VideoView播放
@@ -214,7 +280,9 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
         mPresenter = new VideoListPresenterImpl();
         mPresenter.attachView(this);
         mPresenter.setVideoType(mVideoType);
-        mPresenter.onCreate();
+        if(getUserVisibleHint()) {
+            mPresenter.onCreate();
+        }
     }
 
     public void setVideoPlayView(VideoPlayView videoPlayView){
@@ -288,15 +356,44 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
     public void setVideoList(List<VideoData> videoDataList, int loadType) {
         switch (loadType){
             case LoadDataType.TYPE_FIRST_LOAD:
+                mEmptyView.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 mVideoListAdapter.setList(videoDataList);
                 mVideoListAdapter.notifyDataSetChanged();
                 break;
             case LoadDataType.TYPE_REFRESH:
+                mSwipeRefreshLayout.setRefreshing(false);
                 mVideoListAdapter.setList(videoDataList);
                 mVideoListAdapter.notifyDataSetChanged();
                 break;
             case LoadDataType.TYPE_LOAD_MORE:
+                isLoading = false;
+                mVideoListAdapter.hideFooter();
                 mVideoListAdapter.addMore(videoDataList);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void updateErrorView(int loadType) {
+        switch (loadType){
+            case LoadDataType.TYPE_FIRST_LOAD:
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+                mEmptyView.setVisibility(View.VISIBLE);
+                break;
+            case LoadDataType.TYPE_REFRESH:
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+                mEmptyView.setVisibility(View.VISIBLE);
+                break;
+            case LoadDataType.TYPE_LOAD_MORE:
+                isLoading = false;
+                mVideoListAdapter.hideFooter();
+                mVideoListAdapter.notifyDataSetChanged();
+                break;
+            default:
                 break;
         }
     }
@@ -315,7 +412,7 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
 
     @Override
     public void showMsg(String message) {
-
+        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
     }
 
     @Override

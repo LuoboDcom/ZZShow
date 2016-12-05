@@ -135,7 +135,7 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
                                 (lastVisibleItemPosition[1] >= totalItemCount - 1))) {
                     isLoading = true;
                     mPresenter.loadMore();
-                    mAdapter.showFooter();
+//                    mAdapter.showFooter();
                     mPhotoRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
                 }
             }
@@ -181,6 +181,7 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
                 mAdapter.notifyDataSetChanged();
                 break;
             case LoadDataType.TYPE_LOAD_MORE:
+                isLoading = false;
                 mAdapter.hideFooter();
                 mAdapter.addMore(photoGirlList);
                 break;
@@ -202,6 +203,7 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
                 mEmptyView.setVisibility(View.VISIBLE);
                 break;
             case LoadDataType.TYPE_LOAD_MORE:
+                isLoading = false;
                 mAdapter.hideFooter();
                 mAdapter.notifyDataSetChanged();
                 break;

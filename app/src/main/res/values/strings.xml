@@ -80,6 +80,7 @@
 
     <string name="news_channel_my_title">我的频道</string>
     <string name="edit_text">编辑</string>
+    <string name="finish_text">完成</string>
     <string name="news_channel_recommend_title">频道推荐</string>
     <string name="news_channel_title">频道管理</string>
     <string name="loading">努力加载中...</string>
