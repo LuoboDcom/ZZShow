@@ -5,7 +5,7 @@
     android:id="@+id/activity_news_photo_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_black"
+    android:background="@color/photo_detail_background_color"
     tools:context="com.ys.yoosir.zzshow.mvp.ui.activities.NewsPhotoDetailActivity">
 
     <com.ys.yoosir.zzshow.widget.photoview.HackyViewPager
@@ -50,7 +50,7 @@
             android:layout_marginRight="56dp"
             android:layout_gravity="top|left"
             android:lines="2"
-            android:textColor="@color/tv_color_white"
+            android:textColor="@color/title_color"
             android:textSize="18sp"
             android:text="济南泉水直饮点变取水点 水桶水管齐上阵"
             />
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
-            android:textColor="@color/tv_color_white"
+            android:textColor="@color/title_color"
             android:textSize="14sp"
             android:text="这是描述描述描述"
             />

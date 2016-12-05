@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_gray"
+    android:background="@color/background_color_primary"
     tools:context=".mvp.ui.fragments.News.NewsListFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -15,7 +15,7 @@
             android:id="@+id/news_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/background_gray">
+            >
 
         </android.support.v7.widget.RecyclerView>
 

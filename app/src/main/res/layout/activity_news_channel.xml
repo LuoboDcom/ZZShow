@@ -20,7 +20,8 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background_color_primary">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/news_channel_my_title"
-                    android:textColor="@color/tv_color_black"
+                    android:textColor="@color/text_color_primary"
                     android:textSize="@dimen/text_size_l" />
 
                 <TextView
@@ -70,7 +71,7 @@
                 android:layout_marginTop="@dimen/padding_size_l"
                 android:gravity="center_vertical"
                 android:text="@string/news_channel_recommend_title"
-                android:textColor="@color/tv_color_black"
+                android:textColor="@color/text_color_primary"
                 android:textSize="@dimen/text_size_l" />
 
             <android.support.v7.widget.RecyclerView

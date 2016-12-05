@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="@dimen/padding_size_l"
-        android:textColor="@color/tv_color_white"
+        android:textColor="@color/title_color"
         android:textSize="@dimen/text_size_m" />
 
 </FrameLayout>

@@ -25,7 +25,7 @@
 
     </style>
 
-    <style name="AppTheme.NoTrans">
+    <style name="AppTheme.NoTrans" parent="AppTheme">
 
     </style>
 
@@ -46,6 +46,11 @@
     <style name="WindowAnimationFadeInOut">
         <item name="@android:windowEnterAnimation">@anim/fade_in</item>
         <item name="@android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
+    <style name="TitleTextAppearance">
+        <item name="android:textSize">@dimen/text_size_xxl</item>
+        <item name="android:textColor">@color/title_color</item>
     </style>
 
 </resources>
