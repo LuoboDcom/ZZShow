@@ -1,6 +1,7 @@
 package com.ys.yoosir.zzshow.apis;
 
 import com.socks.library.KLog;
+import com.ys.yoosir.zzshow.apis.common.ApiConstants;
 import com.ys.yoosir.zzshow.apis.common.HostType;
 import com.ys.yoosir.zzshow.apis.interfaces.NewsListModuleApi;
 import com.ys.yoosir.zzshow.apis.services.NewsService;
@@ -40,7 +41,11 @@ public class NewsListModuleApiImpl implements NewsListModuleApi<List<NewsSummary
                 .flatMap(new Func1<Map<String, List<NewsSummary>>, Observable<NewsSummary>>() {
                     @Override
                     public Observable<NewsSummary> call(Map<String, List<NewsSummary>> stringListMap) {
-                        return Observable.from(stringListMap.get(id));
+                        if(ApiConstants.NETEASE_ID_HOUSE.equals(id)){
+                            return Observable.from(stringListMap.get("北京"));
+                        }else{
+                            return Observable.from(stringListMap.get(id));
+                        }
                     }
                 })
                 .map(new Func1<NewsSummary, NewsSummary>() {

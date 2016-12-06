@@ -106,12 +106,12 @@ public class NewsChannelAdapter extends BaseRecyclerViewAdapter<NewsChannelTable
         viewHolder.mChannelNameTv.setText(newsChannel.getNewsChannelName());
         int colorId;
         if(newsChannel.isNewsChannelFixed()){
-            colorId = R.color.tv_color_dark_gray;
+            colorId = R.color.text_color_secondary;
         }else{
-            colorId = R.color.tv_color_black;
+            colorId = R.color.text_color_primary;
         }
         viewHolder.mChannelNameTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),colorId));
-        if(newsChannel.isNewsChannelSelect() && isEdit){
+        if(!newsChannel.isNewsChannelFixed() && newsChannel.isNewsChannelSelect() && isEdit){
             viewHolder.mDeleteIv.setVisibility(View.VISIBLE);
         }else{
             viewHolder.mDeleteIv.setVisibility(View.GONE);

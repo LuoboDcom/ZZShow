@@ -124,8 +124,8 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
     @Override
     public void initViews() {
 
-        toolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.tv_color_white));
-        toolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.tv_color_primary_white));
+        toolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.title_color));
+        toolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.title_color));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

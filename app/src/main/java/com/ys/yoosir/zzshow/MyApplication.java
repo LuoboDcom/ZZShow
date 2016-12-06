@@ -2,8 +2,10 @@ package com.ys.yoosir.zzshow;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.socks.library.KLog;
+import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
 
 /**
  * @version 1.0
@@ -21,6 +23,15 @@ public class MyApplication extends Application{
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        initDayNightMode();
         KLog.init(true);
+    }
+
+    private void initDayNightMode() {
+        if (SharedPreferencesUtil.isNightMode()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 }

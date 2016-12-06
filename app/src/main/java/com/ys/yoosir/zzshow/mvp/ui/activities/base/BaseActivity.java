@@ -99,8 +99,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         return mIsAddedView;
     }
 
-    public void setmIsAddedView(boolean mIsAddedView) {
-        this.mIsAddedView = mIsAddedView;
+    public void setIsAddedView(boolean isAddedView) {
+        this.mIsAddedView = isAddedView;
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -121,7 +121,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     public void changeToNight() {
-        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         initNightView();
         mNightView.setBackgroundResource(R.color.night_mask);
     }

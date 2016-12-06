@@ -13,7 +13,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".mvp.ui.activities.SplashActivity">
+        <activity android:name=".mvp.ui.activities.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,23 +24,27 @@
         <activity
             android:name=".mvp.ui.activities.HomeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTrans" />
         <activity
             android:name=".mvp.ui.activities.NewsDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTrans" />
         <activity
             android:name=".mvp.ui.activities.NewsPhotoDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Trans" />
         <activity
             android:name=".mvp.ui.activities.NewsChannelActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTrans" />
         <activity
             android:name=".mvp.ui.activities.PhotoDetailActivity"
             android:theme="@style/AppTheme.Trans" />
         <activity
             android:name=".mvp.ui.activities.AboutActivity"
-            android:label="@string/title_activity_about"
-            android:theme="@style/AppTheme"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

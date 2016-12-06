@@ -135,7 +135,7 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
                                 (lastVisibleItemPosition[1] >= totalItemCount - 1))) {
                     isLoading = true;
                     mPresenter.loadMore();
-//                    mAdapter.showFooter();
+                    mAdapter.showFooter();
                     mPhotoRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
                 }
             }

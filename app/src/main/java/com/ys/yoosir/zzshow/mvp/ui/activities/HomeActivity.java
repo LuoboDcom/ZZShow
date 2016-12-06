@@ -3,6 +3,9 @@ package com.ys.yoosir.zzshow.mvp.ui.activities;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
+import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
@@ -19,7 +22,9 @@ import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.News.NewsFragment;
@@ -34,7 +39,9 @@ import butterknife.BindView;
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,VideoFragment.OnVideoFIListener,NewsFragment.OnNewsFIListener,PhotoFragment.OnPhotoFIListener {
 
-    private final String CHILD_FRAGMENT_TAG = "child_news" ;
+    private final String CHILD_FRAGMENT_TAG_NEWS = "child_news" ;
+    private final String CHILD_FRAGMENT_TAG_PHOTO = "child_photo" ;
+    private final String CHILD_FRAGMENT_TAG_VIDEO = "child_video" ;
 
     private NewsFragment mNewsFragment;
     private VideoFragment mVideoFragment;
@@ -50,6 +57,32 @@ public class HomeActivity extends BaseActivity
     @BindView(R.id.full_screen)
     FrameLayout mFullScreenLayout;
 
+    private boolean isSwitchNight = false;
+    private int     showContentId; // 1.news ; 2.photo ; 3.video
+    private long    oldOutTime;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        if(savedInstanceState != null) {
+            showContentId = savedInstanceState.getInt("contentTypeId");
+        }
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        KLog.d("NightMode"," - onSaveInstanceState - ");
+        outState.putInt("contentTypeId",showContentId);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        KLog.d("NightMode"," - onRestoreInstanceState - ");
+        showContentId = savedInstanceState.getInt("contentTypeId");
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -57,6 +90,7 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public void initVariables() {
+        KLog.d("NightMode"," - initVariables - ");
         mNewsFragment = new NewsFragment();
         mVideoFragment = new VideoFragment();
         mPhotoFragment = new PhotoFragment();
@@ -68,9 +102,10 @@ public class HomeActivity extends BaseActivity
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                if(ismIsAddedView()){
-                    setmIsAddedView(false);
+                if(isSwitchNight && ismIsAddedView()){
+                    setIsAddedView(false);
                     getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
+                    KLog.d("NightMode"," - recreate - ");
                     recreate();
                 }
             }
@@ -78,8 +113,26 @@ public class HomeActivity extends BaseActivity
 
         mNavigationView.setNavigationItemSelectedListener(this);
         initNightModeSwitch();
-        mNavigationView.setCheckedItem(R.id.nav_news);
-        setChildFragment(mNewsFragment);
+        setDefaultChildFragment(showContentId);
+    }
+
+    private void setDefaultChildFragment(int contentId){
+        KLog.d("NightMode"," - setDefaultChildFragment - contentId="+contentId);
+        switch (contentId){
+            case R.id.nav_photo:
+                mNavigationView.setCheckedItem(R.id.nav_photo);
+                setChildFragment(mPhotoFragment);
+                break;
+            case R.id.nav_video:
+                mNavigationView.setCheckedItem(R.id.nav_video);
+                setChildFragment(mVideoFragment);
+                break;
+            case R.id.nav_news:
+            default:
+                mNavigationView.setCheckedItem(R.id.nav_news);
+                setChildFragment(mNewsFragment);
+                break;
+        }
     }
 
     public void setToolbar(Toolbar toolbar){
@@ -120,6 +173,7 @@ public class HomeActivity extends BaseActivity
         dayNightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isSwitchNight = true;
                 if(isChecked){
                     changeToNight();
                     SharedPreferencesUtil.saveNightMode(true);
@@ -136,7 +190,7 @@ public class HomeActivity extends BaseActivity
     private void setChildFragment(BaseFragment childFragment){
         FragmentManager mFragmentManager = getSupportFragmentManager();
         FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.replace(R.id.show_content_layout,childFragment,CHILD_FRAGMENT_TAG);
+        mFragmentTransaction.replace(R.id.show_content_layout,childFragment,CHILD_FRAGMENT_TAG_NEWS);
         mFragmentTransaction.commit();
     }
 
@@ -178,12 +232,15 @@ public class HomeActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        isSwitchNight = false;
         if (id == R.id.nav_news) {
+            showContentId = id;
             setChildFragment(mNewsFragment);
         } else if (id == R.id.nav_photo) {
+            showContentId = id;
             setChildFragment(mPhotoFragment);
         } else if (id == R.id.nav_video) {
+            showContentId = id;
             setChildFragment(mVideoFragment);
         } else if (id == R.id.nav_share) {
             share();
@@ -246,6 +303,12 @@ public class HomeActivity extends BaseActivity
             if(mFullScreenLayout != null && mFullScreenLayout.getVisibility() == View.VISIBLE  && getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 return true;
+            }else{
+                if( System.currentTimeMillis() - oldOutTime > 1200l){
+                    oldOutTime = System.currentTimeMillis();
+                    Toast.makeText(HomeActivity.this,"再次点击，退出应用",Toast.LENGTH_SHORT).show();
+                    return true;
+                }
             }
         }
         return super.onKeyDown(keyCode, event);

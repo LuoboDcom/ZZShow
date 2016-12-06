@@ -270,6 +270,7 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
                     mLastPosition = -1;
                     mVideoPlayView.stop();
                     mVideoPlayView.release();
+                    view.findViewById(R.id.video_cover_layout).setVisibility(View.VISIBLE);
                 }
             }
         });

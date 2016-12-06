@@ -77,6 +77,6 @@ public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,List
     @Override
     public void onError(String errorMsg) {
         super.onError(errorMsg);
-        mView.showMsg(errorMsg);
+        mView.updateErrorView(mLoadDataType);
     }
 }

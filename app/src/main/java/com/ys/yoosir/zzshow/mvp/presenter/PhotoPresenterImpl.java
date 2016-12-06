@@ -72,6 +72,7 @@ public class PhotoPresenterImpl extends BasePresenterImpl<PhotoGirlView,List<Pho
         if(mLoadType == LoadDataType.TYPE_LOAD_MORE){
             mLoadType--;
         }
+        mView.updateErrorView(mLoadType);
     }
 
     @Override

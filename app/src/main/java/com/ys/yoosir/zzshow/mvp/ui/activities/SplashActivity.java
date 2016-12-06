@@ -76,6 +76,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void startLogoOuter() {
 //        YoYo.with(Techniques.RubberBand).duration(1000).playOn(mLogoOuterIv);
+
     }
 
     private void startShowAppName() {

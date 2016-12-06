@@ -79,7 +79,7 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
     }
 
     private NewsListAdapter mAdapter;
-    private boolean isFirst = true;
+//    private boolean isFirst = true;
     private boolean hasMore = false;
     private boolean isLoading = false;
 
@@ -174,7 +174,7 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
         mPresenter.attachView(this);
         mPresenter.setNewsTypeAndId(mNewsChannelType, mNewsChannelId);
         KLog.d(TAG,"initPresenter - mNewsChannelIndex = "+ mNewsChannelIndex);
-        if(getUserVisibleHint() && isFirst){
+        if(getUserVisibleHint()){
             KLog.d(TAG,"initPresenter - mNewsChannelIndex = "+ mNewsChannelIndex + " -- onCreate");
             mPresenter.onCreate();
         }
@@ -187,8 +187,7 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser && isFirst && mPresenter != null){
-            isFirst = false;
+        if(isVisibleToUser && mPresenter != null){
             mPresenter.onCreate();
         }
     }

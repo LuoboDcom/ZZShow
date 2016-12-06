@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/padding_size_l"
         android:text="@string/loading"
-        android:textColor="@color/gray_text"
+        android:textColor="@color/text_color_secondary"
         android:textSize="@dimen/text_size_l"/>
 
 </LinearLayout>
