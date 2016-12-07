@@ -1,4 +1,4 @@
-### 效果图
+### 效果图 （如果效果图看不清，可以点击下面 “吱吱文章”查看）
 ![新闻](http://upload-images.jianshu.io/upload_images/1976991-6adf16d6a4fc4c4c.gif?imageMogr2/auto-orient/strip)
 
 ![图集](http://upload-images.jianshu.io/upload_images/1976991-9cd4d3df41e9ffcb.gif?imageMogr2/auto-orient/strip)
