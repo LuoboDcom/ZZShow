@@ -25,7 +25,7 @@
             android:name=".mvp.ui.activities.HomeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTrans" />
+            android:theme="@style/AppTheme.Trans" />
         <activity
             android:name=".mvp.ui.activities.NewsDetailActivity"
             android:screenOrientation="portrait"
