@@ -263,6 +263,7 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
 
             @Override
             public void onChildViewDetachedFromWindow(View view) {
+                if(mVideoPlayView == null) return;
                 int position = mVideoListView.getChildAdapterPosition(view);
                 if(position == mLastPosition){
                     FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.item_layout_video);

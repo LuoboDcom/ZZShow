@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -39,9 +40,10 @@ import butterknife.BindView;
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,VideoFragment.OnVideoFIListener,NewsFragment.OnNewsFIListener,PhotoFragment.OnPhotoFIListener {
 
-    private final String CHILD_FRAGMENT_TAG_NEWS = "child_news" ;
-    private final String CHILD_FRAGMENT_TAG_PHOTO = "child_photo" ;
-    private final String CHILD_FRAGMENT_TAG_VIDEO = "child_video" ;
+    private static final String CHILD_FRAGMENT_TAG_NEWS = "child_news" ;
+    private static final String CHILD_FRAGMENT_TAG_PHOTO = "child_photo" ;
+    private static final String CHILD_FRAGMENT_TAG_VIDEO = "child_video" ;
+    private static final String CHILD_FRAGMENT_TYPE = "CHILD_FRAGMENT_TYPE";
 
     private NewsFragment mNewsFragment;
     private VideoFragment mVideoFragment;
@@ -58,29 +60,31 @@ public class HomeActivity extends BaseActivity
     FrameLayout mFullScreenLayout;
 
     private boolean isSwitchNight = false;
-    private int     showContentId; // 1.news ; 2.photo ; 3.video
+    private String  childFragmentType; // 1.news ; 2.photo ; 3.video
     private long    oldOutTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d("ChangeNight","-onCreate");
         if(savedInstanceState != null) {
-            showContentId = savedInstanceState.getInt("contentTypeId");
+            childFragmentType = savedInstanceState.getString(CHILD_FRAGMENT_TYPE);
+            Log.d("ChangeNight","-savedInstanceState - "+childFragmentType);
         }
         super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        KLog.d("NightMode"," - onSaveInstanceState - ");
-        outState.putInt("contentTypeId",showContentId);
+        Log.d("ChangeNight","-onSaveInstanceState - "+childFragmentType);
+        outState.putString(CHILD_FRAGMENT_TYPE,childFragmentType);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        KLog.d("NightMode"," - onRestoreInstanceState - ");
-        showContentId = savedInstanceState.getInt("contentTypeId");
+        childFragmentType = savedInstanceState.getString(CHILD_FRAGMENT_TYPE);
+        Log.d("ChangeNight","-onRestoreInstanceState - "+childFragmentType);
     }
 
     @Override
@@ -113,26 +117,24 @@ public class HomeActivity extends BaseActivity
 
         mNavigationView.setNavigationItemSelectedListener(this);
         initNightModeSwitch();
-        setDefaultChildFragment(showContentId);
+        childFragmentType = childFragmentType == null ? CHILD_FRAGMENT_TAG_NEWS : childFragmentType;
+        setDefaultChildFragment(childFragmentType);
     }
 
-    private void setDefaultChildFragment(int contentId){
-        KLog.d("NightMode"," - setDefaultChildFragment - contentId="+contentId);
-        switch (contentId){
-            case R.id.nav_photo:
+    private void setDefaultChildFragment(String childFragmentTag){
+        switch (childFragmentTag){
+            case CHILD_FRAGMENT_TAG_PHOTO:
                 mNavigationView.setCheckedItem(R.id.nav_photo);
-                setChildFragment(mPhotoFragment);
                 break;
-            case R.id.nav_video:
+            case CHILD_FRAGMENT_TAG_VIDEO:
                 mNavigationView.setCheckedItem(R.id.nav_video);
-                setChildFragment(mVideoFragment);
                 break;
-            case R.id.nav_news:
+            case CHILD_FRAGMENT_TAG_NEWS:
             default:
                 mNavigationView.setCheckedItem(R.id.nav_news);
-                setChildFragment(mNewsFragment);
                 break;
         }
+        setChildFragment(childFragmentType);
     }
 
     public void setToolbar(Toolbar toolbar){
@@ -187,11 +189,44 @@ public class HomeActivity extends BaseActivity
     }
 
 
-    private void setChildFragment(BaseFragment childFragment){
+    private void setChildFragment(String childFragmentTag){
         FragmentManager mFragmentManager = getSupportFragmentManager();
         FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.replace(R.id.show_content_layout,childFragment,CHILD_FRAGMENT_TAG_NEWS);
+        if(childFragmentType.equals(childFragmentTag)){
+            BaseFragment childFragment = (BaseFragment) mFragmentManager.findFragmentByTag(childFragmentTag);
+            if(childFragment == null){
+                childFragment = getChildFragmentByTag(childFragmentTag);
+            }
+            if(!childFragment.isAdded()){
+                mFragmentTransaction.add(R.id.show_content_layout,childFragment,childFragmentTag);
+            }
+            mFragmentTransaction.show(childFragment);
+        }else{
+            BaseFragment childFragment = (BaseFragment) mFragmentManager.findFragmentByTag(childFragmentType);
+            mFragmentTransaction.hide(childFragment);
+            BaseFragment addChildFragment = (BaseFragment) mFragmentManager.findFragmentByTag(childFragmentTag);
+            if(addChildFragment == null){
+                addChildFragment = getChildFragmentByTag(childFragmentTag);
+            }
+            if(!addChildFragment.isAdded()){
+                mFragmentTransaction.add(R.id.show_content_layout,addChildFragment,childFragmentTag);
+            }
+            mFragmentTransaction.show(addChildFragment);
+        }
         mFragmentTransaction.commit();
+        childFragmentType = childFragmentTag;
+    }
+
+    private BaseFragment getChildFragmentByTag(String childFragmentTag){
+        switch (childFragmentTag){
+            case CHILD_FRAGMENT_TAG_PHOTO:
+                return  mPhotoFragment;
+            case CHILD_FRAGMENT_TAG_VIDEO:
+                return mVideoFragment;
+            case CHILD_FRAGMENT_TAG_NEWS:
+            default:
+                return mNewsFragment;
+        }
     }
 
 
@@ -234,14 +269,11 @@ public class HomeActivity extends BaseActivity
         int id = item.getItemId();
         isSwitchNight = false;
         if (id == R.id.nav_news) {
-            showContentId = id;
-            setChildFragment(mNewsFragment);
+            setChildFragment(CHILD_FRAGMENT_TAG_NEWS);
         } else if (id == R.id.nav_photo) {
-            showContentId = id;
-            setChildFragment(mPhotoFragment);
+            setChildFragment(CHILD_FRAGMENT_TAG_PHOTO);
         } else if (id == R.id.nav_video) {
-            showContentId = id;
-            setChildFragment(mVideoFragment);
+            setChildFragment(CHILD_FRAGMENT_TAG_VIDEO);
         } else if (id == R.id.nav_share) {
             share();
         } else if (id == R.id.nav_about) {

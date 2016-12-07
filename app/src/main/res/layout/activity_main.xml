@@ -18,6 +18,8 @@
             android:id="@+id/show_content_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:background="?attr/colorPrimary"
             >
 
         </FrameLayout>
@@ -39,6 +41,7 @@
         android:id="@+id/full_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:visibility="gone">
 
     </FrameLayout>
