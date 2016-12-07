@@ -1,10 +1,11 @@
 ### 效果图
 ![新闻](http://upload-images.jianshu.io/upload_images/1976991-6adf16d6a4fc4c4c.gif?imageMogr2/auto-orient/strip)
 ![图集](http://upload-images.jianshu.io/upload_images/1976991-9cd4d3df41e9ffcb.gif?imageMogr2/auto-orient/strip)
+
 ![图片](http://upload-images.jianshu.io/upload_images/1976991-e889009012ea82aa.gif?imageMogr2/auto-orient/strip)
 ![视频](http://upload-images.jianshu.io/upload_images/1976991-b597b9190b83e91a.gif?imageMogr2/auto-orient/strip)
-![日/夜模式](http://upload-images.jianshu.io/upload_images/1976991-d0f31927677d27ea.gif?imageMogr2/auto-orient/strip)
 
+![日/夜模式](http://upload-images.jianshu.io/upload_images/1976991-d0f31927677d27ea.gif?imageMogr2/auto-orient/strip)
 ![2016-12-08_01_11_08.mp4_1481131355.gif](http://upload-images.jianshu.io/upload_images/1976991-7f43a43a145be4da.gif?imageMogr2/auto-orient/strip)
 
 
@@ -66,5 +67,7 @@
 
 ### TODO
 **使用[Dragger2](https://github.com/google/dagger)**
+
 **使用[Greendao](https://github.com/greenrobot/greenDAO)**
+
 **添加动态权限**
