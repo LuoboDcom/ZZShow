@@ -19,7 +19,7 @@
 
 ### 吱吱源码
 >吱吱源码：https://github.com/LuoboDcom/ZZShow
-  吱吱文章：http://www.jianshu.com/writer#/notebooks/6055709
+  吱吱文章：http://www.jianshu.com/p/e2a8c34932a6
 
 ### 参考的项目
 > 1. 咖枯的 **多彩资讯** 地址：https://github.com/kaku2015/ColorfulNews (主要包括新闻和图片模块)
