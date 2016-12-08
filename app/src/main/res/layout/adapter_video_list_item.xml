@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@mipmap/icon_video_stop"
+            android:src="@mipmap/video_play_btn"
             />
 
     </FrameLayout>

@@ -192,6 +192,7 @@ public class HomeActivity extends BaseActivity
     private void setChildFragment(String childFragmentTag){
         FragmentManager mFragmentManager = getSupportFragmentManager();
         FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
+
         if(childFragmentType.equals(childFragmentTag)){
             BaseFragment childFragment = (BaseFragment) mFragmentManager.findFragmentByTag(childFragmentTag);
             if(childFragment == null){
@@ -216,6 +217,11 @@ public class HomeActivity extends BaseActivity
             BaseFragment addChildFragment = (BaseFragment) mFragmentManager.findFragmentByTag(childFragmentTag);
             if(addChildFragment == null){
                 addChildFragment = getChildFragmentByTag(childFragmentTag);
+            }else{
+                if(getChildFragmentByTag(childFragmentTag) != addChildFragment){
+                    mFragmentTransaction.remove(addChildFragment);
+                    addChildFragment = getChildFragmentByTag(childFragmentTag);
+                }
             }
             if(!addChildFragment.isAdded()){
                 mFragmentTransaction.add(R.id.show_content_layout,addChildFragment,childFragmentTag);
