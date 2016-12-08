@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.R;
+import com.ys.yoosir.zzshow.db.DBManager;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.News.NewsFragment;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.PhotoFragment;
@@ -62,6 +63,12 @@ public class HomeActivity extends BaseActivity
     private boolean isSwitchNight = false;
     private String  childFragmentType; // 1.news ; 2.photo ; 3.video
     private long    oldOutTime;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DBManager.closeDB();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

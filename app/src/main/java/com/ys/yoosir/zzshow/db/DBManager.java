@@ -18,7 +18,7 @@ import java.util.List;
 public class DBManager {
 
     private static DBManager mDBManager;
-    private final SQLiteDatabase db;
+    private static volatile SQLiteDatabase db;
 
     public static DBManager init(Context context){
         if(mDBManager == null){
@@ -27,9 +27,20 @@ public class DBManager {
         return mDBManager;
     }
 
+    public static void closeDB(){
+        if(db != null){
+            db.close();
+        }
+    }
+
     private DBManager(Context context){
-        DBHelper dbHelper = new DBHelper(context);
-        db = dbHelper.getWritableDatabase();
+        if(db == null){
+            synchronized (DBManager.class){
+                if(db == null){
+                    db = new DBHelper(context).getWritableDatabase();
+                }
+            }
+        }
     }
 
     /**
