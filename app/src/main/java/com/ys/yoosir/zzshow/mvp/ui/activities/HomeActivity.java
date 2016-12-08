@@ -134,7 +134,7 @@ public class HomeActivity extends BaseActivity
                 mNavigationView.setCheckedItem(R.id.nav_news);
                 break;
         }
-        setChildFragment(childFragmentType);
+        setChildFragment(childFragmentTag);
     }
 
     public void setToolbar(Toolbar toolbar){
@@ -196,14 +196,23 @@ public class HomeActivity extends BaseActivity
             BaseFragment childFragment = (BaseFragment) mFragmentManager.findFragmentByTag(childFragmentTag);
             if(childFragment == null){
                 childFragment = getChildFragmentByTag(childFragmentTag);
+            }else{
+                if(getChildFragmentByTag(childFragmentTag) != childFragment){
+                    mFragmentTransaction.remove(childFragment);
+                    childFragment = getChildFragmentByTag(childFragmentTag);
+                }
             }
             if(!childFragment.isAdded()){
                 mFragmentTransaction.add(R.id.show_content_layout,childFragment,childFragmentTag);
             }
-            mFragmentTransaction.show(childFragment);
+            if(childFragment.isHidden()) {
+                mFragmentTransaction.show(childFragment);
+            }
         }else{
             BaseFragment childFragment = (BaseFragment) mFragmentManager.findFragmentByTag(childFragmentType);
-            mFragmentTransaction.hide(childFragment);
+            if(childFragment != null) {
+                mFragmentTransaction.hide(childFragment);
+            }
             BaseFragment addChildFragment = (BaseFragment) mFragmentManager.findFragmentByTag(childFragmentTag);
             if(addChildFragment == null){
                 addChildFragment = getChildFragmentByTag(childFragmentTag);
@@ -213,8 +222,8 @@ public class HomeActivity extends BaseActivity
             }
             mFragmentTransaction.show(addChildFragment);
         }
-        mFragmentTransaction.commit();
         childFragmentType = childFragmentTag;
+        mFragmentTransaction.commit();
     }
 
     private BaseFragment getChildFragmentByTag(String childFragmentTag){

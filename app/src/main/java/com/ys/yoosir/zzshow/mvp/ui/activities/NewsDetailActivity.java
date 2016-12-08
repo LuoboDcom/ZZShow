@@ -126,13 +126,6 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
 
         toolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.title_color));
         toolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.title_color));
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         Glide.with(this).load(mPostImgPath).asBitmap()
                 .placeholder(R.mipmap.ic_loading)
                 .format(DecodeFormat.PREFER_ARGB_8888)
