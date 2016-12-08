@@ -1,13 +1,17 @@
 package com.ys.yoosir.zzshow.mvp.ui.activities;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,10 +28,15 @@ import rx.functions.Action1;
 
 public class SplashActivity extends AppCompatActivity {
 
-    @BindView(R.id.logo_outer_iv)
-    ImageView mLogoOuterIv;
-    @BindView(R.id.logo_inner_iv)
-    ImageView mLogoInnerIv;
+    @BindView(R.id.logo_bg)
+    ImageView mLogoBgIv;
+
+    @BindView(R.id.logo_word)
+    ImageView mLogoWordIv;
+
+    @BindView(R.id.logo_trumpet)
+    ImageView mLogoTrumpetIv;
+
     boolean isShowingRubberEffect = false;
     @BindView(R.id.app_name_tv)
     TextView mAppNameTv;
@@ -48,7 +57,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void startLogoInner1() {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_top_in);
-        mLogoInnerIv.startAnimation(animation);
+        mLogoWordIv.startAnimation(animation);
     }
 
     private void startLogoOuterAndAppName() {
@@ -75,16 +84,23 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void startLogoOuter() {
-//        YoYo.with(Techniques.RubberBand).duration(1000).playOn(mLogoOuterIv);
-
+//        YoYo.with(Techniques.RubberBand).duration(1000).playOn(mLogoBgIv);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(1000);
+        animatorSet.playTogether(ObjectAnimator.ofFloat(mLogoBgIv, "scaleX", new float[]{1.0F, 1.25F, 0.75F, 1.15F, 1.0F}),
+                ObjectAnimator.ofFloat(mLogoBgIv, "scaleY", new float[]{1.0F, 0.75F, 1.25F, 0.85F, 1.0F}));
+        animatorSet.start();
     }
 
     private void startShowAppName() {
 //        YoYo.with(Techniques.FadeIn).duration(1000).playOn(mAppNameTv);
+        ObjectAnimator.ofFloat(mAppNameTv,"alpha",new float[]{0,1}).setDuration(1000).start();
+        ObjectAnimator.ofFloat(mLogoTrumpetIv,"alpha",new float[]{0,1}).setDuration(1000).start();
     }
 
     private void startLogoInner2() {
-//        YoYo.with(Techniques.Bounce).duration(1000).playOn(mLogoInnerIv);
+//        YoYo.with(Techniques.Bounce).duration(1000).playOn(mLogoWordIv);
+        ObjectAnimator.ofFloat(mLogoWordIv, "translationY", new float[]{0.0F, 0.0F, -30.0F, 0.0F, -15.0F, 0.0F, 0.0F});
     }
 
     private void finishActivity() {

@@ -4,21 +4,31 @@
     android:id="@+id/activity_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#2fd2ea"
     tools:context="com.ys.yoosir.zzshow.mvp.ui.activities.SplashActivity">
 
     <ImageView
-        android:id="@+id/logo_outer_iv"
+        android:id="@+id/logo_bg"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@mipmap/ic_launcher_outer"/>
+        android:src="@mipmap/zzshow_logo_bg"/>
 
     <ImageView
-        android:id="@+id/logo_inner_iv"
+        android:id="@+id/logo_word"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@mipmap/ic_launcher_inner"
+        android:src="@mipmap/zzshow_logo_word"
+        tools:alpha="1"/>
+
+    <ImageView
+        android:id="@+id/logo_trumpet"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@mipmap/zzshow_logo_trumpet"
+        android:alpha="0"
         tools:alpha="1"/>
 
     <TextView
@@ -30,7 +40,7 @@
         android:alpha="0"
         android:text="@string/app_name"
         android:textColor="@color/tv_color_white"
-        android:textSize="@dimen/text_size_m"
+        android:textSize="@dimen/text_size_xxl"
         tools:alpha="1"/>
     
 </FrameLayout>
