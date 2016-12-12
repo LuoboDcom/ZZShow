@@ -2,7 +2,7 @@ package com.ys.yoosir.zzshow.mvp.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.ys.yoosir.zzshow.apis.listener.RequestCallBack;
+import com.ys.yoosir.zzshow.common.RequestCallBack;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.BasePresenter;
 import com.ys.yoosir.zzshow.mvp.view.base.BaseView;
 

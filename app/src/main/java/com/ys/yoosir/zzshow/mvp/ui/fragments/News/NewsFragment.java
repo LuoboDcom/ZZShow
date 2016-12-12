@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.events.ChannelChangeEvent;
-import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.presenter.NewsPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsChannelActivity;
@@ -28,7 +28,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.Subscription;
 import rx.functions.Action1;
 
 /**

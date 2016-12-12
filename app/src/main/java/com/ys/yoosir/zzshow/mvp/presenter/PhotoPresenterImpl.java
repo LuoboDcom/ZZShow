@@ -1,9 +1,9 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
-import com.ys.yoosir.zzshow.apis.PhotoModuleApiImpl;
-import com.ys.yoosir.zzshow.apis.common.LoadDataType;
-import com.ys.yoosir.zzshow.apis.interfaces.PhotoModuleApi;
-import com.ys.yoosir.zzshow.mvp.modle.photos.PhotoGirl;
+import com.ys.yoosir.zzshow.mvp.apis.PhotoModuleApiImpl;
+import com.ys.yoosir.zzshow.common.LoadDataType;
+import com.ys.yoosir.zzshow.mvp.apis.interfaces.PhotoModuleApi;
+import com.ys.yoosir.zzshow.mvp.entity.photos.PhotoGirl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PhotoPresenter;
 import com.ys.yoosir.zzshow.mvp.view.PhotoGirlView;
 

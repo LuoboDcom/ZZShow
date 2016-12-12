@@ -15,8 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.apis.common.LoadDataType;
-import com.ys.yoosir.zzshow.mvp.modle.videos.VideoData;
+import com.ys.yoosir.zzshow.common.LoadDataType;
+import com.ys.yoosir.zzshow.mvp.entity.videos.VideoData;
 import com.ys.yoosir.zzshow.mvp.presenter.VideoListPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.VideoListPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.VideoListAdapter;

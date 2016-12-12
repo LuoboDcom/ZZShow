@@ -3,9 +3,10 @@ package com.ys.yoosir.zzshow.apis;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.ys.yoosir.zzshow.apis.common.ApiConstants;
-import com.ys.yoosir.zzshow.apis.listener.RequestCallBack;
-import com.ys.yoosir.zzshow.mvp.modle.netease.NewsSummary;
+import com.ys.yoosir.zzshow.common.ApiConstants;
+import com.ys.yoosir.zzshow.common.RequestCallBack;
+import com.ys.yoosir.zzshow.mvp.apis.NewsListModuleApiImpl;
+import com.ys.yoosir.zzshow.mvp.entity.netease.NewsSummary;
 
 import org.junit.After;
 import org.junit.Before;

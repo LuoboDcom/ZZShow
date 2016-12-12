@@ -12,8 +12,8 @@ import android.provider.MediaStore;
 
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.apis.PhotoDetailModuleApiImpl;
-import com.ys.yoosir.zzshow.apis.interfaces.PhotoDetailModuleApi;
+import com.ys.yoosir.zzshow.mvp.apis.PhotoDetailModuleApiImpl;
+import com.ys.yoosir.zzshow.mvp.apis.interfaces.PhotoDetailModuleApi;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PhotoDetailPresenter;
 import com.ys.yoosir.zzshow.mvp.view.PhotoDetailView;
 

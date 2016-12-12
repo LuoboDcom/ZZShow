@@ -2,10 +2,10 @@ package com.ys.yoosir.zzshow.mvp.presenter;
 
 import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.Constants;
-import com.ys.yoosir.zzshow.apis.NewsChannelApiImpl;
-import com.ys.yoosir.zzshow.apis.interfaces.NewsChannelApi;
+import com.ys.yoosir.zzshow.mvp.apis.NewsChannelApiImpl;
+import com.ys.yoosir.zzshow.mvp.apis.interfaces.NewsChannelApi;
 import com.ys.yoosir.zzshow.events.ChannelChangeEvent;
-import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsChannelPresenter;
 import com.ys.yoosir.zzshow.mvp.view.NewsChannelView;
 import com.ys.yoosir.zzshow.utils.RxBus;

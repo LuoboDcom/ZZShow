@@ -1,6 +1,6 @@
 package com.ys.yoosir.zzshow.mvp.view;
 
-import com.ys.yoosir.zzshow.mvp.modle.photos.PhotoGirl;
+import com.ys.yoosir.zzshow.mvp.entity.photos.PhotoGirl;
 import com.ys.yoosir.zzshow.mvp.view.base.BaseView;
 
 import java.util.List;

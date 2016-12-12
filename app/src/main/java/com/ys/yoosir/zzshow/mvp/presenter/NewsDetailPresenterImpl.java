@@ -1,9 +1,9 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
 import com.socks.library.KLog;
-import com.ys.yoosir.zzshow.apis.NewsDetailModuleApiImpl;
-import com.ys.yoosir.zzshow.apis.interfaces.NewsDetailModuleApi;
-import com.ys.yoosir.zzshow.mvp.modle.netease.NewsDetail;
+import com.ys.yoosir.zzshow.mvp.apis.NewsDetailModuleApiImpl;
+import com.ys.yoosir.zzshow.mvp.apis.interfaces.NewsDetailModuleApi;
+import com.ys.yoosir.zzshow.mvp.entity.netease.NewsDetail;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsDetailPresenter;
 import com.ys.yoosir.zzshow.mvp.view.NewsDetailView;
 

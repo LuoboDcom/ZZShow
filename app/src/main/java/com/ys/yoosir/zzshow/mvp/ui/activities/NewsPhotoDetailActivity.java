@@ -12,12 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.modle.NewsPhotoDetail;
+import com.ys.yoosir.zzshow.mvp.entity.netease.NewsPhotoDetail;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
 import com.ys.yoosir.zzshow.utils.SystemUiVisibilityUtil;
 import com.ys.yoosir.zzshow.widget.photoview.HackyViewPager;

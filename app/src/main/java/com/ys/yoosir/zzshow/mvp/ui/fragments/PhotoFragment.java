@@ -8,7 +8,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -20,8 +19,8 @@ import android.widget.Toast;
 
 import com.ys.yoosir.zzshow.Constants;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.apis.common.LoadDataType;
-import com.ys.yoosir.zzshow.mvp.modle.photos.PhotoGirl;
+import com.ys.yoosir.zzshow.common.LoadDataType;
+import com.ys.yoosir.zzshow.mvp.entity.photos.PhotoGirl;
 import com.ys.yoosir.zzshow.mvp.presenter.PhotoPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PhotoPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.PhotoDetailActivity;

@@ -1,6 +1,6 @@
 package com.ys.yoosir.zzshow.mvp.view;
 
-import com.ys.yoosir.zzshow.mvp.modle.netease.NewsDetail;
+import com.ys.yoosir.zzshow.mvp.entity.netease.NewsDetail;
 import com.ys.yoosir.zzshow.mvp.view.base.BaseView;
 
 /**

@@ -1,8 +1,8 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
-import com.ys.yoosir.zzshow.apis.VideoModuleApiIml;
-import com.ys.yoosir.zzshow.apis.interfaces.VideoModuleApi;
-import com.ys.yoosir.zzshow.mvp.modle.videos.VideoChannel;
+import com.ys.yoosir.zzshow.mvp.apis.VideoModuleApiIml;
+import com.ys.yoosir.zzshow.mvp.apis.interfaces.VideoModuleApi;
+import com.ys.yoosir.zzshow.mvp.entity.videos.VideoChannel;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.VideoPresenter;
 import com.ys.yoosir.zzshow.mvp.view.VideoView;
 

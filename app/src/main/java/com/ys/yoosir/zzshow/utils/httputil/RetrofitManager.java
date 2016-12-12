@@ -2,8 +2,8 @@ package com.ys.yoosir.zzshow.utils.httputil;
 
 import android.util.SparseArray;
 
-import com.ys.yoosir.zzshow.apis.common.ApiConstants;
-import com.ys.yoosir.zzshow.apis.common.HostType;
+import com.ys.yoosir.zzshow.common.ApiConstants;
+import com.ys.yoosir.zzshow.common.HostType;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

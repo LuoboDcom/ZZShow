@@ -21,6 +21,15 @@
 >吱吱源码：https://github.com/LuoboDcom/ZZShow
   吱吱文章：http://www.jianshu.com/p/e2a8c34932a6
 
+### Version
+
+#### V1.0.1
+1.修改项目的包结构，让项目的架构更清晰
+
+#### V1.0.0
+1.提交第一版
+
+
 ### 参考的项目
 > 1. 咖枯的 **多彩资讯** 地址：https://github.com/kaku2015/ColorfulNews (主要包括新闻和图片模块)
  Email: [kaku201313@163.com](mailto:kaku201313@163.com)

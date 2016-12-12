@@ -1,9 +1,6 @@
 package com.ys.yoosir.zzshow.mvp.view;
 
-import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.view.base.BaseView;
-
-import java.util.List;
 
 /**
  *   首页

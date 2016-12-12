@@ -1,7 +1,6 @@
 package com.ys.yoosir.zzshow.mvp.ui.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,28 +11,21 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
-import com.ys.yoosir.zzshow.mvp.modle.videos.VideoChannel;
+import com.ys.yoosir.zzshow.mvp.entity.videos.VideoChannel;
 import com.ys.yoosir.zzshow.mvp.presenter.VideoPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.VideoPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.PostFragmentPagerAdapter;
-import com.ys.yoosir.zzshow.mvp.ui.fragments.News.NewsListFragment;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
-import com.ys.yoosir.zzshow.mvp.view.NewsView;
 import com.ys.yoosir.zzshow.mvp.view.VideoView;
 import com.ys.yoosir.zzshow.utils.TabLayoutUtil;
-import com.ys.yoosir.zzshow.utils.mediavideo.IjkVideoView;
 import com.ys.yoosir.zzshow.widget.video.VideoPlayView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 /**

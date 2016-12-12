@@ -4,14 +4,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.events.ChannelItemMoveEvent;
-import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.presenter.NewsChannelPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsChannelPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;

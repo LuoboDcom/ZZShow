@@ -1,8 +1,8 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
-import com.ys.yoosir.zzshow.apis.NewsModuleApiImpl;
-import com.ys.yoosir.zzshow.apis.interfaces.NewsModuleApi;
-import com.ys.yoosir.zzshow.mvp.modle.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.mvp.apis.NewsModuleApiImpl;
+import com.ys.yoosir.zzshow.mvp.apis.interfaces.NewsModuleApi;
+import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsPresenter;
 import com.ys.yoosir.zzshow.mvp.view.NewsView;
 
