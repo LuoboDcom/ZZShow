@@ -4,8 +4,11 @@ import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.common.ApiConstants;
 import com.ys.yoosir.zzshow.db.DBManager;
+import com.ys.yoosir.zzshow.greendao.gen.NewsChannelTableDao;
 import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
+
+import org.greenrobot.greendao.query.Query;
 
 import java.util.List;
 
@@ -22,12 +25,17 @@ public class NewsChannelTableManager {
         if(!SharedPreferencesUtil.isInitDB()){
             String[] channelNames = MyApplication.getInstance().getResources().getStringArray(R.array.news_channel_name);
             String[] channelIds = MyApplication.getInstance().getResources().getStringArray(R.array.news_channel_id);
+            NewsChannelTableDao channelTableDao = MyApplication.getDaoSeesion().getNewsChannelTableDao();
             for (int i = 0; i < channelNames.length; i++) {
-                NewsChannelTable entity = new NewsChannelTable(
-                    channelNames[i],
+                NewsChannelTable entity = new NewsChannelTable(null,
+                        channelNames[i],
                         channelIds[i],
-                        ApiConstants.getType(channelIds[i]),i <= 7,i,i == 0);
-                DBManager.init(MyApplication.getInstance()).addNewsChannel(entity);
+                        ApiConstants.getType(channelIds[i]),
+                        i <= 7,
+                        i,
+                        i == 0);
+//                DBManager.init(MyApplication.getInstance()).addNewsChannel(entity);
+                channelTableDao.insert(entity);
             }
             SharedPreferencesUtil.updateInitDBValue(true);
         }
@@ -38,7 +46,10 @@ public class NewsChannelTableManager {
      * @param index
      */
     public static List<NewsChannelTable> loadNewsChannelsIndexGt(int index){
-        return DBManager.init(MyApplication.getInstance()).loadNewsChannelsByWhere(" news_channel_index > ? ",new String[]{index+""});
+        Query<NewsChannelTable> newsChannelTableQuery = MyApplication.getDaoSeesion().getNewsChannelTableDao().queryBuilder()
+                .where(NewsChannelTableDao.Properties.NewsChannelIndex.gt(index)).build();
+        return newsChannelTableQuery.list();
+        //return DBManager.init(MyApplication.getInstance()).loadNewsChannelsByWhere(" news_channel_index > ? ",new String[]{index+""});
     }
 
 
@@ -48,7 +59,8 @@ public class NewsChannelTableManager {
      * @param channelTable
      */
     public static void update(NewsChannelTable channelTable) {
-        DBManager.init(MyApplication.getInstance()).update(channelTable);
+        MyApplication.getDaoSeesion().getNewsChannelTableDao().update(channelTable);
+//        DBManager.init(MyApplication.getInstance()).update(channelTable);
     }
 
     /**
@@ -56,7 +68,13 @@ public class NewsChannelTableManager {
      * @return 已被选择的频道
      */
     public static List<NewsChannelTable> loadNewsChannelsMine(){
-        return DBManager.init(MyApplication.getInstance()).loadNewsChannels("1");
+        Query<NewsChannelTable> newsChannelTableQuery = MyApplication.getDaoSeesion().getNewsChannelTableDao()
+                .queryBuilder()
+                .where(NewsChannelTableDao.Properties.NewsChannelSelect.eq(true))
+                .orderAsc(NewsChannelTableDao.Properties.NewsChannelIndex)
+                .build();
+        return newsChannelTableQuery.list();
+//        return DBManager.init(MyApplication.getInstance()).loadNewsChannels("1");
     }
 
     /**
@@ -64,11 +82,18 @@ public class NewsChannelTableManager {
      * @return 推荐频道列表
      */
     public static List<NewsChannelTable> loadNewsChannelsRecommend(){
-        return DBManager.init(MyApplication.getInstance()).loadNewsChannels("0");
+        Query<NewsChannelTable> newsChannelTableQuery = MyApplication.getDaoSeesion().getNewsChannelTableDao()
+                .queryBuilder()
+                .where(NewsChannelTableDao.Properties.NewsChannelSelect.eq(false))
+                .orderAsc(NewsChannelTableDao.Properties.NewsChannelIndex)
+                .build();
+        return newsChannelTableQuery.list();
+//        return DBManager.init(MyApplication.getInstance()).loadNewsChannels("0");
     }
 
     public static int getCount(){
-        return (int) DBManager.init(MyApplication.getInstance()).getCount();
+        return MyApplication.getDaoSeesion().getNewsChannelTableDao().loadAll().size();
+//        return (int) DBManager.init(MyApplication.getInstance()).getCount();
     }
 
     /**
@@ -77,7 +102,12 @@ public class NewsChannelTableManager {
      * @return
      */
     public static List<NewsChannelTable> loadNewsChannelsIndexLtAndIsUnselect(int channelIndex) {
-        return DBManager.init(MyApplication.getInstance()).loadNewsChannelsByWhere("news_channel_index < ? and news_channel_select = ? ",new String[]{channelIndex+"","0"});
+        Query<NewsChannelTable> newsChannelTableQuery = MyApplication.getDaoSeesion().getNewsChannelTableDao().queryBuilder()
+                .where(NewsChannelTableDao.Properties.NewsChannelIndex.lt(channelIndex)
+                        ,NewsChannelTableDao.Properties.NewsChannelSelect.eq(false))
+                .build();
+        return newsChannelTableQuery.list();
+        //return DBManager.init(MyApplication.getInstance()).loadNewsChannelsByWhere("news_channel_index < ? and news_channel_select = ? ",new String[]{channelIndex+"","0"});
     }
 
     /**
@@ -85,15 +115,25 @@ public class NewsChannelTableManager {
      * @return
      */
     public static int getNewsChannelSelectSize() {
-        return (int) DBManager.init(MyApplication.getInstance()).getCountByWhere(" news_channel_select = ? ",new String[]{"1"});
+        return (int) MyApplication.getDaoSeesion().getNewsChannelTableDao().queryBuilder()
+                .where(NewsChannelTableDao.Properties.NewsChannelSelect.eq(true))
+                .buildCount().count();
+        //return (int) DBManager.init(MyApplication.getInstance()).getCountByWhere(" news_channel_select = ? ",new String[]{"1"});
     }
 
     public static NewsChannelTable loadNewsChannel(int index) {
-        return DBManager.init(MyApplication.getInstance()).findNewsChannelByIndex(index);
+        return MyApplication.getDaoSeesion().getNewsChannelTableDao().queryBuilder()
+                .where(NewsChannelTableDao.Properties.NewsChannelIndex.eq(index))
+                .build().unique();
+        //return DBManager.init(MyApplication.getInstance()).findNewsChannelByIndex(index);
     }
 
     public static List<NewsChannelTable> loadNewsChannelsWithin(int from, int to) {
-        return DBManager.init(MyApplication.getInstance())
-                .loadNewsChannelsByWhere("news_channel_index BETWEEN ? AND ? ",new String[]{from+"",to+""});
+        Query<NewsChannelTable> newsChannelTableQuery = MyApplication.getDaoSeesion().getNewsChannelTableDao().queryBuilder()
+                .where(NewsChannelTableDao.Properties.NewsChannelIndex.between(from,to))
+                .build();
+        return newsChannelTableQuery.list();
+//        return DBManager.init(MyApplication.getInstance())
+//                .loadNewsChannelsByWhere("news_channel_index BETWEEN ? AND ? ",new String[]{from+"",to+""});
     }
 }

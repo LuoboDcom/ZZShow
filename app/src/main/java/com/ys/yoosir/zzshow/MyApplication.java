@@ -5,7 +5,11 @@ import android.content.Context;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.socks.library.KLog;
+import com.ys.yoosir.zzshow.greendao.gen.DaoMaster;
+import com.ys.yoosir.zzshow.greendao.gen.DaoSession;
 import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
+
+import org.greenrobot.greendao.database.Database;
 
 /**
  * @version 1.0
@@ -14,6 +18,8 @@ import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
 public class MyApplication extends Application{
 
     private static Context mInstance;
+
+    private static DaoSession mDaoSession;
 
     public static Context getInstance(){
         return mInstance;
@@ -24,6 +30,7 @@ public class MyApplication extends Application{
         super.onCreate();
         mInstance = this;
         initDayNightMode();
+        initDaoSession();
         KLog.init(true);
     }
 
@@ -33,5 +40,15 @@ public class MyApplication extends Application{
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+    }
+
+    private void initDaoSession(){
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"zzshow-db");
+        Database db = helper.getWritableDb();
+        mDaoSession = new DaoMaster(db).newSession();
+    }
+
+    public static DaoSession getDaoSeesion(){
+        return mDaoSession;
     }
 }

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 23
@@ -30,6 +31,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+greendao {
+    schemaVersion       1
+    daoPackage          'com.ys.yoosir.zzshow.greendao.gen'
+    targetGenDir        'src/main/java'
+    generateTests       true
+    targetGenDirTests   'src/androidTest/java'
 }
 
 dependencies {
@@ -88,4 +97,5 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'org.greenrobot:greendao:3.2.0'
 }
