@@ -1,0 +1,27 @@
+//Define versions
+ext{
+    //Sdk and tools
+    midSdkVersion = 14
+    targetSdkVersion = 24
+    compileSdkVersion = 24
+    buildToolsVersion = '24.0.2'
+
+    // App dependencies
+    supportLibraryVersion = '24.2.0'
+    ijkplayerVersion = '0.6.3'
+    rxjavaVersion = '1.2.1'
+    retrofitVersion = '2.1.0'
+    butterknifeVersion = '8.4.0'
+    okhttpVersion = '3.2.0'
+    klogVersion = '1.4.0'
+    glideVersion = '3.7.0'
+    glideOkhttpVersion = "1.4.0"
+    photoviewVersion = '1.2.6'
+    systembartintVersion = '1.0.3'
+    junitVersion = '4.12'
+    runnerVersion = '0.5'
+    rulesVersion = '0.5'
+    picassoVersion = '2.5.2'
+    greendaoVersion = '3.2.0'
+    daggerVersion = '2.8'
+}

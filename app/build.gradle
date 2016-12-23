@@ -1,33 +1,29 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
+apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.ys.yoosir.zzshow"
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion rootProject.ext.midSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
         versionName "1.1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    configurations.all {
-        resolutionStrategy.force 'com.android.support:support-annotations:23.1.0'
-    }
-
     buildTypes {
 
         debug {
-
+            minifyEnabled false
         }
 
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -43,59 +39,66 @@ greendao {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    // Required for local unit tests (JUnit 4 framework)
-    // Required for instrumented tests
-    
+
+    //SupportLibrary
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:design:$rootProject.supportLibraryVersion"
+    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
 
     //RxJava
+    compile "io.reactivex:rxandroid:$rootProject.rxjavaVersion"
+    compile "io.reactivex:rxjava:$rootProject.rxjavaVersion"
 
-    //Retrofit
-
-    //ButterKnife
-    
     //okHttp
+    compile "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
 
     //Glide
-    compile('com.github.bumptech.glide:okhttp3-integration:1.4.0') {
+    compile("com.github.bumptech.glide:okhttp3-integration:$rootProject.glideOkhttpVersion") {
         exclude group: 'glide-parent'
     }
-
-    //Video
+    compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
 
     //media ijkplayer
-
+    compile "tv.danmaku.ijk.media:ijkplayer-java:$rootProject.ijkplayerVersion"
+    compile "tv.danmaku.ijk.media:ijkplayer-armv7a:$rootProject.ijkplayerVersion"
+    compile "tv.danmaku.ijk.media:ijkplayer-exo:$rootProject.ijkplayerVersion"
+    compile "tv.danmaku.ijk.media:ijkplayer-x86:$rootProject.ijkplayerVersion"
+    compile "tv.danmaku.ijk.media:ijkplayer-armv5:$rootProject.ijkplayerVersion"
     
     //Retrofit
+    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+    compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.retrofitVersion"
 
-    
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.2.1'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    compile 'com.github.zhaokaiqiang.klog:library:1.4.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.github.waynell:VideoListPlayer:1.3'
-    compile 'tv.danmaku.ijk.media:ijkplayer-java:0.6.3'
-    compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.6.3'
-    compile 'tv.danmaku.ijk.media:ijkplayer-exo:0.6.3'
-    compile 'tv.danmaku.ijk.media:ijkplayer-x86:0.6.3'
-    compile 'tv.danmaku.ijk.media:ijkplayer-armv5:0.6.3'
-    compile 'com.github.chrisbanes:PhotoView:1.2.6'
-    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-    testCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support:support-annotations:23.4.0'
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support.test:rules:0.5'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    //ButterKnife dependencies
+    compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+    apt "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
 
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'org.greenrobot:greendao:3.2.0'
+    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
+    //GreenDao dependencies
+    compile "org.greenrobot:greendao:$rootProject.greendaoVersion"
+
+    // Dagger dependencies
+    apt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    compile "com.google.dagger:dagger:$rootProject.daggerVersion"
+
+    //KLog dependencies
+    compile "com.github.zhaokaiqiang.klog:library:$rootProject.klogVersion"
+
+    //PhotoView dependencies
+    compile "com.github.chrisbanes:PhotoView:$rootProject.photoviewVersion"
+
+    //systembar
+    compile "com.readystatesoftware.systembartint:systembartint:$rootProject.systembartintVersion"
+
+    // Required for local unit tests (JUnit 4 framework)
+    // Required for instrumented tests
+    testCompile "junit:junit:$rootProject.junitVersion"
+    androidTestCompile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
+    androidTestCompile "com.android.support.test:runner:$rootProject.runnerVersion"
+    androidTestCompile "com.android.support.test:rules:$rootProject.rulesVersion"
+
+
 }
