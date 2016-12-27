@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatDelegate;
 
 import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.common.AppManager;
+import com.ys.yoosir.zzshow.di.component.AppComponent;
+import com.ys.yoosir.zzshow.di.component.DaggerAppComponent;
 import com.ys.yoosir.zzshow.di.module.AppModule;
 import com.ys.yoosir.zzshow.greendao.gen.DaoMaster;
 import com.ys.yoosir.zzshow.greendao.gen.DaoSession;
@@ -23,6 +25,7 @@ public class MyApplication extends Application{
     private final String TAG = this.getClass().getSimpleName();
     private static MyApplication mApplication;
 
+    private AppComponent mAppComponent;
     private AppModule mAppModule;
     @Inject
     protected AppManager mAppManager;
@@ -38,6 +41,11 @@ public class MyApplication extends Application{
         super.onCreate();
         mApplication = this;
         this.mAppModule = new AppModule(this,mAppManager);//提供application
+        mAppComponent = DaggerAppComponent
+                .builder()
+                .appModule(mAppModule)
+                .build();
+
         initDayNightMode();
         initDaoSession();
         KLog.init(true);
@@ -59,6 +67,15 @@ public class MyApplication extends Application{
         if(mApplication != null){
             mApplication = null;
         }
+    }
+
+    /**
+     *  将AppComponent 返回出去，供其他地方使用，AppComponent接口中声明的方法返回的实例，
+     *  在getAppComponent()拿到对象后都可以直接使用
+     * @return
+     */
+    public AppComponent getAppComponent(){
+        return mAppComponent;
     }
 
     private void initDayNightMode() {

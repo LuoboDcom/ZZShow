@@ -15,6 +15,7 @@ import android.view.WindowManager;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.ys.yoosir.zzshow.R;
+import com.ys.yoosir.zzshow.di.component.ActivityComponent;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.BasePresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.HomeActivity;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsDetailActivity;
@@ -30,6 +31,8 @@ import rx.Subscription;
  * Created by Yoosir on 2016/10/19 0019.
  */
 public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity{
+
+    protected ActivityComponent mActivityComponent;
 
     protected  T mPresenter;
 
