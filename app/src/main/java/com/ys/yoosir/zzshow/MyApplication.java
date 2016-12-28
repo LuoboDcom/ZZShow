@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.socks.library.KLog;
+import com.ys.yoosir.zzshow.db.DBManager;
 import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
 
 /**
@@ -33,5 +34,11 @@ public class MyApplication extends Application{
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        DBManager.closeDB();
     }
 }

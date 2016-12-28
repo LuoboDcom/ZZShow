@@ -63,13 +63,7 @@ public class HomeActivity extends BaseActivity
     private boolean isSwitchNight = false;
     private String  childFragmentType; // 1.news ; 2.photo ; 3.video
     private long    oldOutTime;
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        DBManager.closeDB();
-    }
-
+    
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("ChangeNight","-onCreate");
