@@ -62,12 +62,6 @@ public class HomeActivity extends BaseActivity
     private long    oldOutTime;
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        DBManager.closeDB();
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("ChangeNight","-onCreate");
         if(savedInstanceState != null) {

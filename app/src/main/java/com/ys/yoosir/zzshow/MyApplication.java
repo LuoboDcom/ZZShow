@@ -11,6 +11,8 @@ import com.ys.yoosir.zzshow.di.component.DaggerAppComponent;
 import com.ys.yoosir.zzshow.di.module.AppModule;
 import com.ys.yoosir.zzshow.greendao.gen.DaoMaster;
 import com.ys.yoosir.zzshow.greendao.gen.DaoSession;
+import com.ys.yoosir.zzshow.db.DBManager;
+
 import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
 
 import org.greenrobot.greendao.database.Database;
@@ -67,6 +69,7 @@ public class MyApplication extends Application{
         if(mApplication != null){
             mApplication = null;
         }
+        DBManager.closeDB();
     }
 
     /**
