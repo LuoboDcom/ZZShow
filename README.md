@@ -21,6 +21,9 @@
 >吱吱源码：https://github.com/LuoboDcom/ZZShow
   吱吱文章：http://www.jianshu.com/p/e2a8c34932a6
 
+### APK
+![APK](https://github.com/LuoboDcom/ZZShow/blob/master/apppicture/zzshowApk.png)
+
 ### Version
 
 #### V1.0.1
