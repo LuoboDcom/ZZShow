@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -24,6 +26,9 @@ import rx.Subscription;
  */
 
 public class NewsChannelApiImpl implements NewsChannelApi<Map<Integer,List<NewsChannelTable>>> {
+
+    @Inject
+    public NewsChannelApiImpl(){}
 
     @Override
     public Subscription loadNewsChannels(final RequestCallBack<Map<Integer, List<NewsChannelTable>>> callBack) {

@@ -22,6 +22,8 @@ import com.ys.yoosir.zzshow.utils.RxBus;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import rx.functions.Action1;
@@ -57,6 +59,9 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
         }
     }
 
+    @Inject
+    NewsChannelPresenterImpl mNewsChannelPresenterImpl;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_news_channel;
@@ -79,8 +84,13 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
                         mPresenter.onItemSwap(channelItemMoveEvent.getFromPosition(),channelItemMoveEvent.getToPosition());
                     }
                 });
-        mPresenter = new NewsChannelPresenterImpl();
+        mPresenter = mNewsChannelPresenterImpl;
         mPresenter.attachView(this);
+    }
+
+    @Override
+    public void initInjector() {
+        mActivityComponent.inject(this);
     }
 
     @Override

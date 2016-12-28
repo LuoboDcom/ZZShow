@@ -89,7 +89,11 @@ public class NewsPhotoDetailActivity extends BaseActivity {
     public void initVariables() {
         mNewsPhotoDetail = getIntent().getParcelableExtra(PHOTO_DETAIL);
         mPictureList = mNewsPhotoDetail.getPictureItemList();
+    }
 
+    @Override
+    public void initInjector() {
+        mActivityComponent.inject(this);
     }
 
     @Override

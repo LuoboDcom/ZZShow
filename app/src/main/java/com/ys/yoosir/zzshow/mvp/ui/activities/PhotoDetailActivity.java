@@ -125,6 +125,11 @@ public class PhotoDetailActivity extends BaseActivity<PhotoDetailPresenter> impl
     }
 
     @Override
+    public void initInjector() {
+        mActivityComponent.inject(this);
+    }
+
+    @Override
     public void initVariables() {
         mPhotoUrl = getIntent().getStringExtra(PHOTO_URL);
         initPresenter();

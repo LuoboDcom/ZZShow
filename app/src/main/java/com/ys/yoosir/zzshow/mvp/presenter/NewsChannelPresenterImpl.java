@@ -13,6 +13,8 @@ import com.ys.yoosir.zzshow.utils.RxBus;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 /**
  * @version 1.0
  * @author  yoosir
@@ -26,8 +28,9 @@ public class NewsChannelPresenterImpl extends BasePresenterImpl<NewsChannelView,
     private boolean mIsChannelChanged;
     private String selectChannelName = null;
 
-    public NewsChannelPresenterImpl(){
-        mNewsApi =  new NewsChannelApiImpl();
+    @Inject
+    public NewsChannelPresenterImpl(NewsChannelApiImpl newsChannelApiImpl){
+        mNewsApi =  newsChannelApiImpl;
     }
 
     @Override

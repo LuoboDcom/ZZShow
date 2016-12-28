@@ -107,6 +107,11 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
         mPresenter.setPostId(mPostId);
     }
 
+    @Override
+    public void initInjector() {
+        mActivityComponent.inject(this);
+    }
+
     /**
      * 获取跳转传递的参数
      */

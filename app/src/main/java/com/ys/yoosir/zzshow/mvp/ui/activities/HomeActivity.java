@@ -2,9 +2,7 @@ package com.ys.yoosir.zzshow.mvp.ui.activities;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -22,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.socks.library.KLog;
@@ -97,6 +94,11 @@ public class HomeActivity extends BaseActivity
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    public void initInjector() {
+        mActivityComponent.inject(this);
     }
 
     @Override

@@ -5,6 +5,10 @@ import android.app.Activity;
 import com.ys.yoosir.zzshow.di.module.ActivityModule;
 import com.ys.yoosir.zzshow.di.scope.ActivityScope;
 import com.ys.yoosir.zzshow.mvp.ui.activities.HomeActivity;
+import com.ys.yoosir.zzshow.mvp.ui.activities.NewsChannelActivity;
+import com.ys.yoosir.zzshow.mvp.ui.activities.NewsDetailActivity;
+import com.ys.yoosir.zzshow.mvp.ui.activities.NewsPhotoDetailActivity;
+import com.ys.yoosir.zzshow.mvp.ui.activities.PhotoDetailActivity;
 
 import dagger.Component;
 
@@ -22,4 +26,11 @@ public interface ActivityComponent {
 
     void inject(HomeActivity homeActivity);
 
+    void inject(NewsDetailActivity newsDetailActivity);
+
+    void inject(NewsChannelActivity newsChannelActivity);
+
+    void inject(NewsPhotoDetailActivity newsPhotoDetailActivity);
+
+    void inject(PhotoDetailActivity photoDetailActivity);
 }

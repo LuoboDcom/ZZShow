@@ -14,8 +14,11 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.di.component.ActivityComponent;
+import com.ys.yoosir.zzshow.di.component.DaggerActivityComponent;
+import com.ys.yoosir.zzshow.di.module.ActivityModule;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.BasePresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.HomeActivity;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsDetailActivity;
@@ -44,6 +47,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     public abstract int getLayoutId();
 
+    public abstract void initInjector();
+
     public abstract void initVariables();
 
     public abstract void initViews();
@@ -51,10 +56,13 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int layoutId = getLayoutId();
+        initActivityComponent();
+
         setNightOrDayMode();
 //        setStatusBarTranslucent();
+        int layoutId = getLayoutId();
         setContentView(layoutId);
+        initInjector();
         initVariables();
         ButterKnife.bind(this);
         initToolBar();
@@ -62,6 +70,21 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         if(mPresenter != null){
             mPresenter.onCreate();
         }
+    }
+
+    private void initActivityComponent(){
+        mActivityComponent = DaggerActivityComponent.builder()
+                .appComponent(((MyApplication)getApplication()).getAppComponent())
+                .activityModule(new ActivityModule(this))
+                .build();
+    }
+
+    /**
+     *  提供Component
+     * @return
+     */
+    public ActivityComponent getActivityComponent(){
+        return mActivityComponent;
     }
 
     protected void initToolBar(){
