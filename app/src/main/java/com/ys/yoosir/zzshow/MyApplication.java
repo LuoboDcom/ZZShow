@@ -95,7 +95,7 @@ public class MyApplication extends Application{
         mDaoSession = new DaoMaster(db).newSession();
     }
 
-    public static DaoSession getDaoSeesion(){
+    public static DaoSession getDaoSession(){
         return mDaoSession;
     }
 }

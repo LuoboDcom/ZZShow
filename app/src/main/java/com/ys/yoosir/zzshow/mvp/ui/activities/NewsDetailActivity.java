@@ -26,6 +26,8 @@ import com.ys.yoosir.zzshow.widget.phototext.PhotoTextView;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Observable;
@@ -62,6 +64,9 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
             share();
         }
     }
+
+    @Inject
+    NewsDetailPresenterImpl mNewsDetailPresenterImpl;
 
     public static Intent getNewsDetailIntent(Context context, String postId, String postImgPath){
         Intent intent = new Intent(context,NewsDetailActivity.class);
@@ -102,7 +107,7 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
     @Override
     public void initVariables() {
         getIntentParams();
-        mPresenter = new NewsDetailPresenterImpl();
+        mPresenter = mNewsDetailPresenterImpl;
         mPresenter.attachView(this);
         mPresenter.setPostId(mPostId);
     }

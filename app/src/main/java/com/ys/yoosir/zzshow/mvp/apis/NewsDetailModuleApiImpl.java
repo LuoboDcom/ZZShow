@@ -12,6 +12,8 @@ import com.ys.yoosir.zzshow.utils.httputil.RxJavaCustomTransform;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Func1;
@@ -21,6 +23,11 @@ import rx.functions.Func1;
  * Created by Yoosir on 2016/11/15 0015.
  */
 public class NewsDetailModuleApiImpl implements NewsDetailModuleApi<NewsDetail>{
+
+    @Inject
+    public NewsDetailModuleApiImpl(){
+
+    }
 
     @Override
     public Subscription getNewsDetail(final RequestCallBack<NewsDetail> callBack, final String postId) {

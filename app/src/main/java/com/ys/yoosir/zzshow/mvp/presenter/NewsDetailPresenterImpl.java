@@ -7,6 +7,8 @@ import com.ys.yoosir.zzshow.mvp.entity.netease.NewsDetail;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsDetailPresenter;
 import com.ys.yoosir.zzshow.mvp.view.NewsDetailView;
 
+import javax.inject.Inject;
+
 /**
  * @version 1.0
  * Created by Yoosir on 2016/11/15 0015.
@@ -19,8 +21,9 @@ public class NewsDetailPresenterImpl extends BasePresenterImpl<NewsDetailView,Ne
 
     private String mPostId;
 
-    public NewsDetailPresenterImpl(){
-        moduleApi = new NewsDetailModuleApiImpl();
+    @Inject
+    public NewsDetailPresenterImpl(NewsDetailModuleApiImpl newsDetailModuleApi){
+        moduleApi = newsDetailModuleApi;
     }
 
     @Override
