@@ -12,10 +12,12 @@ import android.widget.ImageView;
 
 import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.R;
+import com.ys.yoosir.zzshow.di.component.AppComponent;
+import com.ys.yoosir.zzshow.di.component.DaggerNewsComponent;
+import com.ys.yoosir.zzshow.di.module.NewsModule;
 import com.ys.yoosir.zzshow.events.ChannelChangeEvent;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.presenter.NewsPresenterImpl;
-import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsChannelActivity;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.PostFragmentPagerAdapter;
 import com.ys.yoosir.zzshow.mvp.ui.fragments.base.BaseFragment;
@@ -34,7 +36,7 @@ import rx.functions.Action1;
  *  @version 1.0
  *  @author  yoosir
  */
-public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsView {
+public class NewsFragment extends BaseFragment<NewsPresenterImpl> implements NewsView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -97,6 +99,15 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsVie
     }
 
     @Override
+    protected void setupFragmentComponent(AppComponent appComponent) {
+        DaggerNewsComponent.builder()
+                .appComponent(appComponent)
+                .newsModule(new NewsModule(this))
+                .build()
+                .inject(this);
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.fragment_news;
     }
@@ -104,12 +115,10 @@ public class NewsFragment extends BaseFragment<NewsPresenter> implements NewsVie
     @Override
     public void initViews(View view) {
         mListener.onNewsToolbar(mToolbar);
-        initPresenter();
     }
 
-    private void initPresenter() {
-        mPresenter = new NewsPresenterImpl();
-        mPresenter.attachView(this);
+    @Override
+    protected void initData() {
         mPresenter.onCreate();
     }
 

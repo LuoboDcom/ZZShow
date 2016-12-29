@@ -23,8 +23,11 @@ import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.Constants;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.common.LoadDataType;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsPhotoDetail;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsSummary;
+import com.ys.yoosir.zzshow.di.component.AppComponent;
+import com.ys.yoosir.zzshow.di.component.DaggerNewsListComponent;
+import com.ys.yoosir.zzshow.di.module.NewsListModule;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsPhotoDetail;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsSummary;
 import com.ys.yoosir.zzshow.mvp.presenter.NewsListPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsListPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsDetailActivity;
@@ -45,7 +48,7 @@ import butterknife.OnClick;
  * Use the {@link NewsListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewsListFragment extends BaseFragment<NewsListPresenter> implements MyRecyclerListener,NewsListView{
+public class NewsListFragment extends BaseFragment<NewsListPresenterImpl> implements MyRecyclerListener,NewsListView{
 
     private static final String TAG = "NewsListFragment";
 
@@ -99,6 +102,15 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
     }
 
     @Override
+    protected void setupFragmentComponent(AppComponent appComponent) {
+        DaggerNewsListComponent.builder()
+                .appComponent(appComponent)
+                .newsListModule(new NewsListModule(this))
+                .build()
+                .inject(this);
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.fragment_news_list;
     }
@@ -107,7 +119,16 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
     public void initViews(View view) {
         initSwipeRefreshLayout();
         initRecyclerView();
-        initPresenter();
+    }
+
+    @Override
+    protected void initData() {
+        mPresenter.setNewsTypeAndId(mNewsChannelType, mNewsChannelId);
+        KLog.d(TAG,"initPresenter - mNewsChannelIndex = "+ mNewsChannelIndex);
+        if(getUserVisibleHint()){
+            KLog.d(TAG,"initPresenter - mNewsChannelIndex = "+ mNewsChannelIndex + " -- onCreate");
+            mPresenter.onCreate();
+        }
     }
 
     private void initRecyclerView() {
@@ -167,17 +188,6 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
                 mPresenter.refreshData();
             }
         });
-    }
-
-    private void initPresenter() {
-        mPresenter = new NewsListPresenterImpl();
-        mPresenter.attachView(this);
-        mPresenter.setNewsTypeAndId(mNewsChannelType, mNewsChannelId);
-        KLog.d(TAG,"initPresenter - mNewsChannelIndex = "+ mNewsChannelIndex);
-        if(getUserVisibleHint()){
-            KLog.d(TAG,"initPresenter - mNewsChannelIndex = "+ mNewsChannelIndex + " -- onCreate");
-            mPresenter.onCreate();
-        }
     }
 
     public void scrollToTop(){

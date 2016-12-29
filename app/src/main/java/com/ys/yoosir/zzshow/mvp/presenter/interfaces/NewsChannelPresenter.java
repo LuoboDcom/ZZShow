@@ -1,6 +1,6 @@
 package com.ys.yoosir.zzshow.mvp.presenter.interfaces;
 
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsChannelTable;
 
 /**
  *

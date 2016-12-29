@@ -1,6 +1,6 @@
 package com.ys.yoosir.zzshow.mvp.view;
 
-import com.ys.yoosir.zzshow.mvp.view.base.BaseView;
+import com.ys.yoosir.zzshow.mvp.base.BaseView;
 
 /**
  * @version 1.0

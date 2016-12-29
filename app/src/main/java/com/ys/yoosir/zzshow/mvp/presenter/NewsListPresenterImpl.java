@@ -1,30 +1,33 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
 import com.socks.library.KLog;
-import com.ys.yoosir.zzshow.mvp.apis.NewsListModuleApiImpl;
 import com.ys.yoosir.zzshow.common.LoadDataType;
-import com.ys.yoosir.zzshow.mvp.apis.interfaces.NewsListModuleApi;
 import com.ys.yoosir.zzshow.common.RequestCallBack;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsSummary;
+import com.ys.yoosir.zzshow.di.scope.FragmentScope;
+import com.ys.yoosir.zzshow.mvp.model.apis.interfaces.NewsModuleApi;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsSummary;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsListPresenter;
 import com.ys.yoosir.zzshow.mvp.view.NewsListView;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * @version 1.0
  * Created by Yoosir on 2016/11/10 0010.
  */
-public class NewsListPresenterImpl extends BasePresenterImpl<NewsListView,List<NewsSummary>>
+@FragmentScope
+public class NewsListPresenterImpl extends BasePresenterImpl<NewsListView,NewsModuleApi,List<NewsSummary>>
         implements NewsListPresenter,RequestCallBack<List<NewsSummary>>{
 
-    private NewsListModuleApi<List<NewsSummary>> moduleApi;
     private int mLoadDataType;
     private String mNewsType,mNewsId;
     private int mStartPage;
 
-    public NewsListPresenterImpl(){
-        moduleApi = new NewsListModuleApiImpl();
+    @Inject
+    public NewsListPresenterImpl(NewsListView rootView,NewsModuleApi newsModuleApi){
+        super(rootView,newsModuleApi);
     }
 
     @Override
@@ -77,6 +80,6 @@ public class NewsListPresenterImpl extends BasePresenterImpl<NewsListView,List<N
     }
 
     public void loadNewsData(){
-        mSubscription = moduleApi.loadNews(this,mNewsType,mNewsId,mStartPage);
+        mSubscription = mApi.loadNews(this,mNewsType,mNewsId,mStartPage);
     }
 }

@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.socks.library.KLog;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsChannelTable;
 
 import java.util.ArrayList;
 import java.util.List;

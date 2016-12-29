@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsSummary;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsSummary;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 import com.ys.yoosir.zzshow.utils.DimenUtil;
 

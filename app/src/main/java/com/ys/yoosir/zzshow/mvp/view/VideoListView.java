@@ -1,7 +1,7 @@
 package com.ys.yoosir.zzshow.mvp.view;
 
-import com.ys.yoosir.zzshow.mvp.entity.videos.VideoData;
-import com.ys.yoosir.zzshow.mvp.view.base.BaseView;
+import com.ys.yoosir.zzshow.mvp.model.entity.videos.VideoData;
+import com.ys.yoosir.zzshow.mvp.base.BaseView;
 
 import java.util.List;
 

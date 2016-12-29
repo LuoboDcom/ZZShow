@@ -12,13 +12,17 @@ import android.provider.MediaStore;
 
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.apis.PhotoDetailModuleApiImpl;
-import com.ys.yoosir.zzshow.mvp.apis.interfaces.PhotoDetailModuleApi;
+import com.ys.yoosir.zzshow.di.scope.ActivityScope;
+import com.ys.yoosir.zzshow.mvp.model.apis.PhotoDetailModuleApiImpl;
+import com.ys.yoosir.zzshow.mvp.model.apis.interfaces.PhotoDetailModuleApi;
+import com.ys.yoosir.zzshow.mvp.model.apis.interfaces.PhotoModuleApi;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PhotoDetailPresenter;
 import com.ys.yoosir.zzshow.mvp.view.PhotoDetailView;
 
 import java.io.File;
 import java.io.IOException;
+
+import javax.inject.Inject;
 
 /**
  *
@@ -26,8 +30,8 @@ import java.io.IOException;
  * @author  yoosir
  * Created by Administrator on 2016/11/30.
  */
-
-public class PhotoDetailPresenterImpl extends BasePresenterImpl<PhotoDetailView,Uri> implements PhotoDetailPresenter {
+@ActivityScope
+public class PhotoDetailPresenterImpl extends BasePresenterImpl<PhotoDetailView,PhotoModuleApi,Uri> implements PhotoDetailPresenter {
 
     private static final int TYPE_SAVE = 1;
     private static final int TYPE_SHARE = 2;
@@ -35,12 +39,12 @@ public class PhotoDetailPresenterImpl extends BasePresenterImpl<PhotoDetailView,
 
     private int mType;
 
-    public PhotoDetailModuleApi<Uri> photoDetailModuleApi;
     public Activity mActivity;
 
-    public PhotoDetailPresenterImpl(Activity activity){
+    @Inject
+    public PhotoDetailPresenterImpl(PhotoDetailView rootView,PhotoModuleApi moduleApi,Activity activity){
+        super(rootView,moduleApi);
         mActivity = activity;
-        photoDetailModuleApi = new PhotoDetailModuleApiImpl();
     }
 
     @Override
@@ -73,7 +77,7 @@ public class PhotoDetailPresenterImpl extends BasePresenterImpl<PhotoDetailView,
     }
 
     private void getPhotoUri(String photoUrl){
-        mSubscription = photoDetailModuleApi.saveImageAndGetImageUri(this,photoUrl);
+        mSubscription = mApi.saveImageAndGetImageUri(this,photoUrl);
     }
 
     @Override

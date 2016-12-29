@@ -2,20 +2,24 @@ package com.ys.yoosir.zzshow.mvp.presenter;
 
 import android.util.Log;
 
-import com.ys.yoosir.zzshow.mvp.apis.VideoListModuleApiImpl;
+import com.ys.yoosir.zzshow.di.scope.FragmentScope;
 import com.ys.yoosir.zzshow.common.LoadDataType;
-import com.ys.yoosir.zzshow.mvp.apis.interfaces.VideoListModuleApi;
-import com.ys.yoosir.zzshow.mvp.entity.videos.VideoData;
+import com.ys.yoosir.zzshow.mvp.model.apis.interfaces.VideoListModuleApi;
+import com.ys.yoosir.zzshow.mvp.model.apis.interfaces.VideoModuleApi;
+import com.ys.yoosir.zzshow.mvp.model.entity.videos.VideoData;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.VideoListPresenter;
 import com.ys.yoosir.zzshow.mvp.view.VideoListView;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  *  视频 MVP  P 类
  * Created by Yoosir on 2016/10/24 0024.
  */
-public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,List<VideoData>> implements VideoListPresenter{
+@FragmentScope
+public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,VideoModuleApi,List<VideoData>> implements VideoListPresenter{
 
     private int mLoadDataType = LoadDataType.TYPE_FIRST_LOAD;
 
@@ -24,8 +28,9 @@ public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,List
     private String mVideoType;
     private int mStartPage;
 
-    public VideoListPresenterImpl(){
-        moduleApi = new VideoListModuleApiImpl();
+    @Inject
+    public VideoListPresenterImpl(VideoListView rootView,VideoModuleApi moduleApi){
+        super(rootView,moduleApi);
     }
 
     @Override

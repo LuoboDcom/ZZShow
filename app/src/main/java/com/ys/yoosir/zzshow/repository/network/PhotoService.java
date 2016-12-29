@@ -1,6 +1,6 @@
 package com.ys.yoosir.zzshow.repository.network;
 
-import com.ys.yoosir.zzshow.mvp.entity.photos.GirlData;
+import com.ys.yoosir.zzshow.mvp.model.entity.photos.GirlData;
 
 import retrofit2.http.GET;
 import retrofit2.http.Header;

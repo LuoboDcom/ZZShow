@@ -1,23 +1,25 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
-import com.ys.yoosir.zzshow.mvp.apis.NewsModuleApiImpl;
-import com.ys.yoosir.zzshow.mvp.apis.interfaces.NewsModuleApi;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.di.scope.FragmentScope;
+import com.ys.yoosir.zzshow.mvp.model.apis.interfaces.NewsModuleApi;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsPresenter;
 import com.ys.yoosir.zzshow.mvp.view.NewsView;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  *  @version 1.0
  * Created by Yoosir on 2016/10/21 0021.
  */
-public class NewsPresenterImpl extends BasePresenterImpl<NewsView,List<NewsChannelTable>> implements NewsPresenter{
+@FragmentScope
+public class NewsPresenterImpl extends BasePresenterImpl<NewsView,NewsModuleApi,List<NewsChannelTable>> implements NewsPresenter{
 
-    private NewsModuleApi<List<NewsChannelTable>> moduleApi;
-
-    public NewsPresenterImpl(){
-        moduleApi = new NewsModuleApiImpl();
+    @Inject
+    public NewsPresenterImpl(NewsView rootView,NewsModuleApi api){
+        super(rootView,api);
     }
 
     @Override
@@ -38,6 +40,6 @@ public class NewsPresenterImpl extends BasePresenterImpl<NewsView,List<NewsChann
     }
 
     private void loadNewsChannelFromDB(){
-        mSubscription = moduleApi.loadNewsChannel(this);
+        mSubscription = mApi.loadNewsChannel(this);
     }
 }

@@ -13,7 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.entity.videos.VideoChannel;
+import com.ys.yoosir.zzshow.di.component.AppComponent;
+import com.ys.yoosir.zzshow.di.component.DaggerVideoComponent;
+import com.ys.yoosir.zzshow.di.module.VideoModule;
+import com.ys.yoosir.zzshow.mvp.model.entity.videos.VideoChannel;
 import com.ys.yoosir.zzshow.mvp.presenter.VideoPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.VideoPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.PostFragmentPagerAdapter;
@@ -32,7 +35,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
  *  @version 1.0
  *  @author  yoosir
  */
-public class VideoFragment extends BaseFragment<VideoPresenter> implements VideoView {
+public class VideoFragment extends BaseFragment<VideoPresenterImpl> implements VideoView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -82,6 +85,15 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
     }
 
     @Override
+    protected void setupFragmentComponent(AppComponent appComponent) {
+        DaggerVideoComponent.builder()
+                .appComponent(appComponent)
+                .videoModule(new VideoModule(this))
+                .build()
+                .inject(this);
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.fragment_video;
     }
@@ -95,8 +107,12 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
                 ((VideoListFragment)mVideoFragmentList.get(mCurrentItem)).scrollToTop();
             }
         });
-        initPresenter();
         initVideoPlayView();
+    }
+
+    @Override
+    protected void initData() {
+        mPresenter.onCreate();
     }
 
     private VideoPlayView mVideoPlayerView;
@@ -120,12 +136,6 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
                 }
             }
         });
-    }
-
-    private void initPresenter() {
-        mPresenter = new VideoPresenterImpl();
-        mPresenter.attachView(this);
-        mPresenter.onCreate();
     }
 
     @Override

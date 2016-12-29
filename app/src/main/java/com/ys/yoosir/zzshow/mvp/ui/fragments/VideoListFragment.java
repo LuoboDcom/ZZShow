@@ -16,7 +16,10 @@ import android.widget.Toast;
 
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.common.LoadDataType;
-import com.ys.yoosir.zzshow.mvp.entity.videos.VideoData;
+import com.ys.yoosir.zzshow.di.component.AppComponent;
+import com.ys.yoosir.zzshow.di.component.DaggerVideoListComponent;
+import com.ys.yoosir.zzshow.di.module.VideoListModule;
+import com.ys.yoosir.zzshow.mvp.model.entity.videos.VideoData;
 import com.ys.yoosir.zzshow.mvp.presenter.VideoListPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.VideoListPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.VideoListAdapter;
@@ -36,7 +39,7 @@ import butterknife.OnClick;
  * Use the {@link VideoListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VideoListFragment extends BaseFragment<VideoListPresenter> implements VideoListView,MyRecyclerListener {
+public class VideoListFragment extends BaseFragment<VideoListPresenterImpl> implements VideoListView,MyRecyclerListener  {
 
     private static final String TAG = VideoListFragment.class.getSimpleName();
 
@@ -107,6 +110,15 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
     }
 
     @Override
+    protected void setupFragmentComponent(AppComponent appComponent) {
+        DaggerVideoListComponent.builder()
+                .appComponent(appComponent)
+                .videoListModule(new VideoListModule(this))
+                .build()
+                .inject(this);
+    }
+
+    @Override
     public int getLayoutId() {
         Log.d(TAG,"getLayoutId mVideoType="+mVideoType);
         return R.layout.fragment_video_list;
@@ -117,7 +129,14 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
         Log.d(TAG,"initViews mVideoType="+mVideoType);
         initSwipeRefreshLayout();
         initRecyclerView();
-        initPresenter();
+    }
+
+    @Override
+    protected void initData() {
+        mPresenter.setVideoType(mVideoType);
+        if(getUserVisibleHint()) {
+            mPresenter.onCreate();
+        }
     }
 
     private void initSwipeRefreshLayout() {
@@ -275,16 +294,6 @@ public class VideoListFragment extends BaseFragment<VideoListPresenter> implemen
                 }
             }
         });
-    }
-
-    private void initPresenter(){
-        Log.d(TAG,"initPresenter mVideoType="+mVideoType);
-        mPresenter = new VideoListPresenterImpl();
-        mPresenter.attachView(this);
-        mPresenter.setVideoType(mVideoType);
-        if(getUserVisibleHint()) {
-            mPresenter.onCreate();
-        }
     }
 
     public void setVideoPlayView(VideoPlayView videoPlayView){

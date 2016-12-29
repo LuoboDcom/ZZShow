@@ -2,10 +2,10 @@ package com.ys.yoosir.zzshow.mvp.presenter;
 
 import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.Constants;
-import com.ys.yoosir.zzshow.mvp.apis.NewsChannelApiImpl;
-import com.ys.yoosir.zzshow.mvp.apis.interfaces.NewsChannelApi;
+import com.ys.yoosir.zzshow.di.scope.FragmentScope;
+import com.ys.yoosir.zzshow.mvp.model.apis.interfaces.NewsChannelApi;
 import com.ys.yoosir.zzshow.events.ChannelChangeEvent;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsChannelPresenter;
 import com.ys.yoosir.zzshow.mvp.view.NewsChannelView;
 import com.ys.yoosir.zzshow.utils.RxBus;
@@ -20,23 +20,22 @@ import javax.inject.Inject;
  * @author  yoosir
  * Created by Administrator on 2016/11/23.
  */
-
-public class NewsChannelPresenterImpl extends BasePresenterImpl<NewsChannelView,
+@FragmentScope
+public class NewsChannelPresenterImpl extends BasePresenterImpl<NewsChannelView,NewsChannelApi,
         Map<Integer,List<NewsChannelTable>>> implements NewsChannelPresenter {
 
-    private NewsChannelApi<Map<Integer,List<NewsChannelTable>>> mNewsApi;
     private boolean mIsChannelChanged;
     private String selectChannelName = null;
 
     @Inject
-    public NewsChannelPresenterImpl(NewsChannelApiImpl newsChannelApiImpl){
-        mNewsApi =  newsChannelApiImpl;
+    public NewsChannelPresenterImpl(NewsChannelView rootView,NewsChannelApi newsChannelApi){
+        super(rootView,newsChannelApi);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mNewsApi.loadNewsChannels(this);
+        mApi.loadNewsChannels(this);
     }
 
     @Override
@@ -67,13 +66,13 @@ public class NewsChannelPresenterImpl extends BasePresenterImpl<NewsChannelView,
 
     @Override
     public void onItemSwap(int fromPosition, int toPosition) {
-        mNewsApi.swapDB(fromPosition,toPosition);
+        mApi.swapDB(fromPosition,toPosition);
         mIsChannelChanged = true;
     }
 
     @Override
     public void onItemAddOrRemove(NewsChannelTable newsChannel, boolean isChannelMine) {
-        mNewsApi.updateDB(newsChannel,isChannelMine);
+        mApi.updateDB(newsChannel,isChannelMine);
         mIsChannelChanged = true;
     }
 }

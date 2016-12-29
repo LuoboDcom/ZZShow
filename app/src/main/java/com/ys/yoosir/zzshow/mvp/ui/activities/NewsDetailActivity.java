@@ -16,7 +16,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsDetail;
+import com.ys.yoosir.zzshow.di.component.AppComponent;
+import com.ys.yoosir.zzshow.di.component.DaggerNewsDetailComponent;
+import com.ys.yoosir.zzshow.di.module.NewsDetailModule;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsDetail;
 import com.ys.yoosir.zzshow.mvp.presenter.NewsDetailPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsDetailPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
@@ -33,7 +36,7 @@ import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
 
-public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implements NewsDetailView {
+public class NewsDetailActivity extends BaseActivity<NewsDetailPresenterImpl> implements NewsDetailView {
 
     private static final String NEWS_POST_ID = "NEWS_POST_ID";
     private static final String NEWS_IMG_RES = "NEWS_IMG_RES";
@@ -64,9 +67,6 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
             share();
         }
     }
-
-    @Inject
-    NewsDetailPresenterImpl mNewsDetailPresenterImpl;
 
     public static Intent getNewsDetailIntent(Context context, String postId, String postImgPath){
         Intent intent = new Intent(context,NewsDetailActivity.class);
@@ -107,14 +107,6 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
     @Override
     public void initVariables() {
         getIntentParams();
-        mPresenter = mNewsDetailPresenterImpl;
-        mPresenter.attachView(this);
-        mPresenter.setPostId(mPostId);
-    }
-
-    @Override
-    public void initInjector() {
-        mActivityComponent.inject(this);
     }
 
     /**
@@ -136,6 +128,21 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
                 .error(R.mipmap.ic_load_fail)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(newsDetailPictureIv);
+    }
+
+    @Override
+    protected void setupActivityComponent(AppComponent appComponent) {
+        DaggerNewsDetailComponent.builder()
+                .appComponent(appComponent)
+                .newsDetailModule(new NewsDetailModule(this))
+                .build()
+                .inject(this);
+    }
+
+    @Override
+    protected void initData() {
+        mPresenter.setPostId(mPostId);
+        super.initData();
     }
 
     @Override

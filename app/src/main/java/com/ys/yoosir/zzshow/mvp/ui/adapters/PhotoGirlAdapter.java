@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.entity.photos.PhotoGirl;
+import com.ys.yoosir.zzshow.mvp.model.entity.photos.PhotoGirl;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 
 import java.util.List;

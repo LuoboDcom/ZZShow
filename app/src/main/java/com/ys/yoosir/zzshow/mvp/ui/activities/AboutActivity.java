@@ -5,6 +5,7 @@ import android.text.util.Linkify;
 import android.widget.TextView;
 
 import com.ys.yoosir.zzshow.R;
+import com.ys.yoosir.zzshow.di.component.AppComponent;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
 
 import butterknife.BindView;
@@ -20,11 +21,6 @@ public class AboutActivity extends BaseActivity {
     }
 
     @Override
-    public void initInjector() {
-
-    }
-
-    @Override
     public void initVariables() {
 
     }
@@ -33,5 +29,10 @@ public class AboutActivity extends BaseActivity {
     public void initViews() {
         mAboutText.setAutoLinkMask(Linkify.ALL);
         mAboutText.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    @Override
+    protected void setupActivityComponent(AppComponent appComponent) {
+
     }
 }

@@ -1,29 +1,31 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
-import com.ys.yoosir.zzshow.mvp.apis.PhotoModuleApiImpl;
 import com.ys.yoosir.zzshow.common.LoadDataType;
-import com.ys.yoosir.zzshow.mvp.apis.interfaces.PhotoModuleApi;
-import com.ys.yoosir.zzshow.mvp.entity.photos.PhotoGirl;
+import com.ys.yoosir.zzshow.di.scope.FragmentScope;
+import com.ys.yoosir.zzshow.mvp.model.apis.interfaces.PhotoModuleApi;
+import com.ys.yoosir.zzshow.mvp.model.entity.photos.PhotoGirl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PhotoPresenter;
 import com.ys.yoosir.zzshow.mvp.view.PhotoGirlView;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * @version 1.0
  * @author  yoosir
  * Created by Administrator on 2016/11/29.
  */
+@FragmentScope
+public class PhotoPresenterImpl extends BasePresenterImpl<PhotoGirlView,PhotoModuleApi,List<PhotoGirl>> implements PhotoPresenter {
 
-public class PhotoPresenterImpl extends BasePresenterImpl<PhotoGirlView,List<PhotoGirl>> implements PhotoPresenter {
-
-    private PhotoModuleApi<List<PhotoGirl>> mModuleApi;
     private int mLoadType = LoadDataType.TYPE_FIRST_LOAD;
     private int mSize = 20;
     private int mStartPage;
 
-    public PhotoPresenterImpl(){
-        mModuleApi= new PhotoModuleApiImpl();
+    @Inject
+    public PhotoPresenterImpl(PhotoGirlView rootView,PhotoModuleApi moduleApi){
+        super(rootView,moduleApi);
     }
 
     @Override
@@ -57,7 +59,7 @@ public class PhotoPresenterImpl extends BasePresenterImpl<PhotoGirlView,List<Pho
     }
 
     private void loadPhotoDataRequest(int starPage){
-        mSubscription = mModuleApi.getPhotoList(this,mSize,starPage);
+        mSubscription = mApi.getPhotoList(this,mSize,starPage);
     }
 
     @Override

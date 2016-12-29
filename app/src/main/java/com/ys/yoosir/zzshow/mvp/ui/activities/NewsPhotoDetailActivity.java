@@ -16,7 +16,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsPhotoDetail;
+import com.ys.yoosir.zzshow.di.component.AppComponent;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsPhotoDetail;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
 import com.ys.yoosir.zzshow.utils.SystemUiVisibilityUtil;
 import com.ys.yoosir.zzshow.widget.photoview.HackyViewPager;
@@ -92,11 +93,6 @@ public class NewsPhotoDetailActivity extends BaseActivity {
     }
 
     @Override
-    public void initInjector() {
-        mActivityComponent.inject(this);
-    }
-
-    @Override
     public void initViews() {
         mPhotoTextLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +121,11 @@ public class NewsPhotoDetailActivity extends BaseActivity {
             }
         });
         mHackyViewPager.setAdapter(new PhotoPagerAdapter());
+    }
+
+    @Override
+    protected void setupActivityComponent(AppComponent appComponent) {
+
     }
 
     private void hideOrShowStatusBar() {

@@ -5,8 +5,8 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 import com.ys.yoosir.zzshow.common.ApiConstants;
 import com.ys.yoosir.zzshow.common.RequestCallBack;
-import com.ys.yoosir.zzshow.mvp.apis.NewsListModuleApiImpl;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsSummary;
+import com.ys.yoosir.zzshow.mvp.model.apis.NewsListModuleApiImpl;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsSummary;
 
 import org.junit.After;
 import org.junit.Before;

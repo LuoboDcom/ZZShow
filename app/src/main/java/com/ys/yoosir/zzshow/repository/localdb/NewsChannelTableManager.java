@@ -3,9 +3,8 @@ package com.ys.yoosir.zzshow.repository.localdb;
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.common.ApiConstants;
-import com.ys.yoosir.zzshow.db.DBManager;
 import com.ys.yoosir.zzshow.greendao.gen.NewsChannelTableDao;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
 
 import org.greenrobot.greendao.query.Query;

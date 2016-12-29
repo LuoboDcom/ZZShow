@@ -23,6 +23,10 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.squareup.picasso.Picasso;
 import com.ys.yoosir.zzshow.R;
+import com.ys.yoosir.zzshow.di.component.AppComponent;
+import com.ys.yoosir.zzshow.di.component.DaggerPhotoGirlDetailComponent;
+import com.ys.yoosir.zzshow.di.module.ActivityModule;
+import com.ys.yoosir.zzshow.di.module.PhotoGirlDetailModule;
 import com.ys.yoosir.zzshow.mvp.presenter.PhotoDetailPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PhotoDetailPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
@@ -38,7 +42,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  *  2.当使用Glide加载图片时，会导致 ImageView 与 PhotoView 呈现的大小不一样
  */
 
-public class PhotoDetailActivity extends BaseActivity<PhotoDetailPresenter> implements PhotoDetailView {
+public class PhotoDetailActivity extends BaseActivity<PhotoDetailPresenterImpl> implements PhotoDetailView {
 
     private static final String PHOTO_URL = "PHOTO_URL";
 
@@ -125,19 +129,8 @@ public class PhotoDetailActivity extends BaseActivity<PhotoDetailPresenter> impl
     }
 
     @Override
-    public void initInjector() {
-        mActivityComponent.inject(this);
-    }
-
-    @Override
     public void initVariables() {
         mPhotoUrl = getIntent().getStringExtra(PHOTO_URL);
-        initPresenter();
-    }
-
-    private void initPresenter() {
-        mPresenter = new PhotoDetailPresenterImpl(this);
-        mPresenter.attachView(this);
     }
 
     @Override
@@ -178,6 +171,16 @@ public class PhotoDetailActivity extends BaseActivity<PhotoDetailPresenter> impl
 
 
         initLazyLoadView();
+    }
+
+    @Override
+    protected void setupActivityComponent(AppComponent appComponent) {
+        DaggerPhotoGirlDetailComponent.builder()
+                .appComponent(appComponent)
+                .photoGirlDetailModule(new PhotoGirlDetailModule(this))
+                .activityModule(new ActivityModule(this))
+                .build()
+                .inject(this);
     }
 
     private void initLazyLoadView(){

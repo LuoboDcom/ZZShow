@@ -1,7 +1,7 @@
 package com.ys.yoosir.zzshow.repository.network;
 
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsDetail;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsSummary;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsDetail;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsSummary;
 
 import java.util.List;
 import java.util.Map;

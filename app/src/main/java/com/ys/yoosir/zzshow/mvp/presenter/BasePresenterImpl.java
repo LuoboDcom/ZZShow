@@ -1,10 +1,9 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
-import android.support.annotation.NonNull;
-
 import com.ys.yoosir.zzshow.common.RequestCallBack;
+import com.ys.yoosir.zzshow.mvp.base.BaseApi;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.BasePresenter;
-import com.ys.yoosir.zzshow.mvp.view.base.BaseView;
+import com.ys.yoosir.zzshow.mvp.base.BaseView;
 
 import rx.Subscription;
 
@@ -12,10 +11,16 @@ import rx.Subscription;
  * @version 1.0
  * Created by Yoosir on 2016/10/20 0020.
  */
-public class BasePresenterImpl<T extends BaseView,E> implements BasePresenter ,RequestCallBack<E>{
+public class BasePresenterImpl<V extends BaseView,M extends BaseApi,T> implements BasePresenter ,RequestCallBack<T>{
 
-    protected T mView;
+    protected V mView;
+    protected M mApi;
     protected Subscription mSubscription;
+
+    public BasePresenterImpl(V rootView,M model){
+        mView = rootView;
+        mApi  = model;
+    }
 
     @Override
     public void onCreate() {
@@ -23,15 +28,21 @@ public class BasePresenterImpl<T extends BaseView,E> implements BasePresenter ,R
     }
 
     @Override
-    public void attachView(@NonNull BaseView vid) {
-        mView = (T) vid;
+    public void onDestroy() {
+        unSubscribe(mSubscription);
+        if(mApi != null){
+            mApi.onDestroy();
+            this.mApi = null;
+        }
+        this.mView = null;
+        this.mSubscription = null;
     }
 
     @Override
-    public void onDestroy() {
+    public void unSubscribe(Subscription subscription) {
         //TODO unSubscribe
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
         }
     }
 
@@ -43,7 +54,7 @@ public class BasePresenterImpl<T extends BaseView,E> implements BasePresenter ,R
     }
 
     @Override
-    public void success(E data) {
+    public void success(T data) {
         if(mView != null) {
             mView.hideProgress();
         }

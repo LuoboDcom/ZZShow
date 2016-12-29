@@ -20,7 +20,10 @@ import android.widget.Toast;
 import com.ys.yoosir.zzshow.Constants;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.common.LoadDataType;
-import com.ys.yoosir.zzshow.mvp.entity.photos.PhotoGirl;
+import com.ys.yoosir.zzshow.di.component.AppComponent;
+import com.ys.yoosir.zzshow.di.component.DaggerPhotoGirlComponent;
+import com.ys.yoosir.zzshow.di.module.PhotoModule;
+import com.ys.yoosir.zzshow.mvp.model.entity.photos.PhotoGirl;
 import com.ys.yoosir.zzshow.mvp.presenter.PhotoPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.PhotoPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.PhotoDetailActivity;
@@ -40,7 +43,7 @@ import butterknife.OnClick;
  * Created by Administrator on 2016/11/29.
  */
 
-public class PhotoFragment extends BaseFragment<PhotoPresenter> implements PhotoGirlView,MyRecyclerListener{
+public class PhotoFragment extends BaseFragment<PhotoPresenterImpl> implements PhotoGirlView,MyRecyclerListener{
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -90,6 +93,15 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
     }
 
     @Override
+    protected void setupFragmentComponent(AppComponent appComponent) {
+        DaggerPhotoGirlComponent.builder()
+                .appComponent(appComponent)
+                .photoModule(new PhotoModule(this))
+                .build()
+                .inject(this);
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.fragment_photo;
     }
@@ -99,7 +111,11 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
         mListener.onPhotoToolbar(mToolbar);
         initSwipeRefreshLayout();
         initRecyclerView();
-        initPresenter();
+    }
+
+    @Override
+    protected void initData() {
+        mPresenter.onCreate();
     }
 
     private void initSwipeRefreshLayout() {
@@ -142,12 +158,6 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
         mAdapter = new PhotoGirlAdapter(null);
         mAdapter.setOnItemClickListener(this);
         mPhotoRecyclerView.setAdapter(mAdapter);
-    }
-
-    private void initPresenter(){
-        mPresenter = new PhotoPresenterImpl();
-        mPresenter.attachView(this);
-        mPresenter.onCreate();
     }
 
     @Override

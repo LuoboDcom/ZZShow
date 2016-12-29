@@ -16,14 +16,10 @@ import android.view.WindowManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.ys.yoosir.zzshow.MyApplication;
 import com.ys.yoosir.zzshow.R;
-import com.ys.yoosir.zzshow.di.component.ActivityComponent;
-import com.ys.yoosir.zzshow.di.component.DaggerActivityComponent;
-import com.ys.yoosir.zzshow.di.module.ActivityModule;
+import com.ys.yoosir.zzshow.di.component.AppComponent;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.BasePresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.HomeActivity;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsDetailActivity;
-import com.ys.yoosir.zzshow.mvp.ui.activities.NewsPhotoDetailActivity;
-import com.ys.yoosir.zzshow.mvp.ui.activities.PhotoDetailActivity;
 import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
 
 import butterknife.ButterKnife;
@@ -35,10 +31,9 @@ import rx.Subscription;
  */
 public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity{
 
-    protected ActivityComponent mActivityComponent;
-
     protected  T mPresenter;
 
+    protected MyApplication mApplication;
     private WindowManager mWindowManager = null;
     private View mNightView = null;
     private boolean mIsAddedView;
@@ -47,8 +42,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     public abstract int getLayoutId();
 
-    public abstract void initInjector();
-
     public abstract void initVariables();
 
     public abstract void initViews();
@@ -56,36 +49,36 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initActivityComponent();
-
         setNightOrDayMode();
 //        setStatusBarTranslucent();
         int layoutId = getLayoutId();
         setContentView(layoutId);
-        initInjector();
+        //定义变量或读取传递参数
         initVariables();
+        //绑定到butterKnife
         ButterKnife.bind(this);
+        //设置ToolBar
         initToolBar();
+        //初始化View
         initViews();
+        //注入依赖
+        ComponentInject();
+        initData();
+    }
+
+    protected void initData() {
         if(mPresenter != null){
             mPresenter.onCreate();
         }
     }
 
-    private void initActivityComponent(){
-        mActivityComponent = DaggerActivityComponent.builder()
-                .appComponent(((MyApplication)getApplication()).getAppComponent())
-                .activityModule(new ActivityModule(this))
-                .build();
+    protected void ComponentInject(){
+        mApplication = (MyApplication) MyApplication.getInstance();
+        setupActivityComponent(mApplication.getAppComponent());
     }
 
-    /**
-     *  提供Component
-     * @return
-     */
-    public ActivityComponent getActivityComponent(){
-        return mActivityComponent;
-    }
+    //提供AppComponent(提供所有的单例对象)给子类，进行Component依赖
+    protected abstract void setupActivityComponent(AppComponent appComponent);
 
     protected void initToolBar(){
         if(!(this instanceof HomeActivity)) {

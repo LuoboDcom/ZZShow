@@ -1,9 +1,9 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
 import com.socks.library.KLog;
-import com.ys.yoosir.zzshow.mvp.apis.NewsDetailModuleApiImpl;
-import com.ys.yoosir.zzshow.mvp.apis.interfaces.NewsDetailModuleApi;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsDetail;
+import com.ys.yoosir.zzshow.di.scope.FragmentScope;
+import com.ys.yoosir.zzshow.mvp.model.apis.interfaces.NewsModuleApi;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsDetail;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsDetailPresenter;
 import com.ys.yoosir.zzshow.mvp.view.NewsDetailView;
 
@@ -13,17 +13,16 @@ import javax.inject.Inject;
  * @version 1.0
  * Created by Yoosir on 2016/11/15 0015.
  */
-public class NewsDetailPresenterImpl extends BasePresenterImpl<NewsDetailView,NewsDetail> implements NewsDetailPresenter{
+@FragmentScope
+public class NewsDetailPresenterImpl extends BasePresenterImpl<NewsDetailView,NewsModuleApi,NewsDetail> implements NewsDetailPresenter{
 
     private final String TAG = "NewsDetailPresenterImpl";
-
-    private NewsDetailModuleApi<NewsDetail> moduleApi;
 
     private String mPostId;
 
     @Inject
-    public NewsDetailPresenterImpl(NewsDetailModuleApiImpl newsDetailModuleApi){
-        moduleApi = newsDetailModuleApi;
+    public NewsDetailPresenterImpl(NewsDetailView rootView,NewsModuleApi newsModuleApi){
+        super(rootView,newsModuleApi);
     }
 
     @Override
@@ -50,6 +49,6 @@ public class NewsDetailPresenterImpl extends BasePresenterImpl<NewsDetailView,Ne
     }
 
     public void loadNewsDetail(){
-        mSubscription = moduleApi.getNewsDetail(this,mPostId);
+        mSubscription = mApi.getNewsDetail(this,mPostId);
     }
 }

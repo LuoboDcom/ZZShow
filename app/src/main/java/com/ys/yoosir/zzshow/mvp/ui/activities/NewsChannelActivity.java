@@ -9,8 +9,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ys.yoosir.zzshow.R;
+import com.ys.yoosir.zzshow.di.component.AppComponent;
+import com.ys.yoosir.zzshow.di.component.DaggerNewsChannelComponent;
+import com.ys.yoosir.zzshow.di.module.NewsChannelModule;
 import com.ys.yoosir.zzshow.events.ChannelItemMoveEvent;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.presenter.NewsChannelPresenterImpl;
 import com.ys.yoosir.zzshow.mvp.presenter.interfaces.NewsChannelPresenter;
 import com.ys.yoosir.zzshow.mvp.ui.activities.base.BaseActivity;
@@ -34,7 +37,7 @@ import rx.functions.Action1;
  * Created by Yoosir on 2016/11/21.
  */
 
-public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> implements NewsChannelView {
+public class NewsChannelActivity extends BaseActivity<NewsChannelPresenterImpl> implements NewsChannelView {
 
 
     @BindView(R.id.tv_edit)
@@ -59,9 +62,6 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
         }
     }
 
-    @Inject
-    NewsChannelPresenterImpl mNewsChannelPresenterImpl;
-
     @Override
     public int getLayoutId() {
         return R.layout.activity_news_channel;
@@ -84,19 +84,21 @@ public class NewsChannelActivity extends BaseActivity<NewsChannelPresenter> impl
                         mPresenter.onItemSwap(channelItemMoveEvent.getFromPosition(),channelItemMoveEvent.getToPosition());
                     }
                 });
-        mPresenter = mNewsChannelPresenterImpl;
-        mPresenter.attachView(this);
-    }
-
-    @Override
-    public void initInjector() {
-        mActivityComponent.inject(this);
     }
 
     @Override
     public void initViews() {
         initRecyclerView(mMineRecyclerView);
         initRecyclerView(mRecommendRecyclerView);
+    }
+
+    @Override
+    protected void setupActivityComponent(AppComponent appComponent) {
+        DaggerNewsChannelComponent.builder()
+                .appComponent(appComponent)
+                .newsChannelModule(new NewsChannelModule(this))
+                .build()
+                .inject(this);
     }
 
     private void initRecyclerView(RecyclerView recyclerView){

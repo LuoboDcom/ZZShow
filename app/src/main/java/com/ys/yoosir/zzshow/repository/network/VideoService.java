@@ -1,6 +1,6 @@
 package com.ys.yoosir.zzshow.repository.network;
 
-import com.ys.yoosir.zzshow.mvp.entity.videos.VideoData;
+import com.ys.yoosir.zzshow.mvp.model.entity.videos.VideoData;
 
 import java.util.List;
 import java.util.Map;

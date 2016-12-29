@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.R;
 import com.ys.yoosir.zzshow.events.ChannelItemMoveEvent;
-import com.ys.yoosir.zzshow.mvp.entity.netease.NewsChannelTable;
+import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsChannelTable;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.base.BaseRecyclerViewAdapter;
 import com.ys.yoosir.zzshow.mvp.ui.adapters.listener.ItemDragHelperCallback;
 import com.ys.yoosir.zzshow.utils.ClickUtil;
