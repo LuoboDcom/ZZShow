@@ -141,8 +141,10 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenterImpl> im
 
     @Override
     protected void initData() {
-        mPresenter.setPostId(mPostId);
-        super.initData();
+        if(mPresenter != null){
+            mPresenter.setPostId(mPostId);
+            mPresenter.onCreate();
+        }
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.ys.yoosir.zzshow.mvp.presenter;
 
 import com.socks.library.KLog;
 import com.ys.yoosir.zzshow.Constants;
+import com.ys.yoosir.zzshow.di.scope.ActivityScope;
 import com.ys.yoosir.zzshow.di.scope.FragmentScope;
 import com.ys.yoosir.zzshow.mvp.model.apis.interfaces.NewsChannelApi;
 import com.ys.yoosir.zzshow.events.ChannelChangeEvent;
@@ -20,7 +21,7 @@ import javax.inject.Inject;
  * @author  yoosir
  * Created by Administrator on 2016/11/23.
  */
-@FragmentScope
+@ActivityScope
 public class NewsChannelPresenterImpl extends BasePresenterImpl<NewsChannelView,NewsChannelApi,
         Map<Integer,List<NewsChannelTable>>> implements NewsChannelPresenter {
 

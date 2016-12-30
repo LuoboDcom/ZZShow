@@ -112,6 +112,7 @@ public class VideoFragment extends BaseFragment<VideoPresenterImpl> implements V
 
     @Override
     protected void initData() {
+        Log.i("DDVideoFragment","initData");
         mPresenter.onCreate();
     }
 
@@ -254,6 +255,7 @@ public class VideoFragment extends BaseFragment<VideoPresenterImpl> implements V
     }
 
     private void setViewPager(List<String> channelNames) {
+        Log.i("DDVideoFragment","setViewPager");
         PostFragmentPagerAdapter adapter = new PostFragmentPagerAdapter(
                 getChildFragmentManager(),channelNames,mVideoFragmentList);
         mViewPager.setAdapter(adapter);

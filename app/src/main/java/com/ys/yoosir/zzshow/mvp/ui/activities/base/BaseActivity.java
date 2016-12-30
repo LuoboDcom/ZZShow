@@ -22,6 +22,8 @@ import com.ys.yoosir.zzshow.mvp.ui.activities.HomeActivity;
 import com.ys.yoosir.zzshow.mvp.ui.activities.NewsDetailActivity;
 import com.ys.yoosir.zzshow.utils.SharedPreferencesUtil;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import rx.Subscription;
 
@@ -31,6 +33,7 @@ import rx.Subscription;
  */
 public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity{
 
+    @Inject
     protected  T mPresenter;
 
     protected MyApplication mApplication;
@@ -57,12 +60,12 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         initVariables();
         //绑定到butterKnife
         ButterKnife.bind(this);
+        //注入依赖
+        ComponentInject();
         //设置ToolBar
         initToolBar();
         //初始化View
         initViews();
-        //注入依赖
-        ComponentInject();
         initData();
     }
 

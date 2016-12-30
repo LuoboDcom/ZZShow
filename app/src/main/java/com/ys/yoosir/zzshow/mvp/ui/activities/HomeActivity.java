@@ -232,6 +232,8 @@ public class HomeActivity extends BaseActivity
             mFragmentTransaction.show(addChildFragment);
         }
         childFragmentType = childFragmentTag;
+//        mFragmentTransaction.commitNow();
+        mFragmentManager.executePendingTransactions();
         mFragmentTransaction.commit();
     }
 
@@ -287,11 +289,17 @@ public class HomeActivity extends BaseActivity
         int id = item.getItemId();
         isSwitchNight = false;
         if (id == R.id.nav_news) {
-            setChildFragment(CHILD_FRAGMENT_TAG_NEWS);
+            if(!CHILD_FRAGMENT_TAG_NEWS.equals(childFragmentType)) {
+                setChildFragment(CHILD_FRAGMENT_TAG_NEWS);
+            }
         } else if (id == R.id.nav_photo) {
-            setChildFragment(CHILD_FRAGMENT_TAG_PHOTO);
+            if(!CHILD_FRAGMENT_TAG_PHOTO.equals(childFragmentType)) {
+                setChildFragment(CHILD_FRAGMENT_TAG_PHOTO);
+            }
         } else if (id == R.id.nav_video) {
-            setChildFragment(CHILD_FRAGMENT_TAG_VIDEO);
+            if(!CHILD_FRAGMENT_TAG_VIDEO.equals(childFragmentType)) {
+                setChildFragment(CHILD_FRAGMENT_TAG_VIDEO);
+            }
         } else if (id == R.id.nav_share) {
             share();
         } else if (id == R.id.nav_about) {

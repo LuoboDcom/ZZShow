@@ -23,14 +23,4 @@ import dagger.Component;
 public interface ActivityComponent {
 
     Activity getActivity();
-
-    void inject(HomeActivity homeActivity);
-
-    void inject(NewsDetailActivity newsDetailActivity);
-
-    void inject(NewsChannelActivity newsChannelActivity);
-
-    void inject(NewsPhotoDetailActivity newsPhotoDetailActivity);
-
-    void inject(PhotoDetailActivity photoDetailActivity);
 }

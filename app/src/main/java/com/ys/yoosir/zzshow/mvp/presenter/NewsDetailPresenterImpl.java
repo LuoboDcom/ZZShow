@@ -1,6 +1,7 @@
 package com.ys.yoosir.zzshow.mvp.presenter;
 
 import com.socks.library.KLog;
+import com.ys.yoosir.zzshow.di.scope.ActivityScope;
 import com.ys.yoosir.zzshow.di.scope.FragmentScope;
 import com.ys.yoosir.zzshow.mvp.model.apis.interfaces.NewsModuleApi;
 import com.ys.yoosir.zzshow.mvp.model.entity.netease.NewsDetail;
@@ -13,7 +14,7 @@ import javax.inject.Inject;
  * @version 1.0
  * Created by Yoosir on 2016/11/15 0015.
  */
-@FragmentScope
+@ActivityScope
 public class NewsDetailPresenterImpl extends BasePresenterImpl<NewsDetailView,NewsModuleApi,NewsDetail> implements NewsDetailPresenter{
 
     private final String TAG = "NewsDetailPresenterImpl";
