@@ -232,10 +232,9 @@ public class HomeActivity extends BaseActivity
             mFragmentTransaction.show(addChildFragment);
         }
         childFragmentType = childFragmentTag;
-//        mFragmentTransaction.commitNow();
-        mFragmentManager.executePendingTransactions();
         mFragmentTransaction.commit();
     }
+
 
     private BaseFragment getChildFragmentByTag(String childFragmentTag){
         switch (childFragmentTag){

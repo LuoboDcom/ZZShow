@@ -23,8 +23,6 @@ public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,Vide
 
     private int mLoadDataType = LoadDataType.TYPE_FIRST_LOAD;
 
-    private VideoListModuleApi<List<VideoData>> moduleApi;
-
     private String mVideoType;
     private int mStartPage;
 
@@ -70,7 +68,7 @@ public class VideoListPresenterImpl extends BasePresenterImpl<VideoListView,Vide
     }
 
     private void loadVideoData(int startPage){
-        mSubscription = moduleApi.getVideoList(this,mVideoType,startPage);
+        mSubscription = mApi.getVideoList(this,mVideoType,startPage);
     }
 
     @Override
