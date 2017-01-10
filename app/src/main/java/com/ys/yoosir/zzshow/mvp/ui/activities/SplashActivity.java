@@ -1,17 +1,19 @@
 package com.ys.yoosir.zzshow.mvp.ui.activities;
 
+import android.Manifest;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,7 +28,12 @@ import butterknife.ButterKnife;
 import rx.Observable;
 import rx.functions.Action1;
 
+import static android.content.pm.PackageManager.PERMISSION_DENIED;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 public class SplashActivity extends AppCompatActivity {
+
+    private static final int RP_WRITE = 2;
 
     @BindView(R.id.logo_bg)
     ImageView mLogoBgIv;
@@ -47,7 +54,42 @@ public class SplashActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.zoomin, 0);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-        initAnimation();
+        if(toCheckPermission()) {
+            initAnimation();
+        }
+    }
+
+    private boolean toCheckPermission(){
+        int result = ActivityCompat.checkSelfPermission(SplashActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(PERMISSION_GRANTED != result){
+            ActivityCompat.requestPermissions(SplashActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},RP_WRITE);
+            return false;
+        }
+        return true;
+    }
+
+    private void showDialog(boolean isReTry){
+        AlertDialog.Builder builder = new AlertDialog
+                .Builder(this)
+                .setTitle("SD卡读写权限缺少")
+                .setMessage("应用的基础数据本地初始化时，需要SD卡的读写权限，否则将无法正常使用本应用。\n 可通过'设置' -> '应用程序'->'权限设置'，重新设置应用权限。")
+                .setNegativeButton("退出应用", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+                if(isReTry){
+                    builder.setPositiveButton("重新授权", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            toCheckPermission();
+                        }
+                    });
+                }
+                builder.create().show();
     }
 
     private void initAnimation() {
@@ -114,5 +156,26 @@ public class SplashActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(RP_WRITE == requestCode){
+            if (grantResults[0] == PERMISSION_GRANTED) {
+                //TODO continue
+                initAnimation();
+            } else {
+                //TODO show dialog to user
+                //判断用户是否勾选 不再询问的选项，未勾选可以 说明权限作用，重新授权。
+                boolean shouldShow = ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if(shouldShow){
+                    showDialog(true);
+                }else{
+                    showDialog(false);
+                }
+            }
+        }else{
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }
