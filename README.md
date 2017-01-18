@@ -26,6 +26,12 @@
 
 ### Version
 
+### V1.1.0
+1.添加了Dagger
+2.添加GreenDao管理数据库
+3.添加了权限管理
+
+
 #### V1.0.1
 1.修改项目的包结构，让项目的架构更清晰
 
@@ -81,8 +87,8 @@
 - [用RxJava实现事件总线(Event Bus)](http://www.jianshu.com/p/ca090f6e2fe2)
 
 ### TODO
-**使用[Dragger2](https://github.com/google/dagger)**
+** √ 使用[Dragger2](https://github.com/google/dagger)**
 
-**使用[Greendao](https://github.com/greenrobot/greenDAO)**
+** √ 使用[Greendao](https://github.com/greenrobot/greenDAO)**
 
-**添加动态权限**
+** √ 添加动态权限**
